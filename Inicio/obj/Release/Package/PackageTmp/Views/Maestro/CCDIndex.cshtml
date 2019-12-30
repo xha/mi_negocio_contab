@@ -1,0 +1,122 @@
+@model Datos.Models.MaestroModel
+
+@{
+    ViewBag.Title = " de  Documentos";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Maestro", "Index", "Maestro")</li>
+                    <li class="breadcrumbs-item active">Configuraci&oacute;n</li>
+                    <li class="breadcrumbs-item active">Configuraci&oacute;n @ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>Configuraci&oacute;n @ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Maestro - Configuracion @ViewBag.Title - Inicio ', '/Maestro/Ayuda', 'TAUMIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="#" onclick="mostrar_panel('CCDCreate', 'Maestro')" class="btn btn-success">
+                    <i class='fa fa-plus'></i>
+                    Agregar
+                </a>
+            </div>
+        </div>
+        <br />
+    }
+
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold">Documentos 
+                <label class='btn btn-primary grid_opt'><i class='fa fa-print'></i></label>
+            </h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="CCDIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Serie</th>
+                            <th>Ult. Correl</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#CCDIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Maestro/GridCCD",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [4],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [5],
+                searchable: false,
+                orderable: false
+            },
+            {
+                targets: [6],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "Codigo" },
+                { data: "Descripcion" },
+                { data: "Serie" },
+                { data: "UltimoCorrelativo" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="mostrar_panel(\'CCDEdit?Codigo=' + row.Codigo + '\', \'Maestro\')" ><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.Codigo + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Imprimir" href="#"><i class="fa fa-print"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+</script>

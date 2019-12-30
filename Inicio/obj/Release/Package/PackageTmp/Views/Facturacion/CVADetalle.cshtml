@@ -1,0 +1,154 @@
+﻿@model Datos.Models.FacturacionModel
+@{
+    ViewBag.Title = "Consulta de Ventas por Artículo";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Facturacion", "Index", "Facturacion")</li>
+                    <li class="breadcrumbs-item">Consultas</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("CVAIndex", "Facturacion")'>@ViewBag.Title</a></li>
+                    <li class="breadcrumbs-item active">Consultar</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Consultar Registro</label> #<strong>@Model.CodigoProducto</strong></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Crear / Editar', '/Facturacion/Ayuda', 'CVADetalle', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+    {
+        @Html.HiddenFor(m => m.CodigoProducto)
+        <div class="row">
+            <div class="col-sm-3">
+                <label>Art&iacute;culo</label><br />
+                @Html.TextBoxFor(m => m.CodigoProducto, new { @class = "form-control", @readonly = true })
+            </div>
+            <div class="col-sm-2">
+                <label>Unidad Medida</label>
+                @Html.TextBoxFor(m => m.CodigoUnidadMedida, new { @class = "form-control", @readonly = true })
+            </div>
+            <div class="col-sm-2">
+                <label>Marca</label>
+                @Html.TextBoxFor(m => m.CodigoMarca, new { @class = "form-control", @readonly = true })
+            </div>
+        </div>
+    }
+    <hr />
+    <div class="row">
+        <div class="col-sm-2">
+            <label>Fecha Desde</label><br />
+            @Html.TextBoxFor(m => m.FechaEmision, new { @class = "form-control datepickers", @readonly = true })
+        </div>
+        <div class="col-sm-2">
+            <label>Fecha Hasta</label><br />
+            @Html.TextBoxFor(m => m.FechaVencimiento, new { @class = "form-control datepickers", @readonly = true })
+        </div>
+        <div class="col-sm-2">
+            <br />
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-search'></i>
+                Buscar
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped pre-scrollable datatables" id="CVADetalleGrid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Art&iacute;culo</th>
+                        <th>Descripci&oacute;n</th>
+                        <th>Lote/Serie</th>
+                        <th>Und.</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unit.</th>
+                        <th>Precio Bruto</th>
+                        <th>Dscto</th>
+                        <th>Precio Total</th>
+                        <th>IGV</th>
+                        <th>Valor Vta.</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <label>Total Cantidad</label>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>Total V. Venta MN</label>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>Total V. Venta ME</label>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" readonly />
+        </div>
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick='ocultar_panel("CVAIndex", "Facturacion")' class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#CVADetalleGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Facturacion/GridTCVDetalle",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CodigoProducto" },
+                { data: "DescripcionProducto" },
+                { data: "Lote" },
+                { data: "CodigoUnidadMedida" },
+                { data: "Cantidad" },
+                { data: "Precio" },
+                { data: "PrecioVenta" },
+                { data: "DescuentoUnitario" },
+                { data: "IGV" },
+                { data: "ImporteIGV" },
+                { data: "Total" },
+            ]
+        });
+    });
+
+    function nada2(codigo, descripcion) {
+        $('#m_middle').modal('hide');
+    }
+</script>
+

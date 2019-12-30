@@ -1,0 +1,88 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="card row">
+        <div class="card-header text-danger font-weight-bold">Informaci&oacute;n General</div>
+        <div class="card-body row">
+            <div class="col-sm-3">
+                <label>C&oacute;digo</label>
+                @if (Model != null && !String.IsNullOrEmpty(Model.CODIGO))
+                {
+                    @Html.TextBoxFor(m => m.CODIGO, new { @class = "form-control", @readonly = "true" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(m => m.CODIGO, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_enteros(event)" })
+                }
+            </div>
+            <div class="col-sm-6">
+                <label>Descripci&oacute;n</label>
+                @Html.TextBoxFor(m => m.DESCRIPCION, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+            </div>
+        </div>
+    </div>
+    <div class="row p-2">
+        <div class="col-sm-3">
+            <label>Tope de Seguro %</label>
+            <input class="form-control" onkeypress="solo_decimal(event, this)" />
+        </div>
+        <div class="col-sm-3">
+            <label>Aportaci&oacute;n Obligatoria %</label>
+            <input class="form-control" onkeypress="solo_decimal(event, this)" />
+        </div>
+        <div class="col-sm-3">
+            <label>Seguro Invalidez %</label>
+            <input class="form-control" onkeypress="solo_decimal(event, this)" />
+        </div>
+        <div class="col-sm-3">
+            <label>Comisi&oacute;n sobre Rem. %</label>
+            <input class="form-control" onkeypress="solo_decimal(event, this)" />
+        </div>
+    </div>
+    <div class="card row">
+        <div class="card-header font-weight-bold">Tasas de Aportes Complementarios por Actividad de Riesgo</div>
+        <div class="card-body row">
+            <div class="col-sm-4">
+                <label>Ley 27252 - Aport. Comp. (Construcci&oacute;n Civil) %</label>
+                <input class="form-control" onkeypress="solo_decimal(event, this)" />
+            </div>
+            <div class="col-sm-4">
+                <label>Ley 27252 - Aport. Comp. (Miner&iacute;a) %</label>
+                <input class="form-control" onkeypress="solo_decimal(event, this)" />
+            </div>
+        </div>
+    </div>
+    <div class="row p-2">
+        <div class="col-sm-3">
+            <label>C&oacute;digo AFP NET</label>
+            <input class="form-control" onkeypress="solo_decimal(event, this)" />
+        </div>
+        <div class="col-sm-3">
+            <label>Anexo Contable</label>
+            <input class="form-control" onkeypress="solo_decimal(event, this)" />
+        </div>
+        <div class="col-sm-3">
+            <label>C&oacute;digo RTPS</label>
+            <input class="form-control" onkeypress="solo_decimal(event, this)" />
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('PTMLPFIndex', 'Maestro')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>
+<script>
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+</script>

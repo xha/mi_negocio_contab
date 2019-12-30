@@ -1,0 +1,144 @@
+﻿@model Datos.Models.CuentasPorPagarModel
+@{
+    ViewBag.Title = "Proceso de Canje de Letra";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Cuentas Por Pagar", "Index", "CuentasPorPagar")</li>
+                    <li class="breadcrumbs-item">Transacciones</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("TDPPIndex", "CuentasPorPagar")'>Descuentos por Pagar y Pagos</a></li>
+                    <li class="breadcrumbs-item active">Canje</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Proveedor</label> #<strong>@Model.Codigo</strong></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/CuentasPorPagar/Ayuda', 'TDPPCanje', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-3">
+            <label>C&oacute;digo</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-6">
+            <label>Descripci&oacute;n</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Tipo</label>
+            <select class="form-control">
+                <option>Canje</option>
+                <option>Renovaci&oacute;n</option>
+            </select>
+        </div>
+    </div>
+    <hr />
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped pre-scrollable datatables" id="TDPPCanjeGrid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Documento</th>
+                        <th>Fecha Emisi&oacute;n</th>
+                        <th>Fecha Vence</th>
+                        <th>Moneda</th>
+                        <th>Importe</th>
+                        <th>Saldo</th>
+                        <th style="width: 10%">Canje</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-2">
+            <label>Tipo de Cambio</label>
+            @Html.TextBoxFor(m => m.TipoCambio, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="col-sm-2">
+            <label>Importe de Canje MN</label>
+            @Html.TextBoxFor(m => m.ImporteCanjeMN, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="col-sm-2">
+            <label>Importe de Canje ME</label>
+            @Html.TextBoxFor(m => m.ImporteCanjeME, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="col-sm-2">
+            <label>Total Canje MN</label>
+            @Html.TextBoxFor(m => m.CanjeMN, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="col-sm-2">
+            <label>Total Canje ME</label>
+            @Html.TextBoxFor(m => m.CanjeMN, new { @class = "form-control", @readonly = "true" })
+        </div>
+    </div>
+}
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick="ocultar_panel('TDPPIndex', 'CuentasPorPagar')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-danger" onclick="AjaxModalGet('Datos de Canje', '/CuentasPorPagar/Letras','nada')">
+                <i class='fa fa-sim-card'></i>
+                Letras
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#TDPPCanjeGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            ajax: {
+                url: ruta_actual + "/CuentasPorPagar/GridTDPPCanje",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+                [{
+                    targets: [7],
+                    orderable: false,
+                    searchable: false
+                }],
+            columns: [
+                { data: "TipoDocumento" },
+                { data: "Documento" },
+                { data: "FechaEmision" },
+                { data: "FechaVencimiento" },
+                { data: "Moneda" },
+                { data: "ImporteNeto" },
+                { data: "SaldoActual" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<input class="form-control" onkeypress="solo_decimal(event, this)" />';
+                    }
+                },
+            ]
+        });
+    });
+</script>
+

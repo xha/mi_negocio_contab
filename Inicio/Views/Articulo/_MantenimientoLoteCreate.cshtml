@@ -1,0 +1,68 @@
+﻿@model Datos.Models.ArticuloModel
+<div class="container-fluid">
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+    {
+        @Html.HiddenFor(m => m.Codigo)
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Lote</label>
+                @Html.TextBoxFor(m => m.CodigoLote, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_alfanumericos(event)" })
+            </div>
+            <div class="col-sm-4">
+                <label>Fecha de Fabricaci&oacute;n</label>
+                @Html.TextBoxFor(m => m.FechaFabricacion, new { @class = "form-control datepickers", @readonly = "true" })
+            </div>
+            <div class="col-sm-4">
+                <label>Fecha de Vencimiento</label>
+                @Html.TextBoxFor(m => m.FechaVencimiento, new { @class = "form-control datepickers", @readonly = "true" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <label>Observaciones</label>
+                @Html.TextAreaFor(m => m.Observacion, new { @class = "form-control", @maxlength = "255", onkeypress = "solo_alfanumericos(event)" })
+            </div>
+        </div>
+    }
+    <br />
+    <div class="col-sm-12">
+        <a href="#" class="btn btn-info" onclick="nada2()">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $.datepicker.regional['es'] = {
+            closeText: 'Cerrar',
+            prevText: '< Ant',
+            nextText: 'Sig >',
+            currentText: 'Hoy',
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+            dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+            weekHeader: 'Sm',
+            dateFormat: 'dd-mm-yy',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+        };
+
+        $.datepicker.setDefaults($.datepicker.regional['es']);
+
+        $(".datepickers").datepicker({
+            autoclose: true
+        });
+    });
+</script>
+
+
+

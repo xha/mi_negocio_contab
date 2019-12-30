@@ -1,0 +1,56 @@
+﻿<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered dataTables pre-scrollable tabla_modal" id="MDEOIEditGrid" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>C&oacute;digo</th>
+                        <th>Descripci&oacute;n</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>D</td>
+                        <td>Aprobada</td>
+                    </tr>
+                    <tr>
+                        <td>E</td>
+                        <td>Emitida</td>
+                    </tr>
+                    <tr>
+                        <td>L</td>
+                        <td>Liquidada</td>
+                    </tr>
+                    <tr>
+                        <td>P</td>
+                        <td>Entregada Parcial</td>
+                    </tr>
+                    <tr>
+                        <td>R</td>
+                        <td>Aceptada por Proveedor</td>
+                    </tr>
+                    <tr>
+                        <td>T</td>
+                        <td>Entrega Total</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr />
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                    <i class='fa fa-arrow-left'></i>
+                    Regresar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#MDEOIEditGrid tbody').on('dblclick', 'tr', function () {
+            eval($("#parametro").val() + "('" + this.cells[0].textContent + "','" + this.cells[1].textContent + "')");
+        });
+    });
+</script>

@@ -1,0 +1,36 @@
+﻿<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered tabla_modal dataTables pre-scrollable" id="MRGITipoGastoGrid" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>C&oacute;digo</th>
+                        <th>Descripci&oacute;n</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Gasto A</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr />
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                    <i class='fa fa-arrow-left'></i>
+                    Regresar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#MOrdenesImportacionGrid tbody').on('dblclick', 'tr', function () {
+            eval($("#parametro").val() + "('" + this.cells[0].textContent + "','" + this.cells[1].textContent + "','" + this.cells[2].textContent + "')");
+        });
+    });
+</script>

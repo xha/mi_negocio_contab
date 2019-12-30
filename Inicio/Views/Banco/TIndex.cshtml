@@ -1,0 +1,104 @@
+@model Datos.Models.BancoModel
+
+@{
+    ViewBag.Title = "Transacciones Bancarias";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Banco", "Index", "Banco")</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Banco/Ayuda', 'TIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <div class="card shadow">
+        <div class="card-body">
+            <!--<a href="#" onclick="AjaxModalGet('Bancos', '/Utilitarios/Bancos', 'nada2', 'm_middle')">Test</a>-->
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="TIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>N&uacute;mero de Cuenta</th>
+                            <th>Nombre del Banco</th>
+                            <th>Moneda</th>
+                            <th>Tipo de Cuenta</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#TIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Banco/GridT",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [4],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [5],
+                searchable: false,
+                orderable: false
+            },
+            {
+                targets: [6],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "NroCuenta" },
+                { data: "BAN_DESCRIPCION" },
+                { data: "Moneda" },
+                { data: "TipoDeCuenta" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-success grid_opt" title="Transacciones" href="#" onclick="mostrar_panel(\'TTransaccion?Codigo=' + row.BAN_CODIGO + '\', \'Banco\')"><i class="fa fa-file-signature"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-secondary grid_opt" title="Conciliar" href="#" onclick="mostrar_panel(\'TConciliar?Codigo=' + row.BAN_CODIGO + '\', \'Banco\')" ><i class="fa fa-money-bill-wave "></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Imprimir" href="#"><i class="fa fa-print"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+</script>

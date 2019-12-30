@@ -1,0 +1,163 @@
+@model Datos.Models.MaestroModel
+
+@{
+    ViewBag.Title = "";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Maestro", "Index", "Maestro")</li>
+                    <li class="breadcrumbs-item active">Tablas de Ayuda</li>
+                    <li class="breadcrumbs-item active">Conversi&oacute;n Monetaria</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>Conversi&oacute;n Monetaria</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Maestro - Conversion Monetaria - Inicio ', '/Maestro/Ayuda', 'TAUMIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="#" onclick="mostrar_panel('TCMCreate', 'Maestro')" class="btn btn-success">
+                    <i class='fa fa-plus'></i>
+                    Agregar
+                </a>
+            </div>
+        </div>
+        <br />
+    }
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="TCMIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Descripci&oacute;n</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#TCMIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Maestro/GridConversionMonetaria",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [2],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [3],
+                searchable: false,
+                orderable: false
+            },
+            {
+                targets: [4],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "COVMON_CODIGO" },
+                { data: "COVMON_DESCRIPCION" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="mostrar_panel(\'TCMEdit?Codigo=' + row.COVMON_CODIGO + '\', \'Maestro\')" ><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return "<a class='btn btn-danger grid_opt' title='Anular' href='#' onclick='anular_TCMIndex(" + JSON.stringify(row) + ")'><i class='fa fa-trash'></i></a>";
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Imprimir" href="#"><i class="fa fa-print"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+
+    function anular_TCMIndex(row) {
+        swal({
+            title: "¿Estás seguro?",
+            text: "Confirmar Anulado del registro: " + row.COVMON_CODIGO,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            cancelButtonClass: "btn-secondary",
+            confirmButtonText: "Aceptar",
+            cancelButtonText: "Cancelar",
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                var accion      = 2;
+                var datos_enviar= [];
+
+                datos_enviar.push({
+                    COVMON_CODIGO: row.COVMON_CODIGO,
+                    COVMON_DESCRIPCION: row.COVMON_DESCRIPCION,
+                });
+
+                var parametros = "datos_enviar=" + JSON.stringify(datos_enviar) + "&accion=" + accion;
+                $.ajax(
+                {
+                    type: "POST",
+                    dataType: "json",
+                    url: ruta_global + "TCMActualizar",
+                    data: parametros,
+                    beforeSend: function () {
+                        loading_show();
+                    },
+                    cache: false,
+                    success: function (Resultado) {
+                        loading_hide();
+                        window.parent.MostrarMensaje(Resultado.color, Resultado.data);
+                        if (Resultado.respuesta) {
+                            $('#TCMIndexGrid').DataTable().ajax.reload();
+                        }
+
+                    },
+                    error: function (xhr) { // if error occured
+                        loading_hide();
+                        console.log(xhr);
+                        window.parent.MostrarMensaje("Rojo", xhr.responseText);
+                    },
+                });
+            }
+        });
+    }
+</script>

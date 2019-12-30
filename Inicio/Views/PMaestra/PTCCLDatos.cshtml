@@ -1,0 +1,78 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-7">
+            <label>Nombre de Rem. Computable</label>
+            @Html.TextBoxFor(m => m.DESCRIPCION, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-5">
+            <label>Tipo de Remuneraci&oacute;n</label>
+            <select class="form-control w-75">
+                <option>Como remuneraci&oacute;n computable</option>
+                <option>Como remuneraci&oacute;n fija</option>
+            </select>
+        </div>
+        <div class="col-sm-4 mt-2">
+            <label>
+                <input type="checkbox" />
+                Activo
+            </label>
+        </div>
+        <div class="col-sm-4 mt-2">
+            <label>
+                <input type="checkbox" />
+                Proviciones
+            </label>
+        </div>
+        <div class="col-sm-4 mt-2">
+            <label>
+                <input type="checkbox" />
+                General
+            </label>
+        </div>
+    </div>
+}
+<div class="row mt-1">
+    <div class="col-sm-2">
+        <button class="btn btn-primary" onclick="AjaxModalGet('Funciones', '/PMaestra/Funciones', 'nada');">
+            <i class="fa fa-question"></i><br />
+            F&oacute;rmula
+        </button>
+    </div>
+    <div class="col-sm-7">
+        <textarea id="formulas" class="form-control"></textarea>
+    </div>
+</div>        
+
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('PTCCLIndex', 'Maestro')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>
+<script>
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $('#activa_upload').on('ifChecked', function () {
+        $("#div_upload")[0].style.display = "flex";
+    })
+
+    $('#activa_upload').on('ifUnchecked', function () {
+        $("#div_upload")[0].style.display = "none";
+    })
+</script>

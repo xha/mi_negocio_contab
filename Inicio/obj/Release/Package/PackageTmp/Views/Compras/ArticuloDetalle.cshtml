@@ -1,0 +1,131 @@
+﻿@model Datos.Models.ComprasModel
+
+@{
+    ViewBag.Title = "Compras Realizadas";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Compras", "Index", "Compras")</li>
+                    <li class="breadcrumbs-item">Consultas</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("ArticuloIndex", "Compras")'>@ViewBag.Title</a></li>
+                    <li class="breadcrumbs-item active">Detalle</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Detalle Registro</label> #<strong>@Model.Codigo</strong></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Compras/Ayuda', 'ArticuloDetalle', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-3">
+                <label>Art&iacute;culo</label><br />
+                <input class="form-control" readonly />
+            </div>
+            <div class="col-sm-2">
+                <label>UM</label><br />
+                <input class="form-control" readonly />
+            </div>
+            <div class="col-sm-2">
+                <label>Marca</label><br />
+                <input class="form-control" readonly />
+            </div>
+            <div class="col-sm-2">
+                <label>Fecha Desde</label><br />
+                <input class="form-control datepickers" readonly placeholder="Seleccione" />
+            </div>
+            <div class="col-sm-2">
+                <label>Fecha Hasta</label><br />
+                <input class="form-control datepickers" readonly placeholder="Seleccione" />
+            </div>
+            <div class="col-sm-2">
+                <br />
+                <a href="#" class="btn btn-primary">
+                    <i class='fa fa-search'></i>
+                    Buscar
+                </a>
+            </div>
+        </div>
+    }
+    <br />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="CArticuloDetalleGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Proveedor</th>
+                            <th>Fecha</th>
+                            <th>Cantidad</th>
+                            <th>Unidad</th>
+                            <th>Precio</th>
+                            <th>Bruto</th>
+                            <th>Descto</th>
+                            <th>Total Vta.</th>
+                            <th>IGV</th>
+                            <th>Valor Vta.</th>
+                            <th>Descto 2</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <br />
+            <a href="#" onclick='mostrar_panel("ArticuloIndex", "Compras")' class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#CArticuloDetalleGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Compras/GridProductos",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CodigoProducto" },
+                { data: "DescripcionProveedor" },
+                { data: "FechaEmision" },
+                { data: "Cantidad" },
+                { data: "CodigoUnidad" },
+                { data: "Precio" },
+                { data: "Bruto" },
+                { data: "Descuento" },
+                { data: "TotalVta" },
+                { data: "IGV" },
+                { data: "ValorVta" },
+                { data: "DescuentoDetalle" },
+            ]
+        });
+    });
+</script>

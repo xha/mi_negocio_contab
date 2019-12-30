@@ -1,0 +1,167 @@
+﻿@model Datos.Models.ImportacionesModel
+
+<div class="container-fluid">
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-6">
+            <label>Proveedor</label>
+            <div class="row">
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.CodigoProveedor, new { @class = "form-control alert-warning", @maxlength = "11", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Listado de Proveedores', '/Proveedor/Proveedores', 'nada2', 'm_middle')" })
+                </div>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" readonly id="descripcion_proveedor" />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label>RUC</label>
+            <input type="text" class="form-control" readonly id="ruc_proveedor" />
+        </div>
+        <div class="col-sm-3">
+            <label>Mes-Per&iacute;odo Contabilizaci&oacute;n</label>
+            <select class="form-control">
+                <option>04-2019</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <label>Documento</label>
+            <div class="row">
+                <div class="col-sm-3">
+                    @Html.TextBoxFor(m => m.TipoDocumento, new { @class = "form-control alert-warning", @maxlength = "3", onkeypress = "solo_alfanumericos(event)", ondblclick = "AjaxModalGet('Tipo de Documento', '/Utilitarios/TipoDocumento', 'nada2', 'm_middle')" })
+                </div>
+                <div class="col-sm-3">
+                    @Html.TextBoxFor(m => m.Documento, new { @class = "form-control", @maxlength = "25", onkeypress = "solo_alfanumericos(event)" })
+                </div>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(m => m.Documento2, new { @class = "form-control", @maxlength = "25", onkeypress = "solo_alfanumericos(event)" })
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <label>Cod. Gasto</label>
+            <div class="row">
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.CodigoGasto, new { @class = "form-control alert-warning", @maxlength = "3", onkeypress = "solo_alfanumericos(event)", ondblclick = "AjaxModalGet('Tipo de Gasto', '/Utilitarios/TipoGastos', 'nada2', 'm_middle')" })
+                </div>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" readonly id="descripcion_gasto" />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label>Moneda Imp.</label>
+            @Html.TextBoxFor(m => m.TotalMonedaEx, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <label>Valor Vta.</label>
+            @Html.TextBoxFor(m => m.ValorVenta, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-2">
+            <label>Equiv. ME</label>
+            @Html.TextBoxFor(m => m.TotalMoneda, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-2">
+            <label>Precio Vta. ME.</label>
+            @Html.TextBoxFor(m => m.PrecioVentaMe, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-2">
+            <label>Fecha Emisi&oacute;n</label>
+            @Html.TextBoxFor(m => m.FechaEmision, new { @class = "form-control datepickers", @readonly = true })
+        </div>
+        <div class="col-sm-2">
+            <label>D&iacute;as</label>
+            @Html.TextBoxFor(m => m.Dias, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_enteros(event)" })
+        </div>
+        <div class="col-sm-2">
+            <label>Fecha Pago</label>
+            @Html.TextBoxFor(m => m.FechaPago, new { @class = "form-control datepickers", @readonly = true })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <label>T.M.</label>
+            @Html.DropDownListFor(m => m.Moneda, new List<SelectListItem>
+            {
+                new SelectListItem{ Text="Moneda Nacional", Value = "MN" },
+                new SelectListItem{ Text="Moneda Extranjera", Value = "ME" },
+            }, new { @class = "form-control" })
+        </div>
+        <div class="col-sm-2">
+            <label>T/C</label>
+            @Html.TextBoxFor(m => m.TotalCredito, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-2">
+            <label>Tasa IGV</label>
+            @Html.TextBoxFor(m => m.ImporteIGV, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-2">
+            <label>Precio Vta.</label>
+            @Html.TextBoxFor(m => m.PrecioVenta, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-2">
+            <label>IGV</label>
+            @Html.TextBoxFor(m => m.IGV, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-2">
+            <label>Afecto</label>
+            @Html.TextBoxFor(m => m.Afecto, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <label>Inafecto</label>
+            @Html.TextBoxFor(m => m.Inafecto, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-2">
+            <label>Valor Vta.</label>
+            @Html.TextBoxFor(m => m.ValorVenta, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-5">
+            <label>Glosa</label>
+            @Html.TextBoxFor(m => m.Glosa, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-3" align="center">
+            Enviar a Cuentas por Pagar<br />
+            @Html.CheckBoxFor(m => m.EnviarCXP)
+        </div>
+    </div>
+}
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <button class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Guardar
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip({ 
+            placement: 'top', // or bottom, left, right, and variations
+            title: "Top"
+        });
+
+        $('input[type=radio]').iCheck({
+            radioClass: 'iradio_square-blue',
+        });
+
+        $('input[type=checkbox]').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+        });
+        $(".datepickers").datepicker({
+            autoclose: true
+        });
+    });
+</script>

@@ -1,0 +1,261 @@
+    @model Datos.Models.ArticuloModel
+
+@{
+    ViewBag.Title = "Articulo";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <input id="t_id" type="hidden" />
+    <input id="t_unidad" type="hidden" />
+    <input id="t_descripcion" type="hidden" />
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li class="breadcrumbs-item">Base de Datos</li>
+                    <li class="breadcrumbs-item active">Art&iacute;culo</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Artículos - Inicio', '/Articulo/Ayuda', 'Index', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="col-sm-4">
+        <br />
+        <a href="#" onclick="mostrar_panel('Create', 'Articulo')" class="btn btn-success">
+            <i class='fa fa-plus'></i>
+            Agregar
+        </a>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-2">
+            <button  class="btn btn-outline-dark b_articulos col-sm-12" id="div_1" onclick="abrir_modal(1)">
+                <i class='fa fa-save'></i>
+                Datos de Venta    
+            </button>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-outline-dark b_articulos col-sm-12" id="div_2" onclick="abrir_modal(2)">
+                <i class='fa fa-save'></i>
+                Datos de Compra
+            </button>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-outline-dark b_articulos col-sm-12" id="div_3" onclick="abrir_modal(3)">
+                <i class='fa fa-save'></i>
+                Prod. Alternativos
+            </button>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-outline-dark b_articulos col-sm-12" id="div_4" onclick="abrir_modal(4)">
+                <i class='fa fa-save'></i>
+                Equivalentes
+            </button>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-outline-dark b_articulos col-sm-12" id="div_5" onclick="abrir_modal(5)">
+                <i class='fa fa-save'></i>
+                Mant. de Kits
+            </button>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-outline-dark b_articulos col-sm-12" id="div_6" onclick="abrir_modal(6)">
+                <i class='fa fa-save'></i>
+                Mant. de Lotes
+            </button>
+        </div>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold">Listado de Art&iacute;culos 
+                <label class='btn btn-primary grid_opt' onclick="imprimir_global('Listado de Artículos','/Articulo/Articulos')"><i class='fa fa-print'></i></label>
+            </h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="ArticuloIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Unidad</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Peso</th>
+                            <th>Afecta Stock</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var seleccionado = "";
+    $(function () {
+        for (var i = 1; i < 7; i++) {
+            $("#div_"+i)[0].disabled = true;
+        }
+        $("#t_id").val('');
+        $("#t_unidad").val('');
+        $("#t_descripcion").val('');
+
+        $("#ArticuloIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Articulo/GridArticulos",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "ACODIGO" },
+                { data: "UM_ABREV" },
+                { data: "ADESCRI" },
+                { data: "APESO" },
+                { data: "AFSTOCK" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Editar" onclick="mostrar_panel(\'Edit?Codigo=' + row.ACODIGO + '\', \'Articulo\')" href="#"><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_ArticuloIndex(\'' + JSON.stringify(row) + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Imprimir" href="#"><i class="fa fa-print"></i></a>';
+                    }
+                },
+            ],
+            /*'rowCallback': function (row, data, index) {
+                if (data.Habilitado == "NO") {
+                    $(row).find('td:eq(5)').css('background', 'brown');
+                    $(row).find('td:eq(5)').css('color', 'white');
+                }
+                if (data.AfectaStock == "NO") {
+                    $(row).find('td:eq(4)').css('background', 'brown');
+                    $(row).find('td:eq(4)').css('color', 'white');
+                }
+            }*/
+        });
+
+        $('#ArticuloIndexGrid tbody').on('click', 'tr', function () {
+            $('#ArticuloIndexGrid').DataTable().$('tr').removeClass('bg-secondary text-white');
+            $(this).addClass('bg-secondary text-white');
+            $(".b_articulos").removeAttr("disabled");
+            $("#t_id").val($(this).children("td").eq(0).text());
+            $("#t_unidad").val($(this).children("td").eq(1).text());
+            $("#t_descripcion").val($(this).children("td").eq(2).text());
+        });
+    });
+
+    function abrir_modal(sem) {
+        var ruta;
+        var titulo;
+        switch (sem) {
+            case 1:
+                titulo = "Datos de Venta";
+                ruta = "/Articulo/DatosVentaIndex";
+                break;
+            case 2:
+                titulo = "Datos de Compra";
+                ruta = "/Articulo/DatosCompraIndex";
+                break;
+            case 3:
+                titulo = "Productos Alternativos";
+                ruta = "/Articulo/ProductoAlternativoIndex?Codigo=" + $("#t_id").val();
+                break;
+            case 4:
+                titulo = "Equivalentes";
+                ruta = "/Articulo/EquivalenteIndex?Codigo="+$("#t_id").val();
+                break;
+            case 5:
+                titulo = "Mantenimiento de Kits";
+                ruta = "/Articulo/MantenimientoKitIndex";
+                break;
+            case 6:
+                titulo = "Mantenimiento de Lotes";
+                ruta = "/Articulo/MantenimientoLoteIndex";
+                break;
+            default:
+        }
+
+        AjaxModalGet(titulo,ruta);
+    }
+
+    function nada2(codigo, descripcion) {
+        $('#m_middle').modal('hide');
+    }
+
+    function anular_ArticuloIndex(row) {
+        swal({
+            title: "¿Estás seguro?",
+            text: "Confirmar Anulado del registro: " + row.ACODIGO,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            cancelButtonClass: "btn-secondary",
+            confirmButtonText: "Aceptar",
+            cancelButtonText: "Cancelar",
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                var accion = 2;
+                var datos_enviar = [];
+
+                datos_enviar.push({
+                    BAN_CODIGO: row.BAN_CODIGO,
+                    BAN_DESCRIPCION: row.BAN_DESCRIPCION
+                });
+
+                var parametros = "datos_enviar=" + JSON.stringify(datos_enviar) + "&accion=" + accion;
+                $.ajax(
+                {
+                    type: "POST",
+                    dataType: "json",
+                    url: ruta_global + "Articulo/Actualizar",
+                    data: parametros,
+                    beforeSend: function () {
+                        loading_show();
+                    },
+                    cache: false,
+                    success: function (Resultado) {
+                        loading_hide();
+                        window.parent.MostrarMensaje(Resultado.color, Resultado.data);
+                        if (Resultado.respuesta) {
+                            $('#ArticuloIndexGrid').DataTable().ajax.reload();
+                        }
+
+                    },
+                    error: function (xhr) { // if error occured
+                        loading_hide();
+                        console.log(xhr);
+                        window.parent.MostrarMensaje("Rojo", xhr.responseText);
+                        //$(placeholder).append(xhr.statusText + xhr.responseText);
+                    },
+                });
+            }
+        });
+    }
+</script>

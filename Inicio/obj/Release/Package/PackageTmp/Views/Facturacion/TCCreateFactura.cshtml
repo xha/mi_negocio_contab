@@ -1,0 +1,199 @@
+﻿@model Datos.Models.FacturacionModel
+@{
+    ViewBag.Title = "Punto de Venta - OFICINA PRINCIPAL";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Facturacion", "Index", "Facturacion")</li>
+                    <li class="breadcrumbs-item">Transacciones</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("TCIndex", "Facturacion")'>Cotizaciones</a></li>
+                    <li class="breadcrumbs-item active">Nuevo</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Nuevo  Registro</label></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Facturacion/Ayuda', 'TCCreateFactura', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+    {
+        @Html.HiddenFor(m => m.Codigo)
+        <div class="row">
+            <div class="col-sm-3">
+                <label>Vendedor</label><br />
+                <input type="text" class="form-control" readonly />
+            </div>
+            <div class="col-sm-2">
+                <label>Fecha Vta.</label>
+                <input type="text" class="form-control" readonly />
+            </div>
+            <div class="col-sm-2">
+                <label>T.C.</label>
+                <input type="text" class="form-control" readonly />
+            </div>
+            <div class="col-sm-2">
+                <label>Moneda</label><br />
+                @Html.DropDownListFor(m => m.Moneda, new List<SelectListItem>
+                {
+                    new SelectListItem{ Text="Moneda Nacional", Value = "MN" },
+                    new SelectListItem{ Text="Moneda Extranjera", Value = "ME" },
+                }, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-3">
+                <label>Precios Inc. IGV</label>
+                <input type="text" class="form-control" readonly />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Tipo de Documento</label><br />
+                <div class="row">
+                    <div class="col-sm-7">
+                        <select class="form-control">
+                            <option>Monto Desc.</option>
+                            <option>Otro</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" readonly />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    }
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <button class="btn btn-secondary">
+                <i class='fa fa-trash'></i>
+                Limpiar Todo
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="TCCreateFacturaGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Lote/Serie</th>
+                            <th>Und.</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unit.</th>
+                            <th>Precio Total</th>
+                            <th>Dscto</th>
+                            <th>Importe Descto</th>
+                            <th>Importe Total</th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row border rounded">
+        <div class="col-sm-3">
+            <label>Valor Vta.</label><br />
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>I.G.V.</label><br />
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-2" align="right">
+            <br />
+            <b>Total</b>
+        </div>
+        <div class="col-sm-2" align="center">
+            <label>Soles</label><br />
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-2" align="center">
+            <label>Dólares</label><br />
+            <input type="text" class="form-control" readonly />
+        </div>
+    </div>
+    
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick='mostrar_panel("@ViewBag.ruta.ToString()", "Facturacion")' class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <button class="btn btn-success" onclick="AjaxModalGet('Venta al Público - Factura', '/Facturacion/TCFacturaDatosCliente', 'nada')">
+                <i class='fa fa-save'></i>
+                Factura
+            </button>
+            <button class="btn btn-success" onclick="AjaxModalGet('Venta al Público - Boleta', '/Facturacion/TCFacturaDatosCliente', 'nada')">
+                <i class='fa fa-save'></i>
+                Boleta
+            </button>
+            <button class="btn btn-success" onclick="AjaxModalGet('Venta al Público - Pedido', '/Facturacion/TCFacturaDatosCliente', 'nada')">
+                <i class='fa fa-save'></i>
+                Pedido
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#TCCreateFacturaGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Facturacion/GridTCVDetalle",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [10],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                { data: "CodigoProducto" },
+                { data: "DescripcionProducto" },
+                { data: "Lote" },
+                { data: "CodigoUnidadMedida" },
+                { data: "Cantidad" },
+                { data: "Precio" },
+                { data: "ImporteIGV" },
+                { data: "DescuentoUnitario" },
+                { data: "ImporteIGV" },
+                { data: "Total" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Eliminar" href="#"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+
+    function nada2(codigo, descripcion) {
+        $('#m_middle').modal('hide');
+    }
+</script>
+

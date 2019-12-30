@@ -1,0 +1,60 @@
+﻿@model Datos.Models.MaestroModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-2">
+            <label>Codigo</label>
+            @if (Model != null && !String.IsNullOrEmpty(Model.Codigo))
+            {
+                @Html.TextBoxFor(m => m.Codigo, new { @class = "form-control", @readonly = "true" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.Codigo, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_alfanumericos(event)" })
+            }
+        </div>
+        <div class="col-sm-2">
+            <label>Banco</label>
+            @Html.TextBoxFor(m => m.CodigoBanco, new { @class = "form-control alert-warning", @maxlength = "3", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Bancos', '/Utilitarios/Bancos', 'nada2', 'm_middle')" })
+        </div>
+        <div class="col-sm-4">
+            <label>Nro. de Cuenta Bancaria</label>
+            @Html.TextBoxFor(m => m.NroCuenta, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_enteros(event)" })
+        </div>
+        <div class="col-sm-3">
+            <label>Moneda</label>
+            @Html.DropDownListFor(m => m.Moneda, new List<SelectListItem>
+            {
+                new SelectListItem{ Text="Moneda Nacional", Value = "MN" },
+                new SelectListItem{ Text="Moneda Extranjera", Value = "ME" },
+            }, new { @class = "form-control" })
+        </div>
+        <div class="col-sm-3">
+            <label>Tipo de Cuenta</label>
+            @Html.DropDownListFor(m => m.TipoCuenta, new List<SelectListItem>
+            {
+                new SelectListItem{ Text="Corriente", Value = "Corriente" },
+                new SelectListItem{ Text="Ahorro", Value = "Ahorro" },
+            }, new { @class = "form-control" })
+        </div>
+        <div class="col-sm-2">
+            <br />
+            @Html.CheckBoxFor(m => m.Activo)&nbsp;
+            Activo
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('TBCBIndex', 'Maestro')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>

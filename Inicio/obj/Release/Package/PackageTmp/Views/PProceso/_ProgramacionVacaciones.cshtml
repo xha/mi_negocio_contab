@@ -1,0 +1,124 @@
+﻿<div class="container-fluid">
+    <div class="card">
+        <div class="card-header text-danger">
+            Informaci&oacute;n del Trabajador
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-2">
+                    <label>Trabajador</label>
+                    <input class="form-control alert-warning" onkeypress="solo_enteros(event)" ondblclick="AjaxModalGet('Referencias', '/PMaestra/Referencias', 'nada2', 'm_middle')" />
+                </div>
+                <div class="col-sm-2">
+                    <label>Fecha de Ingreso</label>
+                    <input class="form-control datepickers" readonly />
+                </div>
+                <div class="col-sm-3">
+                    <label>&Aacute;rea de Trabajo</label>
+                    <input class="form-control datepickers" readonly />
+                </div>
+                <div class="col-sm-2">
+                    <label>&Uacute;ltimas Vacaciones</label>
+                    <input class="form-control" readonly />
+                </div>
+                <div class="col-sm-3">
+                    <label>Reg. Laboral</label>
+                    <input class="form-control" readonly />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-1">
+        <div class="card-header text-danger">
+            Salida de Vacaciones
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <label>Desde</label>
+                    <input class="form-control datepickers" readonly />
+                </div>
+                <div class="col-sm-3">
+                    <label>Hasta</label>
+                    <input class="form-control datepickers" readonly />
+                </div>
+                <div class="col-sm-3">
+                    <label>D&iacute;as</label>
+                    <input class="form-control w-50" />
+                </div>
+                <div class="col-sm-3">
+                    <label>D&iacute;as Acum.</label>
+                    <input class="form-control w-50" readonly />
+                </div>
+                <div class="col-sm-12">
+                    <p>
+                        Se refiere al per&iacute;odo vacacional del pago de vacaciones. Este per&iacute;odo puede variar desde 15 hasta 30 d&iacute;as, de acuerdo a la ley.
+                        Esta secci&oacute;n no significa el Descanso Vacacional (Goce de Vacaciones).
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-1">
+        <div class="card-header text-danger">
+            Per&iacute;odo a Cancelar
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <label>Desde</label>
+                    <input class="form-control datepickers" readonly />
+                </div>
+                <div class="col-sm-3">
+                    <label>Hasta</label>
+                    <input class="form-control datepickers" readonly />
+                </div>
+                <div class="col-sm-12">
+                    <p>
+                        Se refiere a la &uacute;ltima fecha en el que el trabajador sali&oacute; de vacaciones y la fecha hasta donde legalmente cumpli&oacute;
+                        un a&ntilde;o m&aacute;s de servicio en la empresa, en donde se liquidar&aacute; este per&iacute;odo de vacaciones.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-1">
+        <div class="card-header text-danger">
+            Vacaciones no gozadas
+        </div>
+        <div class="card-body">
+            <div class="row col-sm-12">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Es vacaciones no gozadas
+                </label>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-info" onclick="$('#m_central').modal('hide')">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Aceptar
+            </a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

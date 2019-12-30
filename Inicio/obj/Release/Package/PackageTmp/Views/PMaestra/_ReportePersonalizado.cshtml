@@ -1,0 +1,194 @@
+﻿<div class="container-fluid">
+    <!--<div class="col-lg-12">
+        <a class="toggle-vis" data-column="0">CODIGO_TRABAJADOR</a> - 
+        <a class="toggle-vis" data-column="1">NOMBRE</a> - 
+        <a class="toggle-vis" data-column="2">Office</a> - <a class="toggle-vis" data-column="3">Age</a> - <a class="toggle-vis" data-column="4">Start date</a> - <a class="toggle-vis" data-column="5">Salary</a>
+    </div>-->
+    <div class="row">
+        <div class="col-lg-3">
+            <label>Columna</label>
+            <select class="form-control" id="columna" onchange="activa_fila(this.id);">
+                <option value="">...</option>
+                <option value="2">CREDFAV</option>
+                <option value="3">INC_AFP10</option>
+            </select>
+        </div>
+        <div class="col-lg-3">
+            <label>Promedio</label>
+            <select class="form-control" id="promedio" onchange="activa_fila(this.id);">
+                <option value="">...</option>
+                <option value="4">INGHE100</option>
+                <option value="5">INGHE25</option>
+            </select>
+        </div>
+        <div class="col-lg-3">
+            <label>Fecha Inicio</label>
+            <input readonly class="form-control datepickers" />
+        </div>
+        <div class="col-lg-3">
+            <label>Fecha Fin</label>
+            <input readonly class="form-control datepickers" />
+        </div>
+        <div class="col-lg-3 pt-2">
+            <input type="radio" name="promedio" />&nbsp; Promedio<br />
+        </div>
+        <div class="col-lg-3 pt-2">
+            <input type="radio" name="promedio" />&nbsp; Promedio Valor
+        </div>
+        <div class="col-lg-3 pt-2">
+            <button class="btn btn-primary">
+                <i class='fa fa-plus'></i>
+                Agregar
+            </button>
+        </div>
+    </div>
+    <div class="row m-1" id="div_botones">
+
+    </div>
+    <div class="col-lg-12">
+        <div class="card row mt-1">
+            <div class="card-header text-danger font-weight-bold">Trabajadores</div>
+            <div class="row card-body">
+                <div class="col-sm-12 table-responsive">
+                    <table class="table table-bordered table-striped pre-scrollable datatables" id="ReportePersonalizadoGrid" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th style="max-width: 50px">C&oacute;digo</th>
+                                <th style="min-width: 200px">Nombres</th>
+                                <th>CREDFAV</th>
+                                <th>INC_AFP10</th>
+                                <th>INGHE100</th>
+                                <th>INGHE25</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 mt-1">
+        <div class="card row">
+            <div class="card-header text-danger font-weight-bold">T&iacute;tulo</div>
+            <div class="row card-body">
+                <div class="col-sm-6">
+                    <label>T&iacute;tulo del Informe</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-6">
+                    <label>Otro Encabezado</label>
+                    <input class="form-control" />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group row mt-1">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <button class="btn btn-primary">
+                <i class='fa fa-search'></i>
+                Seleccionar
+            </button>
+            <button class="btn btn-secondary">
+                <i class='fa fa-print'></i>
+                Reporte
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    var table = "";
+    $(function () {
+        $('a.toggle-vis').on('click', function (e) {
+            e.preventDefault();
+
+            // Get the column API object
+            //var column = table.column($(this).attr('data-column'));
+            var column = table.column(0);
+            // Toggle the visibility
+            column.visible(!column.visible());
+        });
+
+        table = $("#ReportePersonalizadoGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            ajax: {
+                url: ruta_actual + "/PMaestra/GridListadoTrabajadores",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs: [
+                {
+                    "targets": [ 2,3,4,5 ],
+                    "visible": false,
+                }
+            ],
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE" },
+                { data: "BASICO" },
+                { data: "ASIGNACION_FAM" },
+                { data: "DOCUMENTO" },
+                { data: "CODIGO_TIPO" },
+            ]
+        });
+    });
+
+    function activa_fila(id) {
+        var valor       = $("#" + id).val();
+        var texto       = $('#' + id + ' option:selected').text();
+        var div_botones = $("#div_botones")[0];
+
+        if (valor != "") {
+            if ($("#boton_"+valor).length == 0) {
+                var boton = document.createElement("button");
+                boton.id = "boton_" + valor;
+                boton.style.cursor = "pointer";
+                boton.className = "btn btn-sm btn-secondary m-2";
+                
+                var label = document.createElement("span");
+                label.innerHTML = texto;
+                label.className = "pl-2";
+
+                var i = document.createElement("i");
+                i.className = "fa fa-times";
+
+                boton.appendChild(i);
+                boton.appendChild(label);
+                eval("boton.onclick = function(){elimina_fila("+valor+");}");
+
+                div_botones.appendChild(boton);
+
+                var column = table.column(valor);
+                // Toggle the visibility
+                column.visible(!column.visible());
+
+                //$("#" + id).val("");
+            }
+        }
+    }
+
+    function elimina_fila(valor) {
+        $("#columna").val("");
+        $("#promedio").val("");
+        $("#boton_" + valor).remove();
+        var column = table.column(valor);
+        // Toggle the visibility
+        column.visible(!column.visible());
+    }
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+</script>

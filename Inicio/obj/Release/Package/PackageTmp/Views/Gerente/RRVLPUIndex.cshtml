@@ -1,0 +1,159 @@
+@{
+    ViewBag.Title = "Listas de Precios con su Utilidad";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Gerente", "Index", "Gerente")</li>
+                    <li class="breadcrumbs-item">Reportes de Rentabilidad de Ventas</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Gerente/Ayuda', 'RRVRVIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Listado de Precios</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <input type="checkbox" id="p_todos" />&nbsp;
+                            <label> Todos </label>
+                        </div>
+                        <div class="row">
+                            <label>Seleccione Listado</label><br />
+                            <select class="form-control" id="i_almacenes">
+                                <option>00 - Ventas al P&uacute;blico</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Art&iacute;culos</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="radio" name="i_articulo" id="i_todos" />&nbsp;
+                                <label>Todos</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="radio" name="i_articulo" id="i_rango" />&nbsp;
+                                <label>Rango</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>De</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" disabled id="i_desde" maxlength="11" onkeypress="solo_enteros(event)" class="form-control alert-warning" title="Doble Click para buscar" ondblclick="AjaxModalGet('Artículos', '/Articulo/Articulos', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                        &nbsp;
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>A</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" disabled id="i_hasta" maxlength="11" onkeypress="solo_enteros(event)" class="form-control alert-warning" title="Doble Click para buscar" ondblclick="AjaxModalGet('Artículos', '/Articulo/Articulos', 'nada2','m_middle')" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Par&aacute;metros</div>
+                    <div class="card-body">
+                        <div class="row col-sm-12">
+                            <label>Moneda</label>
+                            <select class="form-control">
+                                <option>Moneda Nacional</option>
+                                <option>Moneda Extranjera</option>
+                            </select>
+                        </div>
+                        <div class="row col-sm-12">
+                            <label>Tipo de Cambio</label>
+                            <input class="form-control" readonly />
+                        </div>
+                        <div class="row col-sm-12">
+                            <label>Ordenado por</label>
+                            <select class="form-control">
+                                <option>C&oacute;digo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-print'></i>
+                Imprimir
+            </a>
+        </div>
+    }
+</div>
+<script>
+    $(function () {
+        $("#i_todos")[0].checked = true;
+    });
+    /****************************************************************************************************/
+    $('#i_todos').on('ifChecked', function () {
+        activa_articulos(0);
+    })
+
+    $('#i_rango').on('ifChecked', function () {
+        activa_articulos(1);
+    })
+
+    $('#p_todos').on('ifChecked', function (event) {
+        activa_almacen(1);
+    });
+
+    $('#p_todos').on('ifUnchecked', function (event) {
+        activa_almacen(0);
+    });
+    /****************************************************************************************************/
+    function activa_articulos(valor) {
+        var desde = $("#i_desde")[0];
+        var hasta = $("#i_hasta")[0];
+
+        if (valor == 1) {
+            desde.disabled = false;
+            hasta.disabled = false;
+        } else {
+            desde.disabled = true;
+            hasta.disabled = true;
+        }
+    }
+
+    function activa_almacen(valor) {
+        var almacenes = $("#i_almacenes")[0];
+
+        if (valor == 0) {
+            almacenes.disabled = false;
+        } else {
+            almacenes.disabled = true;
+        }
+    }
+</script>

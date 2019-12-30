@@ -1,0 +1,89 @@
+@{
+    ViewBag.Title = "Compras mensuales por proveedor";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Gerente", "Index", "Gerente")</li>
+                    <li class="breadcrumbs-item">Gr&aacute;ficos de An&aacute;lisis Estad&iacute;sticos</li>
+                    <li class="breadcrumbs-item">Compras</li>
+                    <li class="breadcrumbs-item active">Por Proveedor</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Gerente/Ayuda', 'GAECCMIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Proveedor</div>
+                    <div class="card-body">
+                        <div class="row col-sm-12">
+                            <input type="text" class="form-control alert-warning" maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Proveedores', '/Proveedor/Proveedores', 'nada2', 'm_middle')" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Fecha</div>
+                    <div class="card-body">
+                        <div class="row col-sm-12">
+                            <input type="text" class="form-control datepickers" readonly="true" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Moneda</div>
+                    <div class="card-body">
+                        <div class="row col-sm-12">
+                            <select class="form-control">
+                                <option>Moneda Nacional</option>
+                                <option>Moneda Extranjera</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Gr&aacute;fico</div>
+                    <div class="card-body">
+                        <div class="row col-sm-12 p-1">
+                            <input type="radio" name="i_vm" />&nbsp;
+                            Barras
+                        </div>
+                        <div class="row col-sm-12 p-1">
+                            <input type="radio" name="i_vm" />&nbsp;
+                            Lineas
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-print'></i>
+                Imprimir
+            </a>
+        </div>
+    }
+</div>

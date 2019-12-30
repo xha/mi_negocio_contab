@@ -1,0 +1,224 @@
+﻿@model Datos.Models.BancoModel
+@{
+    ViewBag.Title = "Conciliación y Actualización de Movimientos Bancarios";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Banco", "Index", "Banco")</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("TIndex", "Banco")'>Transacciones Bancarias</a></li>
+                    <li class="breadcrumbs-item active">Conciliaci&oacute;n</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Transacci&oacute;n </label> #<strong>@Model.Codigo</strong></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Banco/Ayuda', 'TTransaccion', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Cuenta Bancaria</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>Moneda</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Banco</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>Mes de Conc.</label>
+            <input class="form-control datepickers" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>Saldo de "MesNoCerrado"</label>
+            <input class="form-control" readonly />
+        </div>
+    </div>
+    <hr />
+    <div class="card-body">
+        <div class="table-responsive">
+            <div class="row" align="center">
+                <div class="col-sm-4">
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-2">
+                    <a href="#" class="btn btn-primary">
+                        <i class='fa fa-search'></i>
+                        Buscar
+                    </a>
+                </div>
+                <div class="col-sm-3">
+                    <input type="checkbox" id="i_arts" />&nbsp;
+                    Conciliar Todos
+                </div>
+            </div>
+            <table class="table table-bordered table-striped pre-scrollable datatables" id="TConciliarGrid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Fecha Oper.</th>
+                        <th>Fecha Doc.</th>
+                        <th>Transacci&oacute;n</th>
+                        <th>Tipo Doc.</th>
+                        <th>Documento</th>
+                        <th>Ingreso</th>
+                        <th>Salida</th>
+                        <th>Glosa</th>
+                        <th style="width: 5px">Conc.</th>
+                        <th style="width: 5px"></th>
+                        <th style="width: 5px"></th>
+                        <th style="width: 5px"></th>
+                        <th style="width: 5px"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-3 text-right">
+            <label>Total y Saldo Final</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3 border rounded">
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3 border rounded">
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3 border rounded">
+            <input class="form-control" readonly />
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick="ocultar_panel('TIndex', 'Banco')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-lock'></i>
+                Cerrar Mes
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#TConciliarGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            searching: false,
+            paging: false,
+            info: false,
+
+            ajax: {
+                url: ruta_actual + "/Banco/GridTTransacciones",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+                [{
+                    targets: [8],
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    targets: [9],
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    targets: [10],
+                    orderable: false,
+                    searchable: false
+                },],
+            columns: [
+                { data: "FechaOperacion" },
+                { data: "FechaDocumento" },
+                { data: "NroTransaccion" },
+                { data: "TipoDocumento" },
+                { data: "Documento" },
+                { data: "Ingreso" },
+                { data: "Salida" },
+                { data: "Glosa" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<i class="btn btn-dark fa fa-circle proveedor" onclick="cambiar_imagen(\'' + row.Codigo + '\')" id="input_' + row.Codigo + '"></i>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Digitación" href="#" onclick="AjaxModalGet(\'Detalle\', \'/Banco/Digitacion\', \'nada\')"><i class="fa fa-chart-line"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="AjaxModalGet(\'Detalle\', \'/Banco/Digitacion\', \'nada\')"><i class="fa fa-edit"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Eliminar" href="#" onclick="anular_nota(\'' + row.Codigo + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Imprimir" href="#"><i class="fa fa-print"></i></a>';
+                    }
+                },
+            ]
+        });
+        $('#i_arts').on('ifChecked', function () {
+            activa_arts(0);
+        })
+
+        $('#i_arts').on('ifUnchecked', function () {
+            activa_arts(1);
+        })
+    });
+    /****************************************************************************************************/
+    function activa_arts(valor) {
+        if (valor == 0) {
+            $(".proveedor").each(function () {
+                $(this).removeClass('fa-circle');
+                $(this).addClass('fa-check-circle');
+            });
+        } else {
+            $(".proveedor").each(function () {
+                $(this).removeClass('fa-check-circle');
+                $(this).addClass('fa-circle');
+            });
+        }
+    }
+
+    function cambiar_imagen(valor) {
+        var id = $("#input_" + valor)[0];
+
+        if (id.classList.contains("fa-circle")) {
+            id.classList.remove('fa-circle');
+            id.classList.add('fa-check-circle');
+        } else {
+            id.classList.add('fa-circle');
+            id.classList.remove('fa-check-close');
+        }
+    }
+</script>
+

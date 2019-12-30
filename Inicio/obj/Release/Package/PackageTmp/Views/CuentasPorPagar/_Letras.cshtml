@@ -1,0 +1,140 @@
+﻿<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Datos Generales del Canje</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <label>Proveedor</label><br />
+                            <input class="form-control" readonly />
+                        </div>
+                        <div class="col-sm-4">
+                            <label>Fecha de Canje</label><br />
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Datos de Canje de Letras</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Num. de Letras</label><br />
+                            <input class="form-control" readonly />
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Tipo de Cambio Especial</label><br />
+                            <input class="form-control" onkeypress="solo_decimal(event, this)" maxlength="11" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Tipo de Moneda</div>
+                <div class="card-body">
+                    <div class="row">
+                        <input type="radio" name="es_tmoneda" id="es_tmn" />&nbsp;
+                        MN
+                    </div>
+                    <div class="row">
+                        <input type="radio" name="es_tmoneda" id="es_tme" />&nbsp;
+                        ME
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered tabla_modal pre-scrollable datatables" id="MCXPLetrasGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Num. Letra</th>
+                            <th>Fec. Vence</th>
+                            <th>Plazo</th>
+                            <th>Canje MN</th>
+                            <th>Canje ME</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-4 text-right">
+            <br />
+            <b>Total</b>
+        </div>
+        <div class="col-sm-8">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label>MN</label>
+                    <input type="radio" name="es_moneda" id="es_mn" />
+                </div>
+                <div class="col-sm-6">
+                    <label>ME</label>
+                    <input type="radio" name="es_moneda" id="es_me" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-file-archive'></i>
+                Datos de Letra
+            </a>
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Aceptar
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('input[type=radio]').iCheck({
+            radioClass: 'iradio_square-blue',
+        });
+
+        $(".datepickers").datepicker({
+            autoclose: true
+        });
+
+        $("#MCXPLetrasGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            ajax: {
+                url: ruta_actual + "/CuentasPorpagar/GridLetras",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "Codigo" },
+                { data: "FechaVencimiento" },
+                { data: "Plazo" },
+                { data: "CanjeMN" },
+                { data: "CanjeME" },
+            ]
+        });
+    });
+</script>

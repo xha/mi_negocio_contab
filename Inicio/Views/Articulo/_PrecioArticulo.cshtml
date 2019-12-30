@@ -1,0 +1,60 @@
+﻿@model Datos.Models.ProveedorModel
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered pre-scrollable datatables tabla_modal" id="PrecioGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th style="width: 25%">Tipo de Precio</th>
+                            <th>Valor Vta.</th>
+                            <th>Mon</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $('input[type=radio]').iCheck({
+            radioClass: 'iradio_square-blue',
+        });
+
+        $('input[type=checkbox]').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+        });
+
+        $("#PrecioGrid").DataTable({
+            processing: false, // for show progress bar
+            serverSide: true, // for process server side
+            filter: false, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Articulo/GridPrecioArticulo",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "Codigo" },
+                { data: "Descripcion" },
+                { data: "ValorVenta" },
+                { data: "MonedaVenta" },
+            ]
+        });
+
+        $('#PrecioGrid tbody').on('dblclick', 'tr', function () {
+            eval($("#parametro").val() + "('" + this.cells[0].textContent + "','" + this.cells[1].textContent + "','" + this.cells[2].textContent + "')");
+        });
+        $('.tabla_modal')[0].setAttribute("title", "Doble Click para seleccionar");
+    });
+</script>

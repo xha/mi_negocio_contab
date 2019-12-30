@@ -1,0 +1,177 @@
+﻿@model Datos.Models.ImportacionesModel
+
+@{
+    ViewBag.Title = "Consulta Orden de Importación";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Importaciones", "Index", "Importaciones")</li>
+                    <li class="breadcrumbs-item">Consultas</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("ConsultaOrdenIndex", "Importaciones")'>@ViewBag.Title</a></li>
+                    <li class="breadcrumbs-item active">Editar</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Editar Registro</label> #<strong>@Model.Codigo</strong></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Importaciones/Ayuda', 'ConsultaOrdenDetalle', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    @Html.HiddenFor(m => m.Codigo)
+    <div class="row">
+        <div class="col-sm-3">
+            <label>N&uacute;mero</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>Incoterm</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>F. Emisi&oacute;n</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-1">
+            <label>D&iacute;as</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>F. Entrega</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-5">
+            <label>Proveedor</label>
+            <div class="row">
+                <div class="col-sm-4">
+                    <input readonly class="form-control" />
+                </div>
+                <div class="col-sm-8">
+                    <input readonly class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label>R.U.C.</label><br />
+            <input readonly class="form-control" />
+        </div>
+        <div class="col-sm-5">
+            <label>Glosa</label><br />
+            <input readonly class="form-control" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <label>Moneda Importaci&oacute;n</label>
+            <div class="row">
+                <div class="col-sm-4">
+                    <input readonly class="form-control" />
+                </div>
+                <div class="col-sm-8">
+                    <input readonly class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label>Equiv. ME</label><br />
+            <input readonly class="form-control" />
+        </div>
+        <div class="col-sm-3">
+            <label>T/C</label><br />
+            <input readonly class="form-control" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Valor Bruto</label><br />
+            <input readonly class="form-control" />
+        </div>
+        <div class="col-sm-3">
+            <label>Descuento</label><br />
+            <input readonly class="form-control" />
+        </div>
+        <div class="col-sm-3">
+            <label>Valor Total</label><br />
+            <input readonly class="form-control" />
+        </div>
+        <div class="col-sm-3">
+            <label>ME</label><br />
+            <input readonly class="form-control" />
+        </div>
+    </div>
+}
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick='ocultar_panel("ConsultaOrdenIndex", "Importaciones")' class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <button onclick="AjaxModalGet('Gastos de Importación', '/Importaciones/ConsultaOrdenGastos');"  class="btn btn-primary">
+                <i class='fa fa-arrow-right'></i>
+                Gastos
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped pre-scrollable datatables" id="ConsultaOrdenDetalleGrid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>C&oacute;digo</th>
+                        <th>Descripci&oacute;n</th>
+                        <th>Cantidad</th>
+                        <th>U.M.</th>
+                        <th>V. Unitario</th>
+                        <th>V. Bruto</th>
+                        <th>Descto</th>
+                        <th>V. Total</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#ConsultaOrdenDetalleGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Importaciones/GridConsultaOrdenDetalle",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "Codigo" },
+                { data: "Descripcion" },
+                { data: "Cantidad" },
+                { data: "UM" },
+                { data: "VUnitario" },
+                { data: "VBruto" },
+                { data: "VDescuento" },
+                { data: "Total" },
+            ]
+        });
+    });
+</script>

@@ -1,0 +1,44 @@
+﻿@model Datos.Models.FacturacionModel
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <label>C&oacute;digo</label>
+            <input type="text" class="form-control alert-warning" onkeypress="solo_enteros(event)" maxlength="11" title="Doble Click para buscar" ondblclick="AjaxModalGet('Clientes', '/Cliente/Clientes', 'nada2', 'm_middle')" />
+        </div>
+        <div class="col-sm-3">
+            <label>RUC</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-6">
+            <label>Nombre o Razón Social</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-5">
+            <label>Direcci&oacute;n</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>Tel&eacute;fono</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-5">
+            <label>Referencia</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_middle').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <button class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Aceptar
+            </button>
+        </div>
+    </div>
+</div>

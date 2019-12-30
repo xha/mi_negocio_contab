@@ -1,0 +1,66 @@
+﻿<div class="container-fluid">
+    <p>Formulario del m&oacute;dulo de <b>Cuentas por Cobrar - Transacciones - Cobranzas Realizadas</b></p>
+    <div class="row col-sm-12">
+        <table class="table pre-scrollable tabla_cero">
+            <thead>
+                <tr>
+                    <th class="text-center" style="width: 30%">Opci&oacute;n</th>
+                    <th class="text-center">Acci&oacute;n</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td align="center">
+                        Campo <b>Buscar</b>
+                    </td>
+                    <td>
+                        Filtrado por transacción de las cobranzas realizadas del cliente seleccionado
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <label class="btn btn-primary">
+                            <i class='fa fa-money-check'></i>
+                        </label>
+                    </td>
+                    <td>
+                        Abre una ventana para realizar el registro de una cobranza
+                        <a href="#" class="btn btn-light" onclick="AjaxModalGet('Ayuda Artículos - Cobranzas Realizadas Registrar', '/CuentasPorCobrar/Ayuda', 'TCobranzasRealizadasRegistro', 'm_ayudas')">
+                            <i class='fa fa-arrow-right'></i>
+                            Ver m&aacute;s
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <label class="btn btn-info">
+                            <i class='fa fa-edit'></i>
+                        </label>
+                    </td>
+                    <td>
+                        Abre una ventana para modificar el registro de una cobranza
+                        <a href="#" class="btn btn-light" onclick="AjaxModalGet('Ayuda Artículos - Cobranzas Realizadas Modificar', '/CuentasPorCobrar/Ayuda', 'TCobranzasRealizadasRegistro', 'm_ayudas')">
+                            <i class='fa fa-arrow-right'></i>
+                            Ver m&aacute;s
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <label class="btn btn-danger">
+                            <i class='fa fa-trash'></i>
+                        </label>
+                    </td>
+                    <td>
+                        Anula la cobranza
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr />
+    <a href="#" class="btn btn-light" onclick="AjaxModalGet('Ayuda Artículos - Transacciones', '/CuentasPorCobrar/Ayuda', 'TDCCTransaccion', 'm_ayudas')">
+        <i class='fa fa-undo'></i>
+        Retroceder
+    </a>
+</div>

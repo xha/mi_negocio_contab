@@ -1,0 +1,13 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="calendar"></div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('.calendar').calendar({
+            language: 'es',
+        });
+    });
+</script>

@@ -1,0 +1,76 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Mes de Cargo</label>
+            <input class="form-control datepickers" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Fecha de Inicio</label>
+            <input class="form-control datepickers" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Fecha de Fin</label>
+            <input class="form-control datepickers" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Fecha de Pago</label>
+            <input class="form-control datepickers" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Adelanto de Quincena</label>
+            <input class="form-control datepickers" readonly />
+        </div>
+        <div class="col-sm-9">
+            <label>Nombre / Descripci&oacute;n del Cronograma</label>
+            <input class="form-control" />
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-sm-4">
+            <label>
+                <input type="checkbox" />&nbsp;
+                Regulariza Pago M&iacute;nimo
+            </label>
+        </div>
+        <div class="col-sm-4">
+            <label>
+                <input type="checkbox" />&nbsp;
+                5ta. Categor&iacute; Autom&aacute;tica
+            </label>
+        </div>
+        <div class="col-sm-4">
+            <label>
+                <input type="checkbox" />&nbsp;
+                Adelanto de Pago
+            </label>
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_middle').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <button class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Grabar
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

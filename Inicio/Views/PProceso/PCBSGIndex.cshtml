@@ -1,0 +1,128 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "Gratificación";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item">Procesos</li>
+                    <li class="breadcrumbs-item">Calcular Beneficios Sociales</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5><b>@ViewBag.Title</b></h5>
+        </div>
+
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title Inicio ', '/PMaestra/Ayuda', 'PIRBIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row col-sm-12">
+        <button class="btn btn-success" onclick="AjaxModalGet('Nuevo Cálculo de Gratificación', '/PProceso/CTSEditarCG', 'nada2', 'm_central')">
+            <i class='fa fa-plus'></i>
+            Agregar
+        </button>
+    </div>
+    <div class="card shadow mt-1">
+        <div class="card-header font-weight-bold">
+            Beneficios Sociales : Gratificaciones
+        </div>
+        <div class="card-body">
+            <div class="row mb-2">
+                <div class="col border-bottom text-center"> <p> Beneficios Sociales : Gratificación</p></div>
+
+            </div>
+            <div class="table-responsive">
+              
+                   <table class="table table-bordered table-striped pre-scrollable datatables" id="PIRBIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre Descriptivo</th>
+                            <th>Total S/.</th>
+                            <th>Total $</th>
+                            
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col">
+           
+               <button class="btn btn-secondary   m-1"  onclick="AjaxModalGet('Adelanto de Gratificación', '/PProceso/POBCAdelantL', 'nada2', 'm_central')">
+                   <i class='fa fa-wrench'></i>
+               Adelanto de Grati..
+               </button>
+      
+       
+
+          
+             <button class="col-md-1  btn btn-outline-secondary float-md-right m-1">
+                
+                 ...
+             </button>
+            <select class="col-sm-12 col-md-3 form-control   float-md-right">
+                <option>Ingreso de datos</option>
+            
+            </select>
+              
+        </div>
+   
+    </div>
+    <hr />
+</div>
+
+
+
+<script>
+    $(function () {
+        $("#PIRBIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            info: false,
+
+            ajax: {
+                url: ruta_actual + "/PProceso/GridListadoTrabajadores",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CODIGO" },
+                { data: "NOMBRE" },
+                { data: "BASICO" },
+                { data: "MONEDA" },
+           
+                {
+                    render: function (data, type, row) {
+                        return '<a class="btn btn-info grid_opt" title="Editar" onclick="AjaxModalGet(\'Registro de Bono\',\'/PProceso/CTSEditarCG\', \'nada2\', \'m_central\')" href="#"><i class="fa fa-edit"></i></button>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CODIGO + '\')"><i class="fa fa-trash"></i></button>';
+                    }
+                },
+            ]
+        });
+    });
+</script>

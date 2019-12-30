@@ -1,0 +1,177 @@
+﻿@model Datos.Models.ArticuloModel
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">Modificar Registro</div>
+        @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosVentaForm" }))
+        {
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-2">
+                    <label>C&oacute;digo</label>
+                    @Html.TextBoxFor(m => m.Codigo, new { @class = "form-control", @readonly = "true" })
+                </div>
+                <div class="col-sm-4">
+                    <label>Descripci&oacute;n</label><br />
+                    @Html.TextBoxFor(m => m.Descripcion, new { @class = "form-control", @readonly = "true" })
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>Ubicacion en Almacen</label><br />
+                        @Html.TextBoxFor(m => m.UbicacionAlmacen, new { @class = "form-control", @maxlength = "60", @onkeypress = "solo_alfanumericos(event)" })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <label>Stock Max.</label><br />
+                    @Html.TextBoxFor(m => m.CantidadMaxima, new { @class = "form-control", @maxlength = "10", @onkeypress = "solo_decimal(event, this)" })
+                </div>
+                <div class="col-sm-2">
+                    <label>Stock Min.</label><br />
+                    @Html.TextBoxFor(m => m.CantidadMinima, new { @class = "form-control", @maxlength = "10", @onkeypress = "solo_decimal(event, this)" })
+                </div>
+                <div class="col-sm-2">
+                    <label>Punto de Pedido</label><br />
+                    @Html.TextBoxFor(m => m.PuntoPedido, new { @class = "form-control", @maxlength = "10", @onkeypress = "solo_enteros(event)" })
+                </div>
+                <div class="col-sm-2">
+                    <label>Dias Abast.</label><br />
+                    @Html.TextBoxFor(m => m.DiasAbastencimiento, new { @class = "form-control", @maxlength = "10", @onkeypress = "solo_enteros(event)" })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-12">
+                    <a href="#" class="btn btn-info" onclick="$('#m_central').modal('hide');">
+                        <i class='fa fa-arrow-left'></i>
+                        Regresar
+                    </a>
+                    <a href="#"class="btn btn-success" onclick="agregar_datoscompra()">
+                        <i class='fa fa-plus'></i>
+                        Agregar
+                    </a>
+                </div>
+            </div>
+        </div>
+        }
+        <div class="card-header" align="center"><b>Proveedores que abastecen el art&iacute;culo</b></div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="DatosCompraProv" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Cod. Prov.</th>
+                            <th style="width: 25%">Descripci&oacute;n Prov.</th>
+                            <th>Valor Vta</th>
+                            <th>IGV</th>
+                            <th>Precio Vta</th>
+                            <th>Moneda</th>
+                            <th>Fecha</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-header" align="center"><b>Datos de Ultima Compra</b></div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="DatosCompra" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Descripci&oacute;n Prov.</th>
+                            <th>Doc. Ref.</th>
+                            <th>Cantidad</th>
+                            <th>P. Con IGV</th>
+                            <th>P. Sin IGV</th>
+                            <th>Moneda</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#codigo_dci").val($("#t_id").val());
+        $("#descripcion_dci").val($("#t_descripcion").val());
+
+        $("#DatosCompraProv").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Articulo/GridDatosCompraProv",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [7],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [8],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "CodigoProveedor" },
+                { data: "Descripcion" },
+                { data: "ValorVenta" },
+                { data: "IGV" },
+                { data: "PrecioVenta" },
+                { data: "MonedaCompra" },
+                { data: "FechaCompra" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" href="#" onclick="agregar_datoscompra()"><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CodigoCompra + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+            ]
+        });
+
+        $("#DatosCompra").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Articulo/GridDatosCompra",
+                type: "GET",
+                datatype: "json",
+            },
+            columns: [
+                { data: "Descripcion" },
+                { data: "Documento" },
+                { data: "Cantidad" },
+                { data: "PrecioConIGV" },
+                { data: "PrecioSinIGV" },
+                { data: "MonedaCompra" },
+                { data: "FechaCompra" },
+            ]
+        });
+    });
+
+    function agregar_datoscompra() {
+        var titulo = "Mantenimiento de Detalle de Lista de Proveedores";
+        var ruta = "/Articulo/DatosCompraCreate";
+        AjaxModalGet(titulo, ruta, 'nada2', 'm_middle');
+    }
+</script>
+
+

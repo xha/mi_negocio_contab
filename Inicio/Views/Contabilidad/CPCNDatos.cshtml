@@ -1,0 +1,136 @@
+@model Datos.ContabilidadModels.ContabilidadModel
+
+<div class="row">
+  <div class="col-sm-4">
+    <label>C&oacute;digo de Cuenta</label>
+    <input class="form-control" />
+  </div>
+  <div class="col-sm-6">
+    <label>Descripci&oacute;n</label>
+    <input class="form-control" />
+  </div>
+  <div class="col-sm-2">
+    <label>Nivel</label>
+    <select class="form-control">
+      <option></option>
+    </select>
+  </div>
+  <div class="col-sm-3">
+    <label>Clase de Cuenta</label>
+    <input class="form-control" />
+  </div>
+  <div class="col-sm-3">
+    <label>Tipo de Anexo</label>
+    <input class="form-control" />
+  </div>
+  <div class="col-sm-3">
+    <label>Ajuste Dif. de Cambio</label>
+    <input class="form-control" />
+  </div>
+  <div class="col-sm-3">
+    <label>Cuenta Monetaria</label>
+    <select class="form-control">
+      <option>NO</option>
+      <option>SI</option>
+    </select>
+  </div>
+  <div class="col-sm-2">
+    <label>Destino</label>
+    <select class="form-control">
+      <option>NO</option>
+      <option>SI</option>
+    </select>
+  </div>
+  <div class="col-sm-1">
+    <br />
+    <button class="btn btn-secondary">...</button>
+  </div>
+  <div class="col-sm-2">
+    <label>Centro de Costo</label>
+    <select class="form-control">
+      <option>NO</option>
+      <option>SI</option>
+    </select>
+  </div>
+  <div class="col-sm-3">
+    <label>Concepto Ingreso/Gasto</label>
+    <input class="form-control" />
+  </div>
+  <div class="col-sm-3">
+    <label>Partida de Presupuesto</label>
+    <input class="form-control" />
+  </div>
+  <div class="col-sm-3">
+    <label>Plan de Cuenta Exterior</label>
+    <input class="form-control" />
+  </div>
+  <div class="col-sm-3">
+    <label>Plan Contable Empresarial</label>
+    <input class="form-control" />
+  </div>
+</div>
+<div class="row mt-1">
+  <div class="col-sm-7">
+    <div class="card shadow">
+      <div class="card-header text-danger">
+        C&oacute;digos de Formatos EEFF
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-4">
+            <label>Est&aacute;ndar</label>
+            <input class="form-control" />
+          </div>
+          <div class="col-sm-4">
+            <label>Tributario</label>
+            <input class="form-control" />
+          </div>
+          <div class="col-sm-4">
+            <label>NIFF</label>
+            <input class="form-control" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-5">
+    <div class="card shadow">
+      <div class="card-header text-danger">
+        Clasificaci&oacute;n de los Bienes o Servicios Adquiridos 
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <label>
+              <input type="checkbox" />&nbsp;
+              Tiene Bien o Servicio
+            </label>
+            <select class="form-control"></select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr />
+<div class="row">
+  <div class="col-sm-12">
+    <a href="#" onclick="ocultar_panel('CPCNIndex', 'Contabilidad')" class="btn btn-info">
+      <i class='fa fa-arrow-left'></i>
+      Regresar
+    </a>
+    <button class="btn btn-success">
+      <i class='fa fa-save'></i>
+      Guardar
+    </button>
+  </div>
+</div>
+<script>
+  $('input[type=radio]').iCheck({
+    radioClass: 'iradio_square-blue',
+  });
+
+  $('input[type=checkbox]').iCheck({
+    checkboxClass: 'icheckbox_square-blue',
+  });
+</script>

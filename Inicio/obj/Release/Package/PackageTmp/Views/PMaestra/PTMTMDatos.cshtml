@@ -1,0 +1,32 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-3">
+            <label>C&oacute;digo</label>
+            @Html.TextBoxFor(m => m.CODIGO, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="col-sm-6">
+            <label>Descripci&oacute;n</label>
+            @Html.TextBoxFor(m => m.DESCRIPCION, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-3">
+            <label>S&iacute;mbolo</label>
+            @Html.TextBoxFor(m => m.SIMBOLO, new { @class = "form-control", @maxlength = "5" })
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('PTMTMIndex', 'Maestro')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>

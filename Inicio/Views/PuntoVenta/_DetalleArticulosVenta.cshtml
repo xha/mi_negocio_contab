@@ -1,0 +1,63 @@
+﻿@model Datos.Models.FacturacionModel
+
+<div class="container-fluid">
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DetalleForm" }))
+{
+    <div class="row">
+        <div class="col-sm-4" align="center">
+            <label>C&oacute;digo</label><br />
+            @Html.TextBoxFor(m => m.CodigoProducto, new { @class = "form-control alert-warning", @maxlength = "20", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Listado de Artículos', '/Articulo/Articulos', 'nada2', 'm_middle')" })
+        </div>
+        <div class="col-sm-4" align="center">
+            <label>Unidad Medida</label><br />
+            @Html.TextBoxFor(m => m.CodigoUnidadMedida, new { @class = "form-control alert-warning", @maxlength = "3", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Unidad de Medida', '/Maestro/UnidadMedida', 'nada2', 'm_middle')" })
+        </div>
+        <div class="col-sm-4" align="center">
+            <label>Stock</label><br />
+            @Html.TextBoxFor(m => m.Stock, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_enteros(event)" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4" align="center">
+            <label>Cantidad</label><br />
+            @Html.TextBoxFor(m => m.Cantidad, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event,this)" })
+        </div>
+        <div class="col-sm-4" align="center">
+            <label>Precio</label><br />
+            @Html.TextBoxFor(m => m.CodigoPrecio, new { @class = "form-control alert-warning", @maxlength = "3", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Precio por Artículo', '/Articulo/PrecioArticulo', 'nada2', 'm_middle')" })
+        </div>
+        <div class="col-sm-4" align="center">
+            <label>Importe</label><br />
+            @Html.TextBoxFor(m => m.ImporteIGV, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event,this)" })
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-4" align="center">
+            <label>% Descuento</label><br />
+            @Html.TextBoxFor(m => m.PorcentajeDescuento, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event,this)" })
+        </div>
+        <div class="col-sm-4" align="center">
+            <label>Descto. Unitario en Valor</label><br />
+            @Html.TextBoxFor(m => m.DescuentoUnitario, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event,this)" })
+        </div>
+        <div class="col-sm-4" align="center">
+            <label>Total</label><br />
+            @Html.TextBoxFor(m => m.Total, new { @class = "form-control", @readonly = true })
+        </div>
+    </div>
+}
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-info"  onclick="AjaxModalGet('Selección de Artículos', '/PuntoVenta/ArticulosVenta', 'nada')">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Aceptar
+            </a>
+        </div>
+    </div>
+</div>

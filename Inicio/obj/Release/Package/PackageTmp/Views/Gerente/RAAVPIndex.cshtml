@@ -1,0 +1,122 @@
+@{
+    ViewBag.Title = "Análisis de Variación de Precios";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Gerente", "Index", "Gerente")</li>
+                    <li class="breadcrumbs-item">Reportes de Movimiento </li>
+                    <li class="breadcrumbs-item active">An&aacute;lisis de Variaci&oacute;n de Precios</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>An&aacute;lisis de Variaci&oacute;n de Precios</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Gerente/Ayuda', 'RADVAIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Art&iacute;culos</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="radio" name="i_articulo" id="i_todos" />&nbsp;
+                                <label>Todos</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="radio" name="i_articulo" id="i_rango" />&nbsp;
+                                <label>Rango</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>De</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" disabled id="i_desde" class="form-control alert-warning" maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Artículos', '/Articulo/Articulos', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                        &nbsp;
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>A</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" disabled id="i_hasta" class="form-control alert-warning" maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Artículos', '/Articulo/Articulos', 'nada2','m_middle')" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Fecha</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Desde</label>
+                                <input type="text" class="form-control datepickers" readonly="true" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Hasta</label>
+                                <input type="text" class="form-control datepickers" readonly="true" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <br />
+                <input type="checkbox" />&nbsp;
+                Precios incluyen IGV
+            </div>
+        </div>
+        <hr />
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-print'></i>
+                Imprimir
+            </a>
+        </div>
+    }
+</div>
+<script>
+    $(function () {
+        $("#i_todos")[0].checked = true;
+    });
+    /****************************************************************************************************/
+    $('#i_todos').on('ifChecked', function () {
+        activa_articulos(0);
+    })
+
+    $('#i_rango').on('ifChecked', function () {
+        activa_articulos(1);
+    })
+    /****************************************************************************************************/
+    function activa_articulos(valor) {
+        var desde = $("#i_desde")[0];
+        var hasta = $("#i_hasta")[0];
+
+        if (valor == 1) {
+            desde.disabled = false;
+            hasta.disabled = false;
+        } else {
+            desde.disabled = true;
+            hasta.disabled = true;
+        }
+    }
+</script>

@@ -1,0 +1,387 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "Listado de Trabajadores";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item active">Base de Datos</li>
+                    <li class="breadcrumbs-item active">Tablas de Ayuda</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda PMaestra - @ViewBag.Title - Inicio ', '/PMaestra/Ayuda', 'PTPLTIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Filtrar por</div>
+                    <div class="row card-body">
+                        <div class="col-sm-3">
+                            <label>Tipo de Trabajador</label>
+                            <select class="form-control" onchange="activa_div()" id="tipo_trabajador">
+                                <option value="TT">Tipo de Trabajador</option>
+                                <option value="AT">Area de Trabajo</option>
+                                <option value="CC">Centro de Costos</option>
+                                <option value="FP">Fondo de Pensiones</option>
+                                <option value="BA">Bancos</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Ordenar por</label>
+                            <select class="form-control">
+                                <option value="CT">C&oacute;digo del Trabajador</option>
+                                <option value="NB">Nombre</option>
+                                <option value="CC">Centro de Costo</option>
+                                <option value="CO">C&oacute;digo CC</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Otros</label>
+                            <select class="form-control">
+                                <option value="AS">Activo o Subsidiado</option>
+                                <option value="BA">Baja</option>
+                                <option value="SP">Suspenci&oacute;n Perfecta</option>
+                                <option value="SV">Sin v&iacute;nculo laboral con conceptops pendientes de liquidar</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 mt-3">
+                            <input type="checkbox" class="checkboxes" />&nbsp;
+                            ¿Afiliado Eps/Servicios propios?
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick="mostrar_panel('PTPLTCreate', 'PMaestra')" class="btn btn-success">
+                <i class='fa fa-plus'></i>
+                Agregar
+            </a>
+        </div>
+    </div>
+    <br />
+
+    <div class="card shadow">
+        <div class="row card-body">
+            <div class="col-sm-4">
+                <div class="row divs" id="TT" style="display: flex">
+                    <div class="col-lg-12">
+                        <h5>
+                            <i class='fa fa-users'></i>
+                            <b id="titulo_TT">Tipos de Trabajador</b>
+                        </h5>
+                    </div>
+                    <div class="col-lg-12" id="div_TT"></div>
+                </div>
+                <div class="row divs" id="AT" style="display: none">
+                    <div class="col-lg-12">
+                        <h5>
+                            <i class='fa fa-users'></i>
+                            <b id="titulo_AT"></b>
+                        </h5>
+                    </div>
+                    <div class="col-lg-12" id="div_AT"></div>
+                </div>
+                <div class="row divs" id="CC" style="display: none">
+                    <div class="col-lg-12">
+                        <h5>
+                            <i class='fa fa-users'></i>
+                            <b id="titulo_CC"></b>
+                        </h5>
+                    </div>
+                    <div class="col-lg-12" id="div_CC"></div>
+                </div>
+                <div class="row divs" id="FP" style="display: none">
+                    <div class="col-lg-12">
+                        <h5>
+                            <i class='fa fa-users'></i>
+                            <b id="titulo_FP"></b>
+                        </h5>
+                    </div>
+                    <div class="col-lg-12" id="div_FP"></div>
+                </div>
+                <div class="row divs" id="BA" style="display: none">
+                    <div class="col-lg-12">
+                        <h5>
+                            <i class='fa fa-users'></i>
+                            <b id="titulo_BA"></b>
+                        </h5>
+                    </div>
+                    <div class="col-lg-12" id="div_BA"></div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped pre-scrollable datatables" id="PTPLTIndexGrid" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>C&oacute;digo</th>
+                                <th style="min-width: 250px">Nombres</th>
+                                <th>&Aacute;rea</th>
+                                <th>Departamento</th>
+                                <th>Cargo</th>
+                                <th>B&aacute;sico</th>
+                                <th>Documento</th>
+                                <th>Fecha Ingreso</th>
+                                <th>Centro Costo</th>
+                                <th>Cod. Centro Costo</th>
+                                <th>Cod. &Aacute;rea</th>
+                                <th>Nro. Ficha</th>
+                                <th>Carnet Seguro</th>
+                                <th>Fondo Pensiones</th>
+                                <th>Asignaci&oacute;n Fam.</th>
+                                <th>Fecha Cese</th>
+                                <th>Cod. Alterno</th>
+                                <th>Tipo Trab.</th>
+                                <th>Situaci&oacute;n</th>
+                                <th>Cod. SCTR</th>
+                                <th>RUC EPS</th>
+                                <th>A.F.P.</th>
+                                <th>Banco</th>
+                                <th>Cta. Banco</th>
+                                <th>Tipo Documento</th>
+                                <th>No declara PDT</th>
+                                <th>No calcula</th>
+                                <th>Direcci&oacute;n</th>
+                                <th>Sexo</th>
+                                <th style="width: 5px"></th>
+                                <th style="width: 5px"></th>
+                                <th style="width: 5px"></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        <i class='fa fa-file'></i>
+                        Reportes adicionales
+                    </h5>
+                </div>
+                <div class="row card-body">
+                    <div class="col-sm-3">
+                        <label>Ordenar por</label>
+                        <select class="form-control">
+                            <option value="CT">C&oacute;digo del Trabajador</option>
+                            <option value="NB">Nombre</option>
+                            <option value="CC">Centro de Costo</option>
+                            <option value="CO">C&oacute;digo CC</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-5">
+                        <label>Seleccione Reporte</label>
+                        <select class="form-control" onchange="abre_modal(this.value)" id="reporte_adicional" >
+                            <option value="">...</option>
+                            <option value="RAB">Reporte de Activos y Bajas</option>
+                            <option value="RCT">Reporte de Constancias de Trabajo</option>
+                            <option value="RFT">Fotochecks de Trabajadores</option>
+                            <option value="RTE">Reporte de Trabajadores en Excel (.xls)</option>
+                            <option value="PRE">Personalizar Reporte</option>
+                            <option value="LG1">Listado General</option>
+                            <option value="LG2">Listado General 2</option>
+                            <option value="LG3">Listado General 3</option>
+                            <option value="RTT">Reporte por Tipo de Trabajador</option>
+                            <option value="RCC">Reporte por Centro de Costo</option>
+                            <option value="RAT">Reporte Auxiliar de Trabajadores</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(function () {
+        $('#div_TT').jstree({
+            'core': {
+                'data': [
+                    { "text": "Empleado" },
+                    { "text": "Obrero" }
+                ]
+            },
+        });
+
+        $('#div_AT').jstree({
+            'core': {
+                'data': [
+                    { "text": "Gerencia" },
+                    { "text": "Administración" },
+                    { "text": "Venta" },
+                    { "text": "Sistemas" },
+                    { "text": "Contabilidad" },
+                ]
+            },
+        });
+
+        $('#div_CC').jstree({
+            'core': {
+                'data': [
+                    { "text": "Administración" },
+                    { "text": "Venta" },
+                    { "text": "Sistemas" },
+                ]
+            },
+        });
+
+        $('#div_FP').jstree({
+            'core': {
+                'data': [
+                    { "text": "Horizonte" },
+                    { "text": "Integra" },
+                    { "text": "ONP" },
+                ]
+            },
+        });
+
+        $('#div_BA').jstree({
+            'core': {
+                'data': [
+                    { "text": "Bancos Sueldo",
+                        "children": [
+                            { "text": "Banco de Crédito de Perú" },
+                            { "text": "Banco InterBank" }
+                        ]
+                    },
+                    {
+                        "text": "Bancos CTS",
+                        "children": [
+                            { "text": "Banco de Crédito de Perú" },
+                            { "text": "Banco IB" }
+                        ]
+                    },
+                ]
+            },
+        });
+
+        $("#PTPLTIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            /*language: {
+ 
+                url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+ 
+            },*/
+            ajax: {
+                url: ruta_actual + "/PMaestra/GridListadoTrabajadores",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [2,3,4],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE" },
+                { data: "NOMBRE_AREA" },
+                { data: "DEPARTAMENTO" },
+                { data: "CARGO" },
+                { data: "BASICO" },
+                { data: "DOCUMENTO" },
+                { data: "FECHA_INGRESO" },
+                { data: "CENTRO_COSTO" },
+                { data: "CODIGO_CENTRO" },
+                { data: "CODIGO_AREA" },
+                { data: "NUMERO_FICHA" },
+                { data: "CARNET_SEGURO" },
+                { data: "FONDO_PENSION" },
+                { data: "ASIGNACION_FAM" },
+                { data: "FECHA_CESE" },
+                { data: "CODIGO_ALTERNO" },
+                { data: "CODIGO_TIPO" },
+                { data: "SITUACION" },
+                { data: "CODIGO_SCTR" },
+                { data: "RUC_EPS" },
+                { data: "AFP" },
+                { data: "BANCO" },
+                { data: "CUENTA_BANCO" },
+                { data: "TIPO_DOCUMENTO" },
+                { data: "NO_DECLARA" },
+                { data: "NO_CALCULA" },
+                { data: "DIRECCION" },
+                { data: "SEXO" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="mostrar_panel(\'PTPLTEdit?Codigo=' + row.CODIGO + '\', \'PMaestra\')" ><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CODIGO + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Imprimir" href="#"><i class="fa fa-print"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+
+    $('.checkboxes').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    function activa_div() {
+        var texto = $('#tipo_trabajador option:selected').text();
+        var id = $('#tipo_trabajador').val();
+
+        $('.divs').hide();
+        $('#titulo_' + id).html(texto);
+        $('#' + id).show();
+    }
+
+    function abre_modal(valor) {
+        switch(valor) {
+            case "RAB":
+                AjaxModalGet('Reporte de Ingresos/Egresos', '/PMaestra/ReporteActivosBaja', 'nada2', 'm_middle');
+                break;
+            case "RTE":
+                AjaxModalGet('Reporte de Personalizado de Excel', '/PMaestra/ReporteTrabajadoresExcel', 'nada2', 'm_central');
+                break;
+            case "PRE":
+                AjaxModalGet('Reporte de Trabajadores con Datos Seleccionados', '/PMaestra/ReportePersonalizado', 'nada2', 'm_central');
+                break;
+        }
+        $("#reporte_adicional").val("");
+    }
+</script>

@@ -1,0 +1,134 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+<div class="card">
+    <div class="card-header text-danger">
+        <h5>Datos</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-2">
+                <label>C&oacute;digo</label>
+                <input class="form-control" />
+            </div>
+            <div class="col-sm-4">
+                <label>Descripci&oacute;n</label>
+                <input class="form-control" />
+            </div>
+            <div class="col-sm-4">
+                <label>Columna de Planilla</label>
+                <input class="form-control" />
+            </div>
+            <div class="col-sm-2 text-center">
+                <label>
+                    Agrupar como Otros<br />
+                    <input type="checkbox" />
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card mt-1">
+    <div class="card-header text-danger">
+        <h5>Otras Configuraciones</h5>
+    </div>
+    <div class="card-body text-left">
+        <div class="row">
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Remuneraci&oacute;n Asegurable de AFP
+                </label>                
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Remuneraci&oacute;n de Aportaciones a EsSalud
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Remuneraci&oacute;n Afeca a I.E.S.
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Remuneraci&oacute;n Afeca a SENATI
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Remuneraci&oacute;n Afeca a. S.C.T.R.
+                </label>
+            </div>
+        </div>
+        <div class="row border-top border-default mt-1">
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Rem. Afecta a Quinta Categor&iacute;a - Remuneraci&oacute; Ordinaria
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Rem. Afecta a Quinta Categor&iacute;a - Rem. Variable Proyectable
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Rem. Afecta a Quinta Categor&iacute;a - Rem. Variable No Proyectable
+                </label>
+            </div>
+        </div>
+        <div class="row border-top border-default mt-1">
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Provisiones de C.T.S.
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Provisiones de Gratificaci&oacute;n
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Provisiones de Vacaciones
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>
+<script type="text/javascript">
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

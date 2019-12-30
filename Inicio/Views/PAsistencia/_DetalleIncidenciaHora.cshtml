@@ -1,0 +1,46 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-4">
+            <label>C&oacute;digo</label>
+            @if (!String.IsNullOrEmpty(ViewBag.accion))
+            {
+                @Html.TextBox("codigo", (string)ViewBag.accion, new { @class = "form-control", @readonly = "true" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.CODIGO, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_enteros(event)" })
+            }
+        </div>
+        <div class="col-sm-8">
+            <label>Nombre</label>
+            @Html.TextBoxFor(m => m.DESCRIPCION, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-4">
+            <label>Concepto</label>
+            <input class="form-control" />
+        </div>
+        <div class="col-sm-4">
+            <label>Acci&oacute;n a realizar</label>
+            <select class="form-control">
+                Suma(+)
+                Resta(-)
+            </select>
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="$('#m_middle').modal('hide')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Cod. del Trabajador</label>
+            <input class="form-control alert-warning" onkeypress="solo_enteros(event)" ondblclick="AjaxModalGet('Referencias', '/PMaestra/Referencias', 'nada2', 'm_middle')" />
+        </div>
+        <div class="col-sm-9">
+            <label>Descripci&oacute;n</label>
+            <div class="row">
+                <div class="col-sm-8">
+                    <input class="form-control" readonly />
+                </div>
+                <div class="col-sm-4">
+                    <input class="form-control" readonly />
+                </div>
+            </div>            
+        </div>
+        <div class="col-sm-2">
+            <label>Bono de Ingreso</label>
+            <input class="form-control alert-warning" onkeypress="solo_enteros(event)" ondblclick="AjaxModalGet('Referencias', '/PMaestra/Referencias', 'nada2', 'm_middle')" />
+        </div>
+        <div class="col-sm-4">
+            <label>&nbsp;</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Monto</label>
+            <input class="form-control" onkeypress="solo_decimal(event,this)" />
+        </div>
+        <div class="col-sm-3">
+            <label>Moneda</label>
+            <select class="form-control">
+                <option>S/.</option>
+                <option>$</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <label>Bono de Egreso</label>
+            <input class="form-control alert-warning" onkeypress="solo_enteros(event)" ondblclick="AjaxModalGet('Referencias', '/PMaestra/Referencias', 'nada2', 'm_middle')" />
+        </div>
+        <div class="col-sm-4">
+            <label>&nbsp;</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Mes de Trabajo</label>
+            <select class="form-control">
+                <option>Febrero de 2020</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Cronograma</label>
+            <select class="form-control">
+            </select>
+        </div>
+        <div class="col-sm-7">
+            <label>Aprobado por</label>
+            <input class="form-control" />
+        </div>
+        <div class="col-sm-5">
+            <label>Documento</label>
+            <div class="row">
+                <div class="col-sm-3">
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-4">
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-5">
+                    <input class="form-control" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-info" onclick="$('#m_central').modal('hide')">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Grabar
+            </a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+</script>

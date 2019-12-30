@@ -1,0 +1,175 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2">
+            <label>Centro de Costo</label>
+            <input class="form-control alert-warning" ondblclick="AjaxModalGet('Centros de Costo', '/PMaestra/Referencias', '', 'm_middle');" />
+        </div>
+        <div class="col-sm-3">
+            <label>Trabajador</label>
+            <input class="form-control" />
+        </div>
+        <div class="col-sm-2">
+            <label>Fecha Inicial</label>
+            <input class="form-control datepickers" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>Fecha Fin</label>
+            <input class="form-control datepickers" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>&nbsp;</label><br />
+            <a href="#" class="btn btn-secondary">
+                <i class='fa fa-spinner'></i>
+                Cargar
+            </a>
+        </div>
+    </div>
+    <br />
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="he-tab" data-toggle="tab" href="#he" role="tab" aria-controls="he" aria-selected="true">
+                <i class='fa fa-clock'></i>
+                H.E. y Otros
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tardanza-tab" data-toggle="tab" href="#tardanza" role="tab" aria-controls="tardanza" aria-selected="false">
+                <i class='fa fa-history'></i>
+                Tardanzas
+            </a>
+        </li>
+    </ul>
+    <br />
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="he" role="tabpanel" aria-labelledby="he-tab">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered pre-scrollable datatables" id="RHEGrid" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Cod. Trabajador</th>
+                                    <th>Apellidos y Nombres</th>
+                                    <th>Cod. Horario</th>
+                                    <th>D&iacute;a</th>
+                                    <th>Hora Salida</th>
+                                    <th>Hora Marcada</th>
+                                    <th>Horas Acumuladas / Pendientes</th>
+                                    <th>Horas Extras</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="tardanza" role="tabpanel" aria-labelledby="tardanza-tab">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered pre-scrollable datatables" id="RTardanzaGrid" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Cod. Trabajador</th>
+                                    <th>Apellidos y Nombres</th>
+                                    <th>Cod. Horario</th>
+                                    <th>D&iacute;a</th>
+                                    <th>Hora Salida</th>
+                                    <th>Hora Marcada</th>
+                                    <th>Tardanza</th>
+                                    <th>Tardanzas</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row mt-1">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Grabar
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+    
+    $(function () {
+        $("#RHEGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            info: false,
+
+            ajax: {
+                url: ruta_actual + "/PAsistencia/GridAsistencia",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [3, 4, 5, 6],
+                orderable: false,
+                searchable: false,
+            }],
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE_TRABAJADOR" },
+                { data: "DIA" },
+                { data: "ENTRADA" },
+                { data: "HORA_LABORADA" },
+                { data: "HORA_LABORADA" },
+                { data: "MIN_TARDANZA" },
+                { data: "MIN_TARDANZA" },
+            ],
+        });
+
+        $("#RTardanzaGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            info: false,
+
+            ajax: {
+                url: ruta_actual + "/PAsistencia/GridAsistencia",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [3, 4, 5, 6],
+                orderable: false,
+                searchable: false,
+            }],
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE_TRABAJADOR" },
+                { data: "DIA" },
+                { data: "ENTRADA" },
+                { data: "HORA_LABORADA" },
+                { data: "HORA_LABORADA" },
+                { data: "MIN_TARDANZA" },
+                { data: "MIN_TARDANZA" },
+            ],
+        });
+    });
+</script>

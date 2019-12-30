@@ -1,0 +1,81 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+
+
+    <div class="card shadow">
+        <div class="card-header font-weight-bold text-center"> Configure directamente sus conceptos informaticos de D&iacute;as Efectivos</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered  table-striped pre-scrollable "  style="width: 1256px;" >
+                    <thead>
+                        <tr>
+
+                            <th>Concepto</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>D&iacute;as Efectivamente Laborados</th>
+                            <th>Desconectar Faltas y/u Otro tipo de incidencia</th>
+                            <th>Horas Efectivamente Laboradas</th>
+                            <th>Desconectar Horas de Permiso y/u Otro tipo de incidencia</th>
+                            <th>No Considerar</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+
+
+
+
+                        <tr>
+
+                            <th>
+                            0001
+                            </th>
+                            <th>
+                               XXXXXXXXXXX
+                            </th>
+                            <th>
+                                <input type="checkbox"   class="chect"/>
+                            </th>
+                            <th>
+                                <input type="checkbox"   class="chect"/>
+                            </th>
+                            <th> 
+                                <input type="checkbox"   class="chect"/>
+                            </th>
+                            <th>
+
+                                <input type="checkbox"  class="chect" />
+                            </th>
+                            <th>
+                                <input type="checkbox" class="chect" />
+                            </th>
+                        </tr>
+                    </tbody>
+
+                   
+
+
+                </table>
+             
+            </div>
+            <div class="row">
+                <div class="col mt-2">
+                    <button class="btn btn-success float-right" ondblclick="AjaxModalGet('Referencias', '/PMaestra/Referencias', '', 'm_middle');" > Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+
+    $('.chect').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+</script>

@@ -1,0 +1,213 @@
+@model Datos.Models.AlmacenesModel
+
+@{
+    ViewBag.Title = "";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Almacenes", "Index", "Almacenes")</li>
+                    <li class="breadcrumbs-item">Procesos</li>
+                    <li class="breadcrumbs-item active">Reversi&oacute;n de Documentos Anulados</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>Reversi&oacute;n de Documentos Anulados</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Reversion de Documentos Anulados - Crear / Editar', '/Almacenes/Ayuda', 'PRDAIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label>Fecha Desde</label><br />
+                    <input class="form-control datepickers" readonly />
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <label>Fecha Hasta</label><br />
+                <input class="form-control datepickers" readonly />
+            </div>
+            <div class="col-sm-4">
+                <label>Tipo Documento</label><br />
+                <select class="form-control" onchange="cambia_grid(this.value)">
+                    <option value="0">Transacciones de Ingreso o Salida</option>
+                    <option value="1">Transferencias</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <br />
+                <a href="#" class="btn btn-primary">
+                    <i class='fa fa-search'></i>
+                    Buscar
+                </a>
+            </div>
+        </div>
+        <hr />
+    }
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="PRDAIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr id="tr_PRDAIndexGrid"></tr>
+                    </thead>
+                    <tbody id="body_PRDAIndexGrid"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        grid1();
+    });
+
+    function cambia_grid(valor) {
+        $("#PRDAIndexGrid").dataTable().fnDestroy();
+        if (valor == 0) {
+            grid1();
+        } else {
+            grid2();
+        }
+    }
+
+    function grid1() {
+        var tr = $("#tr_PRDAIndexGrid")[0];
+        var body = $("#body_PRDAIndexGrid")[0];
+        var campos = new Array();
+        var td = new Array();
+        var node = new Array();
+        var y;
+
+        tr.innerHTML = "";
+        body.innerHTML = "";
+        campos.push('Documento');
+        campos.push('Trans.');
+        campos.push('Cliente');
+        campos.push('Fecha');
+        campos.push('Importe');
+        campos.push('Mon');
+        campos.push('Sit');
+
+        for (y = 0; y < campos.length; y++) {
+            td[y] = document.createElement('th');
+            node[y] = document.createTextNode(campos[y]);
+            td[y].appendChild(node[y]);
+            tr.appendChild(td[y]);
+        }
+        y++;
+        td[y] = document.createElement('th');
+        node[y] = document.createTextNode("");
+        td[y].appendChild(node[y]);
+        tr.appendChild(td[y]);
+
+        $("#PRDAIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+            ajax: {
+                url: ruta_actual + "/Almacenes/GridNotasIngreso",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [7],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                { data: "Documento" },
+                { data: "Trans" },
+                { data: "Descripcion" },
+                { data: "FechaEmision" },
+                { data: "PrecioVenta" },
+                { data: "Moneda" },
+                { data: "Sit" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="mostrar_panel(\'PRDADetalle?Codigo=' + row.Codigo + '\', \'Almacenes\')" ><i class="fa fa-edit"></i></a>'; }
+                },
+
+            ]
+        });
+    }
+
+    function grid2() {
+        var tr = $("#tr_PRDAIndexGrid")[0];
+        var body = $("#body_PRDAIndexGrid")[0];
+        var campos = new Array();
+        var td = new Array();
+        var node = new Array();
+        var y;
+
+        tr.innerHTML = "";
+        body.innerHTML = "";
+        campos.push('T. Transf.');
+        campos.push('Doc. Salida');
+        campos.push('Doc. Ingreso');
+        campos.push('Alm. Destino');
+        campos.push('Fecha');
+        campos.push('Sit');
+
+        for (y = 0; y < campos.length; y++) {
+            td[y] = document.createElement('th');
+            node[y] = document.createTextNode(campos[y]);
+            td[y].appendChild(node[y]);
+            tr.appendChild(td[y]);
+        }
+        y++;
+        td[y] = document.createElement('th');
+        node[y] = document.createTextNode("");
+        td[y].appendChild(node[y]);
+        tr.appendChild(td[y]);
+
+        $("#PRDAIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+            ajax: {
+                url: ruta_actual + "/Almacenes/GridCCD2",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [6],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                { data: "NroTransferencia" },
+                { data: "DocumentoSalida" },
+                { data: "DocumentoIngreso" },
+                { data: "Almacen" },
+                { data: "FechaEmision" },
+                { data: "Sit" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="mostrar_panel(\'PRDADetalle?Codigo=' + row.Codigo + '\', \'Almacenes\')" ><i class="fa fa-edit"></i></a>'; }
+                },
+
+            ]
+        });
+    }
+</script>

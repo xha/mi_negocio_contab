@@ -1,0 +1,203 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "Adelanto de Remuneraciones";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item">Procesos</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title', '/PProceso/Ayuda', 'PACPIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header">
+                    <h5>Mes de Trabajo</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <select class="form-control">
+                                <option>Enero de 2020</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header">
+                    <h5>Cronograma de Adelanto</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <select class="form-control">
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6 mt-1">
+                            <label>Fecha Inicial</label>
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                        <div class="col-sm-6 mt-1">
+                            <label>Fecha Final</label>
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header">
+                    <h5>Selecci&oacute;n de Trabajadores</h5>
+                </div>
+                <div class="card-body text-center">
+                    <a href="#" class="btn btn-secondary" onclick="AjaxModalGet('Selector de Trabajadores', '/PProceso/SelectorTrabajadores', '', 'm_central')">
+                        <i class="fa fa-users fa-3x"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-1">
+        <div class="col-sm-5">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Tipo de Cambio</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label>
+                                Planillas <br />
+                                <input type="radio" name="tp" />
+                            </label>
+                        </div>
+                        <div class="col-sm-4">
+                            <label>
+                                Contabilidad<br />
+                                <input type="radio" name="tp" />
+                            </label>
+                        </div>
+                        <div class="col-sm-4">
+                            <label>Valor</label>
+                            <input class="form-control" />                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-7">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Otros</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="row">
+                        <div class="col-sm-5 text-center">
+                            <label>¿Considerar Decimales?</label><br />
+                            <input type="checkbox" />
+                        </div>
+                        <div class="col-sm-7">
+                            <a href="#" class="btn btn-secondary m-1" onclick="AjaxModalGet('Cargos de Cuenta Corriente a Adelantos', '/PProceso/CCCAdelanto', '', 'm_central')">
+                                Aplicar Cuentas Corrientes
+                            </a>
+                            <a href="#" class="btn btn-info m-1">
+                                <i class="fa fa-cogs"></i>
+                                Auto Relleno
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="PAAQIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Nombres</th>
+                            <th>Moneda</th>
+                            <th>B&aacute;sico</th>
+                            <th>Asig. Fam.</th>
+                            <th>DT</th>
+                            <th>Monto</th>
+                            <th>Saldo</th>
+                            <th>Cta. Cte. Ing.</th>
+                            <th>Cta. Cte. Egr.</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(function () {
+        $("#PAAQIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+            ajax: {
+                url: ruta_actual + "/PProceso/GridListadoTrabajadores",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE" },
+                { data: "DEPARTAMENTO" },
+                { data: "BASICO" },
+                { data: "CODIGO_TIPO" },
+                { data: "CODIGO_ALTERNO" },
+                { data: "CODIGO_ALTERNO" },
+                { data: "BASICO" },
+                { data: "CUENTA_BANCO" },
+                { data: "CUENTA_BANCO" },
+            ]
+        });
+    });
+</script>

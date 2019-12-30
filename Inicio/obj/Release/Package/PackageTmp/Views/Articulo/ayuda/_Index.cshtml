@@ -1,0 +1,152 @@
+﻿<div class="container-fluid">
+    <p>Formulario de inicio del m&oacute;dulo de Artículos</p>
+    <div class="row col-sm-12">
+        <table class="table pre-scrollable tabla_cero">
+            <thead>
+                <tr>
+                    <th class="text-center" style="width: 30%">Opci&oacute;n</th>
+                    <th class="text-center">Acci&oacute;n</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td align="center">
+                        <label class="btn btn-success w-75">
+                            <i class='fa fa-plus'></i>
+                            Agregar
+                        </label>
+                    </td>
+                    <td>
+                        Agregar un nuevo registro
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <label class='btn btn-primary grid_opt'><i class='fa fa-print'></i></label>
+                    </td>
+                    <td>
+                        Imprimir uno o varios registros
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <label class="btn btn-primary w-75">
+                            <i class='fa fa-search'></i>
+                            Buscar
+                        </label>
+                    </td>
+                    <td>
+                        Buscar registros seg&uacute;n criterio especificado
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <label class='btn btn-info'><i class="fa fa-edit"></i></label>
+                    </td>
+                    <td>
+                        Editar el registro seleccionado
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <label class='btn btn-danger w-75'><i class="fa fa-trash"></i></label>
+                    </td>
+                    <td>
+                        Anular el registro seleccionado
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <label class='btn btn-outline-dark w-75'>
+                            <i class='fa fa-save'></i>
+                            Datos de Venta 
+                        </label>
+                    </td>
+                    <td>
+                        Abre una ventana donde muestra los datos necesarios para editar los datos de venta de un art&iacute;culo seleccionado,
+                        Debe seleccionar un art&iacute;culo previamente dandole click al mismo en la tabla o grid.
+                        <a href="#" class="btn btn-light" onclick="AjaxModalGet('Ayuda Artículos - Datos de Venta', '/Articulo/Ayuda', 'DatosVentaIndex', 'm_ayudas')">
+                            <i class='fa fa-arrow-right'></i>
+                            Ver m&aacute;s
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <label class='btn btn-outline-dark w-75'>
+                            <i class='fa fa-save'></i>
+                            Datos de Compra
+                        </label>
+                    </td>
+                    <td>
+                        Abre una ventana donde muestra los datos necesarios para editar los Datos de Compra de un art&iacute;culo seleccionado<br />
+                        <a href="#" class="btn btn-light" onclick="AjaxModalGet('Ayuda Artículos - Datos de Compra', '/Articulo/Ayuda', 'DatosCompraIndex', 'm_ayudas')">
+                            <i class='fa fa-arrow-right'></i>
+                            Ver m&aacute;s
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <label class='btn btn-outline-dark w-75'>
+                            <i class='fa fa-save'></i>
+                            Prod. Alternativos
+                        </label>
+                    </td>
+                    <td>
+                        Abre una ventana donde vincula el art&iacute;culo seleccionado con otros productos el cual est&eacute; relacionado
+                        <a href="#" class="btn btn-light" onclick="AjaxModalGet('Ayuda Artículos - Productos Alternativos', '/Articulo/Ayuda', 'ProductoAlternativoIndex', 'm_ayudas')">
+                            <i class='fa fa-arrow-right'></i>
+                            Ver m&aacute;s
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <label class='btn btn-outline-dark w-75'>
+                            <i class='fa fa-save'></i>
+                            Equivalentes
+                        </label>
+                    </td>
+                    <td>
+                        Abre una ventana donde vincula el art&iacute;culo seleccionado con otros productos el cual son sus equivalente
+                        <a href="#" class="btn btn-light" onclick="AjaxModalGet('Ayuda Artículos - Equivalentes', '/Articulo/Ayuda', 'EquivalenteIndex', 'm_ayudas')">
+                            <i class='fa fa-arrow-right'></i>
+                            Ver m&aacute;s
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <label class='btn btn-outline-dark w-75'>
+                            <i class='fa fa-save'></i>
+                            Mant. de Kits
+                        </label>
+                    </td>
+                    <td>
+                        Abre una ventana donde convierte el art&iacute;culo seleccionado en un Kit de Productos
+                        <a href="#" class="btn btn-light" onclick="AjaxModalGet('Ayuda Artículos - Mantenimiento de Kits', '/Articulo/Ayuda', 'MantenimientoKitIndex', 'm_ayudas')">
+                            <i class='fa fa-arrow-right'></i>
+                            Ver m&aacute;s
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <label class='btn btn-outline-dark w-75'>
+                            <i class='fa fa-save'></i>
+                            Mant. de Lotes
+                        </label>
+                    </td>
+                    <td>
+                        Abre una ventana donde se le agrega o modifican los lotes del art&iacute;culo seleccionado
+                        <a href="#" class="btn btn-light" onclick="AjaxModalGet('Ayuda Artículos - Mantenimiento de Lotes', '/Articulo/Ayuda', 'MantenimientoLoteIndex', 'm_ayudas')">
+                            <i class='fa fa-arrow-right'></i>
+                            Ver m&aacute;s
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

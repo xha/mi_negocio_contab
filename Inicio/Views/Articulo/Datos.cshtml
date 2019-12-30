@@ -1,0 +1,165 @@
+﻿@model Datos.Models.ArticuloModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2">
+            <label>C&oacute;digo</label>
+            @if (Model.ACODIGO == "")
+            {
+                @Html.TextBoxFor(m => m.ACODIGO, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_enteros(event)" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.ACODIGO, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_enteros(event)", @readonly = "true" })
+            }
+        </div>
+        <div class="col-sm-5">
+            <label>Descripci&oacute;n</label>
+            @Html.TextBoxFor(m => m.ADESCRI, new { @class = "form-control", @maxlength = "255", @onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-5">
+            <label>Descripci&oacute;n Alt.</label>
+            @Html.TextBoxFor(m => m.ADESCRI2, new { @class = "form-control", @maxlength = "255", @onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-4">
+            <label>Marca</label>
+            @Html.TextBoxFor(m => m.AMARCA, new { @class = "form-control", @maxlength = "30", @onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-2">
+            <label>C&oacute;digo Alterno</label>
+            @Html.TextBoxFor(m => m.ACODIGO2, new { @class = "form-control", @maxlength = "40", @onkeypress = "solo_enteros(event)" })
+        </div>
+        <div class="col-sm-2">
+            <label>Peso</label>
+            @Html.TextBoxFor(m => m.APESO, new { @class = "form-control", @maxlength = "20", @onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-4 row">
+            <div class="col-sm-12">
+                <label>Unidad de medida</label>
+            </div>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(m => m.UM_ABREV, new { @class = "form-control alert-warning", @maxlength = "6", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Unidades de Medida', '/Maestro/UnidadMedida', 'nada2', 'm_middle')" })
+            </div>
+            <div class="col-sm-8">
+                <input id="descripcion_unidad" readonly class="form-control" />
+            </div>
+        </div>
+        <div class="col-sm-4 row">
+            <div class="col-sm-12">
+                <label>Tipo de Art&iacute;culo</label>
+            </div>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(m => m.TART_CODIGO, new { @class = "form-control alert-warning", @maxlength = "2", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Tipos de Artículos', '/Articulo/TipoArticulo', 'nada2', 'm_middle')" })
+            </div>
+            <div class="col-sm-8">
+                <input id="descripcion_tipo_articulo" readonly class="form-control" />
+            </div>
+        </div>
+        <div class="col-sm-4 row">
+            <div class="col-sm-12">
+                <label>Color</label>
+            </div>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(m => m.COD_COLOR, new { @class = "form-control alert-warning", @maxlength = "20", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Colores', '/Utilitarios/Color', 'nada2', 'm_middle')" })
+            </div>
+            <div class="col-sm-8">
+                <input id="descripcion_Color" readonly class="form-control" />
+            </div>
+        </div>
+        <div class="col-sm-4 row">
+            <div class="col-sm-12">
+                <label>Familia</label>
+            </div>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(m => m.FAM_CODIGO, new { @class = "form-control alert-warning", @maxlength = "8", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Familias', '/Maestro/Familias', 'nada2', 'm_middle')" })
+            </div>
+            <div class="col-sm-8">
+                <input id="descripcion_Familia" readonly class="form-control" />
+            </div>
+        </div>
+        <div class="col-sm-4 row">
+            <div class="col-sm-12">
+                <label>Linea</label>
+            </div>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(m => m.LIN_CODIGO, new { @class = "form-control alert-warning", @maxlength = "8", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Linea', '/Maestro/Lineas', 'nada2', 'm_middle')" })
+            </div>
+            <div class="col-sm-8">
+                <input id="descripcion_Linea" readonly class="form-control" />
+            </div>
+        </div>
+        <div class="col-sm-4 row">
+            <div class="col-sm-12">
+                <label>Grupo</label>
+            </div>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(m => m.GRU_CODIGO, new { @class = "form-control alert-warning", @maxlength = "11", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Grupo', '/Maestro/Grupos', 'nada2', 'm_middle')" })
+            </div>
+            <div class="col-sm-8">
+                <input id="descripcion_Grupo" readonly class="form-control" />
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label>Arancel</label>
+            @Html.TextBoxFor(m => m.ARANCEL, new { @class = "form-control", @maxlength = "20", @onkeypress = "solo_alfanumericos(event)" })
+        </div>
+    </div>
+    <div class="row col-sm-12">
+        <label>Notas</label>
+        @Html.TextAreaFor(m => m.ACOMENTA, new { @class = "form-control", @maxlength = "255", onkeyup = "textCounter(this.id, 'n_limite', 255)", onkeypress = "solo_alfanumericos(event)" })
+        <label><b id="n_limite">255</b> caract&eacute;res restantes</label>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            @Html.CheckBoxFor(m => m.AFSTOCK)
+            <label>Afecta Stock</label>
+        </div>
+        <div class="col-sm-2">
+            <!--Html.CheckBoxFor(m => m.Estado)-->
+            <label>Stock por Lote</label>
+        </div>
+        <div class="col-sm-2">
+            @Html.CheckBoxFor(m => m.AFSERIE)
+            <label>Stock por Serie</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <!--Html.CheckBoxFor(m => m.Estado)-->
+            <label>Estado Activo</label>
+        </div>
+        <div class="col-sm-2">
+            @Html.CheckBoxFor(m => m.AFSERIE_MUL)
+            <label>Control de Serie</label>
+        </div>
+        <div class="col-sm-3">
+            @Html.CheckBoxFor(m => m.ARENTABLE)
+            <label>Afecto a Rentabilidad</label>
+        </div>
+    </div>
+</div>
+}
+<br />
+<div class="container-fluid">
+    <div class="col-sm-12">
+        <a onclick="ocultar_panel('Index', 'Articulo')" href="#" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <button class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </button>
+    </div>
+</div>
+<script>
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

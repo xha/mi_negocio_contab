@@ -1,0 +1,432 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="datos-tab" data-toggle="tab" href="#datos" role="tab" aria-controls="datos" aria-selected="true">
+            <i class='fa fa-file'></i>
+            Datos Generales
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="afecto-tab" data-toggle="tab" href="#afecto" role="tab" aria-controls="afecto" aria-selected="false">
+            <i class='fa fa-file'></i>
+            Afecto A
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="contabilidad-tab" data-toggle="tab" href="#contabilidad" role="tab" aria-controls="contabilidad" aria-selected="false">
+            <i class='fa fa-file'></i>
+            Contabildiad
+        </a>
+    </li>
+</ul>
+<br />
+<div class="tab-content" id="myTabContent">
+    <!-- INICIO datos -->
+    <div class="tab-pane fade show active" id="datos" role="tabpanel" aria-labelledby="datos-tab">
+        <div class="row">
+            <div class="col-sm-3">
+                <label>C&oacute;digo</label>
+                <input class="form-control" />
+            </div>
+            <div class="col-sm-6">
+                <label>Nombre</label>
+                <input class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <label>Tipo Concepto</label>
+                <select class="form-control">
+                    <option>Seleccione</option>
+                    <option>0:Informativo</option>
+                    <option>1:Ingreso</option>
+                    <option>2:Egreso</option>
+                    <option>3:Aportaci&oacute;n</option>
+                </select>
+            </div>
+        </div>
+        <div class="card mt-1">
+            <div class="card-header text-danger">Datos Generales</div>
+            <div class="row card-body">
+                <div class="col-sm-3 text-center">
+                    <input type="checkbox" id="si_formula" /><br />
+                    Valor ser&aacute; ingresado (Manualmente)
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-primary" onclick="AjaxModalGet('Funciones', '/PMaestra/Funciones', 'nada');"> 
+                        <i class="fa fa-question"></i><br />
+                        F&oacute;rmula
+                    </button>
+                </div>
+                <div class="col-sm-7">
+                    <textarea id="formulas" class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-sm-4">
+                <label>Considerar como</label>
+                <select class="form-control">
+                    <option>Tiempo computable en d&iacute;as trabajados</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label>Tipo de Remuneraci&oacute;n</label>
+                <select class="form-control">
+                    <option>Remuneraci&oacute;n fija</option>
+                </select>
+            </div>
+        </div>
+        <div class="card mt-1">
+            <div class="card-header text-danger">Posici&oacute;n de impresi&oacute;n</div>
+            <div class="row card-body">
+                <div class="col-sm-2">
+                    <label>Fila en la Boleta</label>
+                    <input class="form-control" value="0" />
+                </div>
+                <div class="col-sm-2 text-center">
+                    <input type="checkbox" /><br />
+                    Posici&oacute;n fija
+                </div>
+                <div class="col-sm-1">
+                    <button class="btn btn-secondary btn-lg">
+                        <i class="fa fa-question"></i>
+                    </button>
+                </div>
+                <div class="col-sm-7">
+                    <label>Columna de la planilla</label>
+                    <input class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-sm-3 text-center">
+                <input type="checkbox" /><br />
+                Permitir grabar valores <= 0
+            </div>
+            <div class="col-sm-3">
+                <label>Adicional</label>
+                <input class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <label>Tipo Jornada Lab. (PLAME)</label>
+                <select class="form-control">
+                    <option>Ninguno</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label>Tipo Suspenci&oacute;n Lab. (PLAME)</label>
+                <select class="form-control">
+                    <option>Ninguno</option>
+                </select>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <a href="#" onclick="ocultar_panel('PTCFMCIndex', 'Maestro')" class="btn btn-info">
+                    <i class='fa fa-arrow-left'></i>
+                    Regresar
+                </a>
+                <a href="#" class="btn btn-success">
+                    <i class='fa fa-save'></i>
+                    Guardar
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- FIN datos -->
+    <!-- INICIO afecto -->
+    <div class="tab-pane fade" id="afecto" role="tabpanel" aria-labelledby="afecto-tab">
+        <div class="row">
+            <div class="col-sm-12" style="border-bottom: 1px solid #c8c8c8">
+                <h5>Afectaciones de Ley</h5>
+            </div>            
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Remuneraci&oacute;n Asegurable a Pensi&oacute;n (ONP - AFP)
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Remuneraci&oacute;n de Aportaciones a EsSalud
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Remuneraci&oacute;n Afecta al SENATI
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Acumula P/Rem. Vacacional
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Remuneraci&oacute;n Afecta al S.C.T.R.
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Concepto de Gratificaci&oacute;n
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Remuneraci&oacute;n Afecta al SUBCIDIO
+                </label>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-sm-12" style="border-bottom: 1px solid #c8c8c8">
+                <h5>Afectaciones 5ta. Categor&iacute;a</h5>
+            </div>
+            <div class="col-sm-6">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Remuneraci&oacute;n afecta a Quinta Categor&iacute;a - Remuneraci&oacute; ordinaria
+                </label>
+            </div>
+            <div class="col-sm-6">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Remuneraci&oacute;n afecta a Quinta Categor&iacute;a - Remuneraci&oacute; Variable Proyectable
+                </label>
+            </div>
+            <div class="col-sm-6">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Remuneraci&oacute;n afecta a Quinta Categor&iacute;a - Remuneraci&oacute; Variable No Proyectable
+                </label>
+            </div>
+            <div class="col-sm-6">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Retener total de Quinta Categor&iacute;a
+                </label>
+            </div>
+            <div class="col-sm-6">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Promedio de Remuneraci&oacute; Variable Proyectable
+                </label>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-sm-12" style="border-bottom: 1px solid #c8c8c8">
+                <h5>Afectaciones Provisiones</h5>
+            </div>            
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Provisiones de C.T.S.
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Provisiones de Gratificaci&oacute;n
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Provisiones de Vacaciones
+                </label>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-sm-12" style="border-bottom: 1px solid #c8c8c8">
+                <h5>Otras Afectaciones</h5>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Variable auxiliar Total01
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Variable auxiliar Total02
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    Variable auxiliar Total03
+                </label>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <a href="#" onclick="ocultar_panel('PTCFMCIndex', 'Maestro')" class="btn btn-info">
+                    <i class='fa fa-arrow-left'></i>
+                    Regresar
+                </a>
+                <a href="#" class="btn btn-success">
+                    <i class='fa fa-save'></i>
+                    Guardar
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- FIN afecto -->
+    <!-- INICIO contabilidad -->
+    <div class="tab-pane fade" id="contabilidad" role="tabpanel" aria-labelledby="contabilidad-tab">
+        <div class="card mt-1">
+            <div class="card-header text-danger">Cuenta Debe</div>
+            <div class="card-body table-responsive">
+                <table class="table table-bordered table-striped" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th style="width: 10%">
+                                <label class="btn btn-primary btn-sm left" onclick="agregar_fila(0)">
+                                    <i class='fa fa-plus'></i>
+                                </label>
+                                <label class="right">Sec</label>
+                            </th>
+                            <th>Cuenta</th>
+                            <th>Tipo</th>
+                            <th style="width: 40%">Desc. de tipo de asiento</th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="ContabilidadDebe"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card mt-2">
+            <div class="card-header text-danger">Cuenta Haber</div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th style="width: 10%">
+                                <label class="btn btn-primary btn-sm left" onclick="agregar_fila(1)">
+                                    <i class='fa fa-plus'></i>
+                                </label>
+                                <label class="right">Sec</label>
+                            </th>
+                            <th>Cuenta</th>
+                            <th>Tipo</th>
+                            <th style="width: 40%">Desc. de tipo de asiento</th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="ContabilidadHaber"></tbody>
+                </table>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <a href="#" onclick="ocultar_panel('PTCFMCIndex', 'Maestro')" class="btn btn-info">
+                    <i class='fa fa-arrow-left'></i>
+                    Regresar
+                </a>
+                <a href="#" class="btn btn-success">
+                    <i class='fa fa-save'></i>
+                    Guardar
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- FIN contabilidad -->
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $('#si_formula').on('ifChecked', function (event) {
+        $("#formulas").val("");
+        $("#formulas")[0].readOnly = true;
+    });
+
+    $('#si_formula').on('ifUnchecked', function (event) {
+        $("#formulas")[0].readOnly = false;
+    });
+
+    var control = 0;
+    function agregar_fila(valor) {
+        if (valor==0) {
+            var tabla = $('#ContabilidadDebe')[0];
+        } else {
+            var tabla = $('#ContabilidadHaber')[0];
+        }        
+        var tr = document.createElement('tr');
+        var td = new Array();
+        var input = new Array();
+        control++;
+        var y = control;
+
+        var tr = document.createElement('tr');
+        tr.id = "fila_"+valor+"_" + y;
+        tr.align = 'center';
+        tr.className = 'text-center';
+
+        td[0] = document.createElement("td");
+        input[0] = document.createElement('input');
+        input[0].id = 'codigo_' + valor + "_" + y;
+        input[0].maxLength = '20';
+        input[0].className = 'form-control';
+        td[0].appendChild(input[0]);
+
+        td[1] = document.createElement("td");
+        input[1] = document.createElement('input');
+        input[1].id = 'descripcion_' + y;
+        input[1].className = 'form-control';
+        td[1].appendChild(input[1]);
+
+        td[2] = document.createElement("td");
+        input[2] = document.createElement('input');
+        input[2].id = 'cuenta_' + valor + "_" + y;
+        input[2].className = 'form-control alert-warning';
+        eval("input[2].onkeypress = function(){solo_enteros(event);}");
+        eval("input[2].ondblclick = function(){AjaxModalGet('Selección de Referencia', '/PMaestra/Referencias', 'nada');}");
+        td[2].appendChild(input[2]);
+
+        td[3] = document.createElement("td");
+        input[3] = document.createElement('input');
+        input[3].id = 'tipo_' + valor + "_" + y;
+        input[3].className = 'form-control';
+        td[3].appendChild(input[3]);
+
+        td[4] = document.createElement("td");
+        var icono = document.createElement('i');
+        var a = document.createElement('label');
+        a.className = "btn btn-danger btn-sm";
+        eval("a.onclick = function(){eliminar_fila(" + y + ","+valor+");}");
+        icono.className = "fa fa-times";
+        icono.style.cursor = 'pointer';
+        icono.title = "Eliminar Fila";
+        a.appendChild(icono);
+        td[4].appendChild(a);
+
+        for (var z = 0; z < td.length; z++) {
+            tr.appendChild(td[z]);
+        }
+        tabla.appendChild(tr);
+    }
+
+    function eliminar_fila(i,valor) {
+        $("#fila_" + valor + "_" + i).remove();
+    }
+</script>

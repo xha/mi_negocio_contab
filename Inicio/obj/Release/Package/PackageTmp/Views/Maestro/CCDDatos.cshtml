@@ -1,0 +1,61 @@
+﻿@model Datos.Models.MaestroModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    @Html.HiddenFor(m => m.Codigo)
+    <div class="row">
+        <div class="col-sm-5">
+            <label>Tipo Doc.</label>
+            <div class="row">
+                <div class="col-sm-4">
+                    <input type="text" class="form-control alert-warning" maxlength="3" onkeypress="solo_alfanumericos(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Tipo de Documento', '/Utilitarios/TipoDocumento','nada2','m_middle')" />
+                </div>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" readonly />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label>Serie Doc</label>
+            <input class="form-control" maxlength="10" onkeypress="solo_alfanumericos(event)" />
+        </div>
+        <div class="col-sm-3">
+            <label>Nro. Inicio</label>
+            <input class="form-control" maxlength="10" onkeypress="solo_enteros(event)" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Nro. Fin</label>
+            <input class="form-control" maxlength="10" onkeypress="solo_enteros(event)" />
+        </div>
+        <div class="col-sm-3">
+            <label>Ult. Nro. Correl.</label>
+            <input class="form-control" maxlength="10" onkeypress="solo_enteros(event)" />
+        </div>
+        <div class="col-sm-3">
+            <label>Lineas Imp.</label>
+            <input class="form-control" maxlength="10" onkeypress="solo_enteros(event)" />
+        </div>
+        <div class="col-sm-3">
+            <label>Formato Imp.</label>
+            <select class="form-control">
+                <option>Formato A</option>
+                <option>Formato B</option>
+            </select>
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('CCDIndex', 'Maestro')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>

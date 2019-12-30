@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Mantenimiento de Datos Informativos";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item active">Base de Datos</li>
+                    <li class="breadcrumbs-item active">Tablas de Conceptos y F&oacute;rmulas</li>
+                    <li class="breadcrumbs-item active">Conceptos</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("PTCMDIIndex", "Maestro")'>@ViewBag.Title</a></li>
+                    <li class="breadcrumbs-item active">Nuevo</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Nuevo  Registro</label></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Maestro - @ViewBag.Title - Crear / Editar', '/Maestro/Ayuda', 'PTCMDIDatos', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    @Html.Partial("PTCMDIDatos")
+</div>
+

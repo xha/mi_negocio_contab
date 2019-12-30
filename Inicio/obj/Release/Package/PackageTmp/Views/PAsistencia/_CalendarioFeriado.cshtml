@@ -1,0 +1,151 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="calendar"></div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_middle').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Guardar
+            </a>
+            <a href="#" class="btn btn-danger" onclick="$('.calendar').calendar('clearTextFromAll');">
+                <i class='fa fa-trash'></i>
+                Limpiar
+            </a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        var currentYear = new Date().getFullYear();
+
+        $('.calendar').calendar({
+            language: 'es',
+            style: 'custom',
+            enableContextMenu: true,
+            enableRangeSelection: true,
+            selectRange: function (e) {
+                editEvent(e);
+            },
+            dataSource: [
+                {
+                    id: new Date(currentYear, 4, 28).getTime(),
+                    startDate: new Date(currentYear, 4, 28),
+                    endDate: new Date(currentYear, 4, 28)
+                },
+                {
+                    id: new Date(currentYear, 2, 16).getTime(),
+                    startDate: new Date(currentYear, 2, 16),
+                    endDate: new Date(currentYear, 2, 16)
+                }
+            ],
+            customDataSourceRenderer: function (element, date, event) {
+                // This will override the background-color to the event's color
+                $(element).css('background-color', '#8B0000');
+                $(element).css('color', '#FFF');
+                $(element).css('border-radius', '15px');
+            },
+        });
+    });
+    function editEvent(event) {
+        var bandera = true;
+        
+        var eve = {
+            id: event.startDate.getTime(),
+            startDate: event.startDate,
+            endDate: event.endDate,
+        }
+        
+        var dataSource = $('.calendar').data('calendar').getDataSource();
+
+        for (var i in dataSource) {
+            if (dataSource[i].id == eve.id) {
+                dataSource.splice(i, 1);
+                bandera = false;
+                break;
+            }
+        }
+
+        if (bandera) {
+            dataSource.push(eve);
+        }
+
+        $('.calendar').data('calendar').setDataSource(dataSource);
+    }
+    
+    /*var currentYear = new Date().getFullYear();
+    $('.calendar').calendar({
+        showHeaders: true,
+        startYear: currentYear,
+        l10n: {
+            jan: "Enero",
+            feb: "Febrero",
+            mar: "Marzo",
+            apr: "Abril",
+            may: "Mayo",
+            jun: "Junio",
+            jul: "Julio",
+            aug: "Agosto",
+            sep: "Septiembre",
+            oct: "Octubre",
+            nov: "Noviembre",
+            dec: "Dicembre",
+            mn: "Lu",
+            tu: "Ma",
+            we: 'Mi',
+            th: 'Ju',
+            fr: 'Vi',
+            sa: 'Sa',
+            su: 'Do'
+        },
+        style: 'custom',
+        enableContextMenu: true,
+        customDayRenderer: function (element, date) {
+            console.log(element);
+            if (date.getDay() === 6 || date.getDay() === 0) {
+                $(element).css('background-color', '#e4edec');
+                $(element).css('border-radius', '15px');
+            }
+        },
+        customDataSourceRenderer: function (element, date, event) {
+            console.log(date);
+            // This will override the background-color to the event's color
+            $(element).css('background-color', 'red');
+            $(element).css('border-radius', '15px');
+        },
+    });*/
+
+    /*var currentYear = new Date().getFullYear();
+
+    var redDateTime = new Date(currentYear, 2, 13).getTime();
+    var circleDateTime = new Date(currentYear, 1, 20).getTime();
+    var borderDateTime = new Date(currentYear, 0, 12).getTime();
+
+    $('.calendar').calendar({
+        customDayRenderer: function (element, date) {
+            if (date.getTime() == redDateTime) {
+                $(element).css('font-weight', 'bold');
+                $(element).css('font-size', '15px');
+                $(element).css('color', 'green');
+            }
+            else if (date.getTime() == circleDateTime) {
+                $(element).css('background-color', 'red');
+                $(element).css('color', 'white');
+                $(element).css('border-radius', '15px');
+            }
+            else if (date.getTime() == borderDateTime) {
+                $(element).css('border', '2px solid blue');
+            }
+        }
+    });*
+    $('.calendar').on('jqyc.dayChoose', function (event) {
+        
+    });*/
+
+</script>

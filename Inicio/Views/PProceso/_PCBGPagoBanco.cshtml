@@ -1,0 +1,164 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "Fórmulas de Gratificaciones";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid ">
+
+    <hr />
+    <div class="row col-sm-12">
+        <button class="btn btn-success" onclick="$('#abrete')[0].style.display='flex'">
+            <i class='fa fa-plus'></i>
+            Agregar
+        </button>
+    </div>
+    <div class="card shadow  animated bounce mt-2" s id="abrete" style="display: none">
+        <div class="card-header font-weight-bold">
+            @ViewBag.Title
+            <button type="button" class="close" onclick="$('#abrete')[0].style.display='none'" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="card-body">
+
+
+            <div class="row">
+                <div class="col-md-5 col-sm-12">
+                    <label>Nombre de Rem. Computable</label>
+                    <input class="form-control alert-warning" ondblclick="AjaxModalGet('Referencias', '/PMaestra/Referencias', '', 'm_middle')" />
+                </div>
+                <div class="col-md-3 col-sm-12">
+                    <label>F&oacute;rmula de Acci&oacute;n</label>
+                    <input class="form-control" />
+                </div>
+
+                <div class="col-md-4 col-sm-12">
+                    <label>Tipo de C&aacute;lculo</label>
+                    <select class="form-control">
+                        <option>Como Remuneraci&oacute;n Fija</option>
+                        <option>Como Remuneraci&oacute;n Fija</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="row justify-content-between m-2 clearfix">
+
+                <div class="col-6">
+
+                    <label class="text-center">
+
+                        C&aacute;lculo con Remuneraciones Imprecisas <br />
+                        <input type="checkbox" />
+
+                    </label>
+                </div>
+                
+                <div class="col-4">
+
+                    <label class="text-center">
+
+                        Orden <br />
+                        <input  class="form-control" placeholder="0" />
+
+                    </label>
+                </div>
+            </div>
+
+            <div class="row m-2 justify-content-around clearfix">
+
+                <div class="col-sm-2 text-center">
+
+                    <label class="text-center">
+
+                       Activo <br />
+                        <input type="checkbox" />
+
+                    </label>
+                </div>
+                <div class="col-sm-2 text-center">
+
+                    <label class="text-center">
+
+                        General  <br />
+                        <input type="checkbox" />
+
+                    </label>
+                </div>
+                <div class="col-sm-2 text-center">
+
+                    <label class="text-center">
+
+                      Provisiones <br />
+                        <input type="checkbox" />
+
+                    </label>
+                </div>
+        
+            
+            
+            
+                </div>
+
+
+
+            <div class="form-group row mt-1 text-right">
+                <div class="col-sm-12">
+                    <a href="#" class="btn btn-success">
+                        <i class='fa fa-save'></i>
+                        Aceptar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+    <div class="card shadow mt-2">
+        <div class="card-header font-weight-bold">
+            @ViewBag.Title
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Remuneraciones Computables</th>
+                            <th>Formula de Acci&oacute;n</th>
+                            <th>Tipo</th>
+                            <th>Criterio</th>
+
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <th>Remuneraciones Computables</th>
+                            <th>Formula de Acci&oacute;n</th>
+                            <th>Tipo</th>
+                            <th>Criterio</th>
+                            <th style="width: 5px">
+
+                                <button class="btn btn-info grid_opt" title="Editar" onclick="$('#abrete')[0].style.display='flex'">
+                                    <i class='fa fa-edit'></i>
+
+                                </button>
+
+                            </th>
+                            <th style="width: 5px"> <button class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota('' + row.CODIGO + '/')"><i class="fa fa-trash"></i></button></th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+

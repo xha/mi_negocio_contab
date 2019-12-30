@@ -1,0 +1,55 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-5">
+            <label>C&oacute;digo</label>
+            <div class="row">
+                <div class="col-sm-5">
+                    <input type="text" class="form-control alert-warning" title="Doble Click para buscar" ondblclick="AjaxModalGet('Artículos', '/Articulo/Articulos', 'nada2', 'm_middle')" />
+                </div>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" readonly />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label>Cantidad</label>
+            <input type="text" class="form-control" />
+        </div>
+        <div class="col-sm-3">
+            <label>Unidad del Art.</label>
+            <input type="text" class="form-control" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <label>Stock</label>
+            <input type="text" class="form-control" />
+        </div>
+        <div class="col-sm-4">
+            <label>Precio sin IGV</label>
+            <input type="text" class="form-control" />
+        </div>
+        <div class="col-sm-4">
+            <label>V. Venta Total</label>
+            <input type="text" class="form-control" />
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <button class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Aceptar
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    function nada2(codigo, descripcion) {
+        $('#m_middle').modal('hide');
+    }
+</script>

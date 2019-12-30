@@ -1,0 +1,317 @@
+﻿@model Datos.Models.UtilitariosModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    @Html.HiddenFor(m => m.Codigo)
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="datos-tab" data-toggle="tab" href="#datos" role="tab" aria-controls="datos" aria-selected="true">
+                <i class='fa fa-file'></i>
+                Datos Generales
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="adicional-tab" data-toggle="tab" href="#adicional" role="tab" aria-controls="adicional" aria-selected="false">
+                <i class='fa fa-cogs'></i>
+                Par&aacute;metros
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="filtro-tab" data-toggle="tab" href="#filtro" role="tab" aria-controls="filtro" aria-selected="false">
+                <i class='fa fa-filter'></i>
+                Filtros
+            </a>
+        </li>
+    </ul>
+    <br />
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="datos" role="tabpanel" aria-labelledby="datos-tab">
+            <div class="row">
+                <div class="col-sm-2">
+                    <label>C&oacute;digo</label>
+                    @Html.TextBoxFor(m => m.Codigo, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_alfanumericos(event)" })
+                </div>
+                <div class="col-sm-2">
+                    <label>R.U.C.</label>
+                    @Html.TextBoxFor(m => m.RUCEmpresa, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_enteros(event)" })
+                </div>
+                <div class="col-sm-4">
+                    <label>Raz&oacute;n Social</label>
+                    @Html.TextBoxFor(m => m.DescripcionComercial, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+                </div>
+                <div class="col-sm-2">
+                    <label>Tel&eacute;fono</label>
+                    @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_alfanumericos(event)" })
+                </div>
+                <div class="col-sm-2">
+                    <label>Fax</label>
+                    @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_alfanumericos(event)" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label>Direcci&oacute;n</label>
+                    @Html.TextBoxFor(m => m.DireccionEmpresa, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+                </div>
+                <div class="col-sm-6">
+                    <label>Representante</label>
+                    @Html.TextBoxFor(m => m.Representante, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>Pantalla</label>
+                    @Html.TextBoxFor(m => m.Representante, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+                </div>
+                <div class="col-sm-4">
+                    <label>Doc</label>
+                    @Html.TextBoxFor(m => m.Representante, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_alfanumericos(event)" })
+                </div>
+                <div class="col-sm-4">
+                    <label>Reporte</label>
+                    @Html.TextBoxFor(m => m.Representante, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="adicional" role="tabpanel" aria-labelledby="adicional-tab">
+            <div class="row p-1">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header text-danger font-weight-bold">Par&aacute;metros</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label>Moneda por omisi&oacute;n</label>
+                                    @Html.DropDownListFor(m => m.Moneda, new List<SelectListItem>
+                                    {
+                                        new SelectListItem{ Text="Moneda Nacional", Value = "MN" },
+                                        new SelectListItem{ Text="Moneda Extranjera", Value = "ME" },
+                                    }, new { @class = "form-control" })
+                                </div>
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Imprimir por pantalla
+                                </div>
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Preg. Impresi&oacute;n
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Numeraci&oacute;n Autom&aacute;tica
+                                </div>
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Factura con Gu&iacute;a
+                                </div>
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Permitir stock negativo
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Montos negativos
+                                </div>
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Cantidades autom&aacute;ticas en puntos de venta
+                                </div>
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    C&oacute;digo de art&iacute;culos a 13 d&iacute;gitos
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Factura con Orden de T.
+                                </div>
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Verificar L&iacute;mite de Cr&eacute;dito
+                                </div>
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Utilizar Tickera
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <br />
+                                    <div class="row col-sm-12 border rounded">
+                                        <input type="checkbox" />&nbsp;
+                                        Impresi&oacute;n agrupada
+                                        <br />
+                                        <select class="form-control col-sm-10">
+                                            <option>Familia</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Impresi&oacute;n de tickets por pantalla
+                                </div>
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Permitir mod. doc. vta.
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Redondeo en canc. m&uacute;ltiple bancaria
+                                </div>
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Aprobaci&oacute;n autom&aacute; de la Orden de Importaci&oacute;n
+                                </div>
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Envio por defecto de Cobranzas/Pagos a Caja
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Habilitar PCGE - Plan Contable General Emp.
+                                </div>
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Uso de caja por punto de venta
+                                </div>
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Habilitar gen. archivos (.txt)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row p-1">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header text-danger font-weight-bold">Par&aacute;metros Adicionales</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Bloqueo mantenimiento en transacciones
+                                </div>
+                                <div class="col-sm-8">
+                                    <br />
+                                    <input type="checkbox" />&nbsp;
+                                    Habilitar autom&aacute;ticamente envio a caja para cuentas por pagar y cuentas por cobrar
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row p-1">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header font-weight-bold">C&oacute;digo de Barra</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <a href="#" class="btn btn-secondary" maxlength="11" onkeypress="solo_enteros(event)" onclick="AjaxModalGet('Prefijo', '/Utilitarios/Prefijo','nada2','m_middle')">
+                                        <i class='fa fa-plus'></i>
+                                        Prefijos de art&iacute;culos pesables
+                                    </a>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>Identificar en c&oacute;digo de barras</label>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <input type="checkbox" />&nbsp;
+                                            Peso del producto
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="checkbox" />&nbsp;
+                                            Peso Total
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label>Nro. decimal codigo de barra</label>
+                                    <input class="form-control" />
+                                </div>
+                                <div class="col-sm-2">
+                                    <label>Redondeo precio total</label>
+                                    <input class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="filtro" role="tabpanel" aria-labelledby="filtro-tab">
+            <div class="row p-1">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header text-danger font-weight-bold">Filtros en las busquedas</div>
+                        <div class="card-body">
+                            <div class="row col-sm-12">
+                                <h5>Esta configuraci&oacute;n es para que cada ventana de ayuda de Art&iacute;culos, Clientes o Proveedores por defecto
+                                se realice la busqueda por el dato seleccionado</h5>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label>Art&iacute;culos</label>
+                                    <select class="form-control">
+                                        <option>C&oacute;digo</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>Clientes, Proveedores</label>
+                                    <select class="form-control">
+                                        <option>C&oacute;digo</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<br />
+<div class="row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('AEIndex', 'Utilitarios')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <button class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </button>
+    </div>
+</div>

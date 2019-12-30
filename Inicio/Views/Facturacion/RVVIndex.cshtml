@@ -1,0 +1,543 @@
+@model Datos.Models.FacturacionModel
+@{
+    ViewBag.Title = "Ventas por Vendedores";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Facturacion", "Index", "Facturacion")</li>
+                    <li class="breadcrumbs-item">Reportes</li>
+                    <li class="breadcrumbs-item">Informes Diarios</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Facturacion/Ayuda', 'RVVIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Par&aacute;metros</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Desde</label><br />
+                                <input class="form-control datepickers" readonly />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Hasta</label><br />
+                                <input class="form-control datepickers" readonly />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label>Moneda</label><br />
+                                <select class="form-control">
+                                    <option>Moneda Nacional</option>
+                                    <option>Moneda Extranjera</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Vendedores</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>De</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control alert-warning" maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Vendedores', '/Vendedor/Vendedores', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                        &nbsp;
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>A</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control alert-warning" maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Vendedores', '/Vendedor/Vendedores', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Filtro</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <input type="radio" id="f_articulos" name="i_filtro" />
+                            </div>
+                            <div class="col-sm-10">
+                                <label>Art&iacute;culo</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <input type="radio" id="f_grupos" name="i_filtro" />
+                            </div>
+                            <div class="col-sm-10">
+                                <label>Grupo</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <input type="radio" id="f_lineas" name="i_filtro" />
+                            </div>
+                            <div class="col-sm-10">
+                                <label>L&iacute;nea</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <input type="radio" id="f_familias" name="i_filtro" />
+                            </div>
+                            <div class="col-sm-10">
+                                <label>Familia</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <input type="radio" id="f_documentos" name="i_filtro" />
+                            </div>
+                            <div class="col-sm-10">
+                                <label>Documento</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <input type="radio" id="f_clientes" name="i_filtro" />
+                            </div>
+                            <div class="col-sm-10">
+                                <label>Clientes</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3" style="display: none" id="d_articulos1">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Art&iacute;culos</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="radio" name="i_articulo" id="i_todos" />&nbsp;
+                                <label>Todos</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="radio" name="i_articulo" id="i_rango" />&nbsp;
+                                <label>Rango</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>De</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" disabled id="i_desde" maxlength="11" onkeypress="solo_enteros(event)" class="form-control alert-warning" title="Doble Click para buscar" ondblclick="AjaxModalGet('Artículos', '/Articulo/Articulos', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                        &nbsp;
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>A</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" disabled id="i_hasta" maxlength="11" onkeypress="solo_enteros(event)" class="form-control alert-warning" title="Doble Click para buscar" ondblclick="AjaxModalGet('Artículos', '/Articulo/Articulos', 'nada2','m_middle')" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3" style="display: none" id="d_grupo1">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Grupos</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label>Familia</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control alert-warning" maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Familias', '/Maestro/Familias', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                        &nbsp;
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label>Linea</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control alert-warning" maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Lineas', '/Maestro/Lineas', 'nada2','m_middle')" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="radio" name="i_grupos" id="g_todos" />&nbsp;
+                                <label>Todos</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="radio" name="i_grupos" id="g_rango" />&nbsp;
+                                <label>Rango</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>De</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" disabled id="g_desde" maxlength="11" onkeypress="solo_enteros(event)" class="form-control alert-warning" title="Doble Click para buscar" ondblclick="AjaxModalGet('Grupos', '/Maestro/Grupos', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                        &nbsp;
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>A</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" disabled id="g_hasta" maxlength="11" onkeypress="solo_enteros(event)" class="form-control alert-warning" title="Doble Click para buscar" ondblclick="AjaxModalGet('Grupos', '/Maestro/Grupos', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3" style="display: none" id="d_linea1">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Lineas</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label>Familia</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control alert-warning" maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Familias', '/Maestro/Familias', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                        &nbsp;
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="radio" name="i_lineas" id="l_todos" />&nbsp;
+                                <label>Todos</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="radio" name="i_lineas" id="l_rango" />&nbsp;
+                                <label>Rango</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>De</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" disabled id="l_desde" maxlength="11" onkeypress="solo_enteros(event)" class="form-control alert-warning" title="Doble Click para buscar" ondblclick="AjaxModalGet('Lineas', '/Maestro/Lineas', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                        &nbsp;
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>A</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" disabled id="l_hasta" maxlength="11" onkeypress="solo_enteros(event)" class="form-control alert-warning" title="Doble Click para buscar" ondblclick="AjaxModalGet('Lineas', '/Maestro/Lineas', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3" style="display: none" id="d_familia1">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Familia</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="radio" name="i_familias" id="f_todos" />&nbsp;
+                                <label>Todos</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="radio" name="i_familias" id="f_rango" />&nbsp;
+                                <label>Rango</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>De</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" disabled id="f_desde" maxlength="11" onkeypress="solo_enteros(event)" class="form-control alert-warning" title="Doble Click para buscar" ondblclick="AjaxModalGet('Familias', '/Maestro/Familias', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                        &nbsp;
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>A</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" disabled id="f_hasta" maxlength="11" onkeypress="solo_enteros(event)" class="form-control alert-warning" title="Doble Click para buscar" ondblclick="AjaxModalGet('Familias', '/Maestro/Familias', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3" style="display: none" id="d_cliente1">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Clientes</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="radio" name="i_clientes" id="c_todos" />&nbsp;
+                                <label>Todos</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="radio" name="i_clientes" id="c_rango" />&nbsp;
+                                <label>Rango</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>De</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" disabled id="c_desde" maxlength="11" onkeypress="solo_enteros(event)" class="form-control alert-warning" title="Doble Click para buscar" ondblclick="AjaxModalGet('Clientes', '/Cliente/Clientes', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                        &nbsp;
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>A</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" disabled id="c_hasta" maxlength="11" onkeypress="solo_enteros(event)" class="form-control alert-warning" title="Doble Click para buscar" ondblclick="AjaxModalGet('Clientes', '/Cliente/Clientes', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <hr />
+    <div class="col-sm-12">
+        <a href="#" class="btn btn-primary">
+            <i class='fa fa-print'></i>
+            Imprimir
+        </a>
+    </div>
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(function () {
+        $("#i_todos")[0].checked = true;
+        $("#g_todos")[0].checked = true;
+        $("#f_todos")[0].checked = true;
+        $("#l_todos")[0].checked = true;
+        $("#c_todos")[0].checked = true;
+        $("#f_articulos")[0].checked = true;
+        activa_div_articulos(0);
+    });
+    /****************************************************************************************************/
+    //$('#opt').on('ifChanged', function (event) { $(event.target).trigger('change'); });
+    $('#i_todos').on('ifChecked', function () {
+        activa_articulos(0);
+    })
+
+    $('#i_rango').on('ifChecked', function () {
+        activa_articulos(1);
+    })
+
+    function activa_articulos(valor) {
+        var desde = $("#i_desde")[0];
+        var hasta = $("#i_hasta")[0];
+
+        if (valor == 1) {
+            desde.disabled = false;
+            hasta.disabled = false;
+        } else {
+            desde.disabled = true;
+            hasta.disabled = true;
+        }
+    }
+    /****************************************************************************************************/
+    $('#f_articulos').on('ifChecked', function () {
+        activa_div_articulos(0);
+    })
+
+    $('#f_grupos').on('ifChecked', function () {
+        activa_div_articulos(1);
+    })
+
+    $('#f_familias').on('ifChecked', function () {
+        activa_div_articulos(2);
+    })
+
+    $('#f_lineas').on('ifChecked', function () {
+        activa_div_articulos(3);
+    })
+
+    $('#f_documentos').on('ifChecked', function () {
+        activa_div_articulos(4);
+    })
+
+    $('#f_clientes').on('ifChecked', function () {
+        activa_div_articulos(5);
+    })
+    /****************************************************************************************************/
+    $('#g_todos').on('ifChecked', function () {
+        activa_grupos(0);
+    })
+    $('#g_rango').on('ifChecked', function () {
+        activa_grupos(1);
+    })
+
+    function activa_grupos(valor) {
+        var desde = $("#g_desde")[0];
+        var hasta = $("#g_hasta")[0];
+
+        if (valor == 1) {
+            desde.disabled = false;
+            hasta.disabled = false;
+        } else {
+            desde.disabled = true;
+            hasta.disabled = true;
+        }
+    }
+    /****************************************************************************************************/
+    $('#c_todos').on('ifChecked', function () {
+        activa_clientes(0);
+    })
+
+    $('#c_rango').on('ifChecked', function () {
+        activa_clientes(1);
+    })
+
+    function activa_clientes(valor) {
+        var desde = $("#c_desde")[0];
+        var hasta = $("#c_hasta")[0];
+
+        if (valor == 1) {
+            desde.disabled = false;
+            hasta.disabled = false;
+        } else {
+            desde.disabled = true;
+            hasta.disabled = true;
+        }
+    }
+    /****************************************************************************************************/
+    $('#f_todos').on('ifChecked', function () {
+        activa_familias(0);
+    })
+
+    $('#f_rango').on('ifChecked', function () {
+        activa_familias(1);
+    })
+
+    function activa_familias(valor) {
+        var desde = $("#f_desde")[0];
+        var hasta = $("#f_hasta")[0];
+
+        if (valor == 1) {
+            desde.disabled = false;
+            hasta.disabled = false;
+        } else {
+            desde.disabled = true;
+            hasta.disabled = true;
+        }
+    }
+    /****************************************************************************************************/
+    $('#l_todos').on('ifChecked', function () {
+        activa_lineas(0);
+    })
+
+    $('#l_rango').on('ifChecked', function () {
+        activa_lineas(1);
+    })
+
+    function activa_lineas(valor) {
+        var desde = $("#l_desde")[0];
+        var hasta = $("#l_hasta")[0];
+
+        if (valor == 1) {
+            desde.disabled = false;
+            hasta.disabled = false;
+        } else {
+            desde.disabled = true;
+            hasta.disabled = true;
+        }
+    }
+    /****************************************************************************************************/
+    function activa_div_articulos(valor) {
+        switch(valor) {
+            case 0:
+                $("#d_articulos1")[0].style.display = "block";
+                $("#d_cliente1")[0].style.display = "none";
+                $("#d_grupo1")[0].style.display = "none";
+                $("#d_familia1")[0].style.display = "none";
+                $("#d_linea1")[0].style.display = "none";
+                break;
+            case 1:
+                $("#d_articulos1")[0].style.display = "none";
+                $("#d_cliente1")[0].style.display = "none";
+                $("#d_grupo1")[0].style.display = "block";
+                $("#d_familia1")[0].style.display = "none";
+                $("#d_linea1")[0].style.display = "none";
+                break;
+            case 2:
+                $("#d_articulos1")[0].style.display = "none";
+                $("#d_cliente1")[0].style.display = "none";
+                $("#d_grupo1")[0].style.display = "none";
+                $("#d_familia1")[0].style.display = "block";
+                $("#d_linea1")[0].style.display = "none";
+                break;
+            case 3:
+                $("#d_articulos1")[0].style.display = "none";
+                $("#d_cliente1")[0].style.display = "none";
+                $("#d_grupo1")[0].style.display = "none";
+                $("#d_familia1")[0].style.display = "none";
+                $("#d_linea1")[0].style.display = "block";
+                break;
+            case 4:
+                $("#d_articulos1")[0].style.display = "none";
+                $("#d_cliente1")[0].style.display = "none";
+                $("#d_grupo1")[0].style.display = "none";
+                $("#d_familia1")[0].style.display = "none";
+                $("#d_linea1")[0].style.display = "none";
+                break;
+            case 5:
+                $("#d_articulos1")[0].style.display = "none";
+                $("#d_cliente1")[0].style.display = "block";
+                $("#d_grupo1")[0].style.display = "none";
+                $("#d_familia1")[0].style.display = "none";
+                $("#d_linea1")[0].style.display = "none";
+                break;
+        }
+    }
+</script>

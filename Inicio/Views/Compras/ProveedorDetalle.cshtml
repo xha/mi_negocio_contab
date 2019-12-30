@@ -1,0 +1,213 @@
+﻿@model Datos.Models.ComprasModel
+
+@{
+    ViewBag.Title = "Consulta de Compras por Proveedor";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Compras", "Index", "Compras")</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("ProveedorIndex", "Compras")'>@ViewBag.Title</a></li>
+                    <li class="breadcrumbs-item active">Detalle</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Detalle Registro</label> #<strong>@Model.Codigo</strong></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Compras/Ayuda', 'ProveedorDetalle', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label>Fecha Desde</label><br />
+                    <input class="form-control datepickers" readonly />
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <label>Fecha Hasta</label><br />
+                <input class="form-control datepickers" readonly />
+            </div>
+            <div class="col-sm-2">
+                <br />
+                <a href="#" class="btn btn-primary">
+                    <i class='fa fa-search'></i>
+                    Buscar
+                </a>
+            </div>
+        </div>
+    }
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="CProveedorDetalleGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Fecha Emitido</th>
+                            <th>Mon</th>
+                            <th>Precio Bruto</th>
+                            <th>Descuento</th>
+                            <th>Precio Venta</th>
+                            <th>Importe IGV</th>
+                            <th>Valor Venta</th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold">Recibo por Honorarios</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="Demogrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Fecha Emitido</th>
+                            <th>Mon</th>
+                            <th>T. Honorario</th>
+                            <th>IR</th>
+                            <th>IES</th>
+                            <th>Neto</th>
+                            <th>Fecha Pago</th>
+                            <th>Fecha Venc.</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick='ocultar_panel("ProveedorIndex", "Compras")' class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#CProveedorDetalleGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Compras/GridPrincipal",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [9],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                { data: "Documento" },
+                { data: "Glosa" },
+                { data: "FechaEmision" },
+                { data: "Moneda" },
+                { data: "ImporteBruto" },
+                { data: "Descuento" },
+                { data: "PrecioVenta" },
+                { data: "ImporteIGV" },
+                { data: "ValorVenta" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-light grid_opt" href="#" onclick="AjaxModalGet2(\'Detalles de Compra del Documento\', \'/Compras/Proveedor\');"><i class="fa fa-search"></i></a>';
+                    }
+                },
+
+            ]
+        });
+    });
+
+    function AjaxModalGet2(titulo, ruta) {
+        var bandera = true;
+        var param = "";
+
+        if (titulo == '') bandera = false;
+        $('#m_central').modal('show');
+        $.ajax({
+            type: 'GET',
+            url: ruta,
+            data: param,
+            cache: false,
+            beforeSend: AjaxWait,
+            success: AjaxSucceeded,
+            error: AjaxFailed
+        });
+        function AjaxWait() {
+            $('#x_cuerpo').html("<img class='w-100' src='@Url.Content("/Content/images/loading1.gif")' />");
+        }
+        function AjaxSucceeded(result) {
+            if (bandera) {
+                $('#x_titulo').html(titulo);
+            }
+            $("#x_cuerpo").html(result);
+            busca_detalle();
+        }
+        function AjaxFailed(result) {
+            $('#x_titulo').html("Error");
+            $('#x_cuerpo').html("Error al Cargar la Solicitud");
+        }
+    }
+
+    function busca_detalle() {
+        $("#DetalleGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Compras/GridProductos",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CodigoProducto" },
+                { data: "DescripcionProducto" },
+                { data: "Lote" },
+                { data: "Cantidad" },
+                { data: "CodigoUnidad" },
+                { data: "Precio" },
+                { data: "Bruto" },
+                { data: "Descuento" },
+                { data: "TotalVta" },
+                { data: "IGV" },
+                { data: "ValorVta" },
+                { data: "DescuentoDetalle" },
+            ]
+        });
+    }
+</script>

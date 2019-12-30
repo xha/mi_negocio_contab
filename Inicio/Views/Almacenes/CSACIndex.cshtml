@@ -1,0 +1,137 @@
+@model Datos.Models.AlmacenesModel
+
+@{
+    ViewBag.Title = "";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Almacenes", "Index", "Almacenes")</li>
+                    <li class="breadcrumbs-item">Consultas</li>
+                    <li class="breadcrumbs-item active">Stock de Art&iacute;culos C/S Costos</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>Stock de Art&iacute;culos C/S Costos</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Stock de Articulos C/S Costos - Inicio', '/Almacenes/Ayuda', 'CSACIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-3">
+                <label>Costo</label><br />
+                <select class="form-control">
+                    <option>Con Costo</option>
+                    <option>Sin Costo</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label>Almac&eacute;n</label><br />
+                <select class="form-control">
+                    <option>Seleccione</option>
+                    <option>01 - Almac&eacute;n Principal</option>
+                    <option>02 - Almac&eacute;n Secundario</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label>Descripci&oacute;n</label><br />
+                <input type="text" class="form-control" onkeypress="solo_alfanumericos(event)" />
+            </div>
+            <div class="col-sm-2">
+                <br />
+                <a href="#" class="btn btn-primary">
+                    <i class='fa fa-search'></i>
+                    Buscar
+                </a>
+            </div>
+        </div>
+        <hr />
+    }
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="CSACIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Cod. Art.</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Stock</th>
+                            <th>Unidad</th>
+                            <th>Familia</th>
+                            <th>Marca</th>
+                            <th>Cod. Alt.</th>
+                            <th>Desc. Alt.</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(function () {
+        $("#CSACIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Almacenes/GridCSAC",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "Codigo" },
+                { data: "Descripcion" },
+                { data: "Stock" },
+                { data: "Und" },
+                { data: "Familia" },
+                { data: "Marca" },
+                { data: "CodAlt" },
+                { data: "CodAlt" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-secondary grid_opt" title="Listado de Precios" href="#" onclick="AjaxModalGet(\'Lista de Precios con IGV\', \'/Almacenes/CSACLista\', \'1\', \'m_middle\');"><i class="fa fa-dollar-sign"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Productos Alternativos" href="#"><i class="fa fa-check"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+</script>

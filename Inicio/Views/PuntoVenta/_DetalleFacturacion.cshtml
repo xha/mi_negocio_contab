@@ -1,0 +1,134 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-4" align="center">
+            <br />
+            <b>Total Venta</b>
+        </div>
+        <div class="col-sm-4" align="center">
+            <b>Soles</b>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-4" align="center">
+            <b>D&oacute;lares</b>
+            <input type="text" class="form-control" readonly />
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-4" align="center">
+            <b>Efectivo</b>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" />
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-4" align="center">
+            <b>Cheque</b>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" id="cheque_soles" class="form-control" onblur="buscar_bancos()" />
+        </div>
+        <div class="col-sm-4">
+            <input type="text" id="cheque_dolares" class="form-control" onblur="buscar_bancos()" />
+        </div>
+    </div>
+    <div class="row border rounded w-100" id="div_banco" style="display: none">
+        <div class="col-sm-4 float-left" align="center">
+            <label>Monto</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-4 float-left">
+            <label>Banco</label>
+            <input type="text" class="form-control" onclick="AjaxModalGet('Bancos', '/Utilitarios/Bancos', 'nada3', 'm_normal')" />
+        </div>
+        <div class="col-sm-4 float-left">
+            <label>Nro. Cheque</label>
+            <input type="text" class="form-control" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-4" align="center">
+            <b>Tarjeta</b>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" id="tarjeta_soles" class="form-control" onblur="buscar_tarjetas()"  />
+        </div>
+        <div class="col-sm-4">
+            <input type="text" id="tarjeta_dolares" class="form-control" onblur="buscar_tarjetas()"  />
+        </div>
+    </div>
+    <div class="row border rounded w-100" id="div_tarjeta" style="display: none">
+        <div class="col-sm-4 float-left" align="center">
+            <label>Monto</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-4 float-left">
+            <label>Tipo Tarjeta</label>
+            <input type="text" class="form-control" onclick="AjaxModalGet('Tipo de Tarjetas', '/Utilitarios/TipoTarjetas', 'nada3', 'm_normal')" />
+        </div>
+        <div class="col-sm-4 float-left">
+            <label>Nro. Tarjeta</label>
+            <input type="text" class="form-control" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-4" align="center">
+            <b>Cobro Pendiente</b>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" />
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" />
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-info" onclick="$('#m_middle').modal('hide')">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Aceptar
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-4" align="center">
+            <b>Vuelto</b>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" />
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" />
+        </div>
+    </div>
+</div>
+<script>
+    function buscar_bancos() {
+        if (($('#cheque_soles')[0].value > 0) || ($('#cheque_dolares')[0].value > 0)) {
+            $('#div_banco')[0].style.display = 'inline-block';
+        } else {
+            $('#div_banco')[0].style.display = 'none';
+        }
+    }
+
+    function buscar_tarjetas() {
+        if (($('#tarjeta_soles')[0].value > 0) || ($('#tarjeta_dolares')[0].value > 0)) {
+            $('#div_tarjeta')[0].style.display = 'inline-block';
+        } else {
+            $('#div_tarjeta')[0].style.display = 'none';
+        }
+    }
+</script>

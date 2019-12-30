@@ -1,0 +1,144 @@
+﻿<div class="container-fluid">
+    <div class="card row">
+        <div class="card-header text-danger font-weight-bold">T&iacute;tulo</div>
+        <div class="row card-body">
+            <div class="col-sm-6">
+                <label>T&iacute;tulo 1</label>
+                <input class="form-control" />
+            </div>
+            <div class="col-sm-6">
+                <label>T&iacute;tulo 2</label>
+                <input class="form-control" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card row mt-1">
+                <div class="card-header text-danger font-weight-bold">Trabajadores</div>
+                <div class="row card-body">
+                    <div class="col-sm-12 table-responsive">
+                        <table class="table table-bordered table-striped pre-scrollable datatables" id="ReporteTrabajadoresExcelGrid" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Seleccione</th>
+                                    <th>C&oacute;digo</th>
+                                    <th style="min-width: 250px">Nombres</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card row mt-1">
+                <div class="card-header text-danger font-weight-bold">Columnas a Visualizar</div>
+                <div class="row card-body">
+                    <div class="col-sm-12 table-responsive">
+                        <table class="table table-bordered table-striped pre-scrollable datatables" id="RTECVGrid" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Seleccione</th>
+                                    <th>Columnas</th>
+                                    <th>Tipo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>TIPODOC</td>
+                                    <td>varchar</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>DOCIDEN</td>
+                                    <td>varchar</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>FECHANAC</td>
+                                    <td>datetime</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>ESTADOCIVIL</td>
+                                    <td>int</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <button class="btn btn-primary">
+                <i class='fa fa-search'></i>
+                Consultar
+            </button>
+            <button class="btn btn-secondary">
+                <i class='fa fa-arrow-right'></i>
+                Exportar
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#RTECVGrid").DataTable({
+            filter: false, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            //paging:   false,
+            info:     false,
+
+            columnDefs: [
+             {
+                 'targets': 0,
+                 'checkboxes': {
+                     'selectRow': true
+                 }
+             }
+            ],
+        });
+
+        $("#ReporteTrabajadoresExcelGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            ajax: {
+                url: ruta_actual + "/PMaestra/GridListadoTrabajadores",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                {
+                    data: 'CODIGO_TRABAJADOR',
+                    'checkboxes': {
+                        'selectRow': true
+                    }
+                },
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE" },
+            ]
+        });
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+</script>

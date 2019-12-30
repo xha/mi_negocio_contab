@@ -1,0 +1,56 @@
+﻿@model Datos.Models.AlmacenesModel
+
+<div class="container-fluid">
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DetalleForm" }))
+    {
+        <div class="row">
+            <div class="col-sm-5">
+                <label>C&oacute;digo</label>
+                <div class="row">
+                    <div class="col-sm-5">
+                        @Html.TextBoxFor(m => m.CodigoProducto, new { @class = "form-control alert-warning", @maxlength = "20", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Listado de Artículos', '/Articulo/Articulos', 'nada2', 'm_middle')" })
+                    </div>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" readonly id="descripcion_producto" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <label>Cantidad</label>
+                @Html.TextBoxFor(m => m.Cantidad, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_enteros(event)" })
+            </div>
+            <div class="col-sm-2">
+                <label>Unidad del Art.</label>
+                @Html.TextBoxFor(m => m.Unidad, new { @class = "form-control alert-warning", @maxlength = "6", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Unidad de Medida', '/Maestro/UnidadMedida', 'nada2', 'm_middle')" })
+            </div>
+            <div class="col-sm-2">
+                <label>Stock</label>
+                @Html.TextBoxFor(m => m.Stock, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_enteros(event)" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <label>Comentario</label>
+                @Html.TextBoxFor(m => m.Comentario, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+            </div>
+        </div>
+    }
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <button class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Aceptar
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    function nada2(codigo, descripcion) {
+        $('#m_middle').modal('hide');
+    }
+</script>

@@ -1,0 +1,145 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "Listado de Fondos de Penciones";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item active">Base de Datos</li>
+                    <li class="breadcrumbs-item active">Tablas de Ayuda</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda PMaestra - @ViewBag.Title - Inicio ', '/PMaestra/Ayuda', 'PTMLFPIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick="mostrar_panel('PTMLFPCreate', 'PMaestra')" class="btn btn-success">
+                <i class='fa fa-plus'></i>
+                Agregar
+            </a>
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-globe'></i>
+                Consulta AFP en l&iacute;nea
+            </a>
+            <a href="#" class="btn btn-secondary">
+                <i class='fa fa-file-import'></i>
+                Actualizar AFP desde la SBS
+            </a>
+        </div>
+    </div>
+    <br />
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="PTMLFPIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Nombre</th>
+                            <th>Aport. Oblig.</th>
+                            <th>Seguro</th>
+                            <th>Tope Seguro</th>
+                            <th>Comisi&oacute;n</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <hr />
+            <div class="col-lg-12" style="display: none" id="div_actualiza_tope">
+                <div class="col-lg-3">
+                    <label>Tope de Seguro Actual</label>
+                    <input id="tope_actual" class="form-control" readonly />
+                </div>
+                <div class="col-lg-3">
+                    <label>Tope de Seguro nuevo</label>
+                    <input id="tope_nuevo" class="form-control" />
+                </div>
+                <div class="col-lg-3">
+                    <a href="#" class="btn btn-success">
+                        <i class='fa fa-save'></i>
+                        Actualizar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#PTMLFPIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+
+            ajax: {
+                url: ruta_actual + "/PMaestra/GridPTMLCC",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [6,7,8],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                { data: "CODIGO" },
+                { data: "DESCRIPCION" }, 
+                { data: "ESCALA_MAXIMA" },
+                { data: "ESCALA_MAXIMA" },
+                { data: "APORTE" },
+                { data: "SEGURO" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="mostrar_panel(\'PTMLFPEdit?Codigo=' + row.CODIGO + '\', \'PMaestra\')" ><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CODIGO + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Imprimir" href="#"><i class="fa fa-print"></i></a>';
+                    }
+                },
+                {
+                    render: function (data, type, row) {
+                        return '<a class="btn btn-secondary grid_opt" title="Actualizar Tope" href="#" onclick="actualizar_tope(\'' + row.ESCALA_MAXIMA + '\')" ><i class="fa fa-cogs"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+
+    function actualizar_tope(valor) {
+        $("#div_actualiza_tope")[0].style.display = "flex";
+        $("#tope_actual").val(valor);
+    }
+</script>

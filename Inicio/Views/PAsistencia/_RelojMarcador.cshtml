@@ -1,0 +1,26 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="row">
+    <div class="col-sm-12">
+        <label>IP</label>
+        <input class="form-control" />
+    </div>
+    <div class="col-sm-12">
+        <label>Puerto</label>
+        <input class="form-control" />
+    </div>
+</div>
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="$('#m_small').modal('hide')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>

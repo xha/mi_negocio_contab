@@ -1,0 +1,182 @@
+﻿@model Datos.Models.CuentasPorCobrarModel
+@{
+    ViewBag.Title = "Módulo de Cuentas por Cobrar";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Cuentas Por Cobrar", "Index", "CuentasPorCobrar")</li>
+                    <li class="breadcrumbs-item">Transacciones</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("TDCCIndex", "CuentasPorCobrar")'>Descuentos por Cobrar y Cobranzas</a></li>
+                    <li class="breadcrumbs-item active">Canje</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Cliente</label> #<strong>@Model.Codigo</strong></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/CuentasPorCobrar/Ayuda', 'TDCCTransaccion', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-4">
+            <label>Cliente</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>R.U.C.</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <br />
+            <a href="#" class="btn btn-primary" onclick="AjaxModalGet('Cobranzas Realizadas', '/CuentasPorCobrar/CobranzasRealizadas', 'nada')">
+                <i class='fa fa-money-check-alt'></i>
+                Cobranzas Realizadas
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped pre-scrollable datatables" id="TDCCTransaccionGrid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>E.</th>
+                        <th>Documento</th>
+                        <th>Fecha Emisi&oacute;n</th>
+                        <th>Importe</th>
+                        <th>Moneda</th>
+                        <th>Venc. Monto</th>
+                        <th>D&iacute;as</th>
+                        <th>Saldo</th>
+                        <th>E.L.</th>
+                        <th style="width: 5px"></th>
+                        <th style="width: 5px"></th>
+                        <th style="width: 5px"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-5 border-right">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row col-sm-12">
+                        <input type="radio" name="div_a" />&nbsp;
+                        Vigentes
+                    </div>
+                    <div class="row col-sm-12">
+                        <input type="radio" name="div_a" />&nbsp;
+                        Hist&oacute;rico
+                    </div>
+                    <div class="row col-sm-12">
+                        <input type="radio" name="div_a" />&nbsp;
+                        Todos
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <a href="#" class="btn btn-secondary">A Hist&oacute;rico</a>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <a href="#" class="btn btn-secondary">A Vigente</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-7">
+            <label>Saldos</label>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label>MN</label>
+                    <input class="form-control" readonly />
+                </div>
+                <div class="col-sm-6">
+                    <label>ME</label>
+                    <input class="form-control" readonly />
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick="mostrar_panel('TDCCIndex', 'CuentasPorCobrar')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#TDCCTransaccionGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            ajax: {
+                url: ruta_actual + "/CuentasPorCobrar/GridTDCCTransaccion",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+                [{
+                    targets: [8],
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    targets: [9],
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    targets: [10],
+                    orderable: false,
+                    searchable: false
+                },],
+            columns: [
+                { data: "Estatus" },
+                { data: "Documento" },
+                { data: "FechaEmision" },
+                { data: "ImporteBruto" },
+                { data: "Moneda" },
+                { data: "FechaEmision" },
+                { data: "Dias" },
+                { data: "SaldoActual" },
+                { data: "Estatus" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Dctos. por Cobrar" href="#" onclick="AjaxModalGet(\'Descuentos por Cobrar\', \'/CuentasPorCobrar/DescuentosPorCobrar\', \'nada\')"><i class="fa fa-list"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="AjaxModalGet(\'Descuentos por Cobrar\', \'/CuentasPorCobrar/DescuentosPorCobrar\', \'nada\')"><i class="fa fa-edit"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Eliminar" href="#" onclick="anular_nota(\'' + row.Codigo + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+</script>
+

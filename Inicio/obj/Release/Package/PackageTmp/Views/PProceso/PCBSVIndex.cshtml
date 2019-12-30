@@ -1,0 +1,173 @@
+    @model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "Vacaciones";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <input id="t_id" type="hidden" />
+    <input id="t_unidad" type="hidden" />
+    <input id="t_descripcion" type="hidden" />
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item">Procesos</li>
+                    <li class="breadcrumbs-item">Calcular Beneficios Sociales</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5><b>@ViewBag.Title</b></h5>
+        </div>
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title', '/PProceso/Ayuda', 'PCBSVIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="card">
+        <div class="card-header text-danger">
+            Filtro
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <label>Mes</label>
+                    <select class="form-control"></select><br />
+                </div>
+                <div class="col-sm-3">
+                    <br />
+                    <label>
+                        <input type="checkbox" />&nbsp;
+                        Todos los meses del a&ntilde;o
+                    </label>
+                </div>
+                <div class="col-sm-3">
+                    <label>
+                        <input type="radio" name="i_pcbsv" />&nbsp;
+                        Programadas
+                    </label>
+                    <label class="mt-1">
+                        <input type="radio" name="i_pcbsv" />&nbsp;
+                        Por Traspaso
+                    </label>
+                </div>
+                <div class="col-sm-3">
+                    <label>
+                        <input type="radio" name="i_pcbsv" />&nbsp;
+                        Canceladas
+                    </label><br />
+                    <label class="mt-1">
+                        <input type="radio" name="i_pcbsv" />&nbsp;
+                        Por Goce
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-1">
+        <div class="col-sm-12">
+            <button class="btn btn-primary m-1" onclick="AjaxModalGet('Programacion de Vacaciones', '/PProceso/ProgramacionVacaciones', '', 'm_central')">
+                Programar vacaciones
+            </button>
+            <button class="btn btn-secondary m-1">
+                Calcular
+            </button>
+        </div>
+    </div>
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" style="cursor: pointer" id="PCBSVIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Nombres</th>
+                            <th>Fecha de Inicio</th>
+                            <th>Fecha Final</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-sm-2">
+            <button class="btn btn-outline-dark b_vacaciones col-sm-12" id="div_1">
+                <i class='fa fa-edit'></i>
+                Editar
+            </button>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-outline-dark b_vacaciones col-sm-12" id="div_2">
+                <i class='fa fa-trash'></i>
+                Eliminar
+            </button>
+        </div>
+        <div class="col-sm-6 form-inline">
+            <label class="mr-1">Rep. Vacaciones:</label>
+            <select class="btn btn-outline-dark b_vacaciones w-50" id="div_3">
+                <option>Seleccione</option>
+                <option>Rol de vacaciones meneral</option>
+                <option>Rol de vacaciones por mes</option>
+                <option>Reporte por centro de costo</option>
+                <option>Resumen por centro de costo</option>
+                <option>Det. Vacaciones</option>
+                <option>Reportes Resumen</option>
+                <option>Solicitud de Vacaciones</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<script>
+    var seleccionado = "";
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+    $(function () {
+        for (var i = 1; i < 4; i++) {
+            $("#div_"+i)[0].disabled = true;
+        }
+        $("#PCBSVIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/PMaestra/GridPTMLCC",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "DESCRIPCION" },
+                { data: "FECHA" },
+                { data: "FECHA" },
+            ],
+        });
+
+        $('#PCBSVIndexGrid tbody').on('click', 'tr', function () {
+            $('#PCBSVIndexGrid').DataTable().$('tr').removeClass('bg-secondary text-white');
+            $(this).addClass('bg-secondary text-white');
+            $(".b_vacaciones").removeAttr("disabled");
+            $("#t_id").val($(this).children("td").eq(0).text());
+            $("#t_unidad").val($(this).children("td").eq(1).text());
+            $("#t_descripcion").val($(this).children("td").eq(2).text());
+        });
+    });
+</script>

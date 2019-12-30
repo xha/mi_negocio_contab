@@ -1,0 +1,151 @@
+﻿@model Datos.Models.AlmacenesModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    @Html.HiddenFor(m => m.Codigo)
+        <div class="row">
+            <div class="col-sm-3">
+                <label>No. Orden de Imp.</label>
+                @Html.TextBoxFor(m => m.Orden, new { @class = "form-control alert-warning", @maxlength = "11", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Ordenes de Importación', '/Almacenes/OrdenesImportacion', 'nada2', 'm_middle')" })
+            </div>
+            <div class="col-sm-3">
+                <label>Fecha</label>
+                @Html.TextBoxFor(m => m.FechaEmision, new { @class = "form-control", @readonly = "true" })
+            </div>
+            <div class="col-sm-3">
+                <label>T.C.</label>
+                @Html.TextBoxFor(m => m.Total, new { @class = "form-control", @readonly = "true" })
+            </div>
+            <div class="col-sm-3">
+                <label>T.M.</label>
+                @Html.TextBoxFor(m => m.Moneda, new { @class = "form-control", @readonly = "true" })
+            </div>            
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Proveedor</label>
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(m => m.Orden, new { @class = "form-control alert-warning", @maxlength = "11", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Proveedores', '/Proveedor/Proveedores', 'nada2', 'm_middle')" })
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" readonly />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <label>Transacci&oacute;n</label>
+                <div class="row">
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.NroTransferencia, new { @class = "form-control alert-warning", @maxlength = "3", onkeypress = "solo_alfanumericos(event)", ondblclick = "AjaxModalGet('Transacción de Almacén', '/Utilitarios/TipoTransaccion', 'nada2', 'm_middle')" })
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" readonly />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Doc. Ref.</label>
+                <div class="row">
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.TipoTransaccion, new { @class = "form-control alert-warning", @maxlength = "3", onkeypress = "solo_alfanumericos(event)", ondblclick = "AjaxModalGet('Tipo de Documento', '/Utilitarios/TipoDocumento', 'nada2', 'm_middle')" })
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.CAAnexo, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_enteros(event)" })
+                    </div>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" readonly id="descripcion_documento" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <label>Fecha Doc.</label>
+                @Html.TextBoxFor(m => m.FechaDocumento, new { @class = "form-control", @readonly = "true" })
+            </div>
+            <div class="col-sm-2">
+                <label>N&uacute;mero</label>
+                @Html.TextBoxFor(m => m.NroTransferencia, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_enteros(event)" })
+            </div>
+            <div class="col-sm-2">
+                <label>T/C</label>
+                @Html.TextBoxFor(m => m.Total, new { @class = "form-control", @readonly = true })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <label>T.M.</label>
+                @Html.DropDownListFor(m => m.Moneda, new List<SelectListItem>
+                {
+                    new SelectListItem{ Text="Moneda Nacional", Value = "MN" },
+                    new SelectListItem{ Text="Moneda Extranjera", Value = "ME" },
+                }, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-10">
+                <label>Comentario</label>
+                @Html.TextBoxFor(m => m.Comentario, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+            </div>
+        </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick='ocultar_panel("NICIIndex", "Almacenes")' class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped pre-scrollable datatables" id="NICIDatosGrid" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>C&oacute;digo</th>
+                    <th>Descripci&oacute;n</th>
+                    <th>Lote/Serie</th>
+                    <th>Cantidad Req.</th>
+                    <th>Und.</th>
+                    <th>Cantidad Rec.</th>
+                    <th>Saldo</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#NICIDatosGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Almacenes/GridNICIDetalle",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CodigoProducto" },
+                { data: "DescripcionProducto" },
+                { data: "Lote" },
+                { data: "CantidadReq" },
+                { data: "Unidad" },
+                { data: "CantidadRec" },
+                { data: "Saldo" },
+            ]
+        });
+    });
+
+    function nada(codigo, descripcion) {
+        $('#m_central').modal('hide');
+    }
+</script>

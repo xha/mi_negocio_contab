@@ -1,0 +1,614 @@
+﻿@model IEnumerable<Datos.Models.Menu> 
+@{
+    ViewBag.MenuColor = Session["MenuColor"];
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Mi Negocio</title>
+    @Styles.Render("~/Content/css")
+    <!-- DataTables Responsive CSS -->
+    <link rel="shortcut icon" href="~/Content/images/favicon.ico" type="image/x-icon" />
+    <link href="@Url.Content("~/Content/sb-admin-2.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/jstree.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/bower_components/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/bower_components/datatables/dataTables.checkboxes.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/bower_components/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery-ui.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/bower_components/jquery.jqGrid/ui.jqgrid.custom.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/bower_components/icheck/skins/all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/bower_components/loading_modal/css/jquery.loadingModal.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/bower_components/sweetalert2/dist/sweetalert2.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/bower_components/toastr/build/toastr.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/bower_components/bootstrap4/css/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/bower_components/year_calendar/css/bootstrap-year-calendar.css")" rel="stylesheet" type="text/css" />
+    <style>
+        .bg-gradient-starsoft {
+            background-color: @ViewBag.MenuColor;
+            background-image: -webkit-gradient(linear, left top, left bottom, color-stop(10%, @ViewBag.MenuColor), to(grey));
+            background-image: linear-gradient(180deg, @ViewBag.MenuColor 10%, grey 100%);
+            background-size: cover;
+        }
+
+        .sidebar .nav-item .collapse .collapse-inner .collapse-item.active,
+        .sidebar .nav-item .collapsing .collapse-inner .collapse-item.active {
+            color: @ViewBag.MenuColor;
+            background-color: #eaecf4;
+            font-weight: 700;
+        }
+
+        h5, h6 {
+            color: @ViewBag.MenuColor;
+        }
+
+        table thead tr th {
+            background-color: @ViewBag.MenuColor;
+            color: #FFF;
+        }
+
+        .breadcrumbs a {
+            color: @ViewBag.MenuColor;
+        }
+
+        .page-item.active .page-link {
+            z-index: 1;
+            color: #fff;
+            background-color: @ViewBag.MenuColor;
+            border-color: @ViewBag.MenuColor;
+        }
+    </style>
+    <!-- jQuery -->
+    <script src="@Url.Content("~/bower_components/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content("~/bower_components/chart/Chart.min.js")"></script>
+    <script src="@Url.Content("~/bower_components/highcharts/highcharts.js")"></script>
+    <script src="@Url.Content("~/bower_components/highcharts/modules/series-label.js")"></script>
+    <script src="@Url.Content("~/bower_components/highcharts/modules/exporting.js")"></script>
+    <script src="@Url.Content("~/bower_components/highcharts/modules/export-data.js")"></script>
+    <script type="text/javascript">
+        //Indica la ruta del navegador
+        var ruta_global = location.href;
+        var caracteres_global = ruta_global.length;
+        if (ruta_global.charAt(caracteres_global - 1) !== "/") ruta_global += "/";
+        var ruta_actual = "";
+        var semaforo = 0;
+        //variable produccion indica la cantidad de slash previos al sistema, Ejemplo
+        //IIS express seria= http: 1/2/ localhost 3/
+        //IIS produccion seria= http: 1/2/ localhost 3/ mi_negocio 4/
+        var produccion = 4;
+
+        for (var z = 0; z < ruta_global.length; z++) {
+            if (ruta_global.charAt(z) == "/") {
+                semaforo++;
+                if (semaforo == produccion) {
+                    ruta_actual = (ruta_global.substr(0, z)).replace('#', '');
+                    z = ruta_global.length;
+                }
+            }
+        }
+    </script>
+    @Scripts.Render("~/bundles/bootstrap")
+</head>
+<body id="page-top">
+    <input type="hidden" id="menu_actual" value="@ViewBag.menu_actual" />
+    <div id="wrapper">
+        <!-- Navigation -->
+        @Html.Action("Menus", "Menu")
+        <!-- End Navigation -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- Topbar -->
+                @Html.Action("TopMenu", "Menu")
+                <!-- End Top Content -->
+                <!-- Begin Page Content -->
+                <div id="page-wrapper" style="position: relative; overflow-y: visible; min-height: 220vh">
+                    <div id="sidebar-primer">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <a href="#" class="boton-cerrar float-right" onclick="$('#sidebar-primer')[0].style.width = '0'">&times;</a>
+                                </div>
+                            </div>
+                            <div class="row col-sm-12">
+                                <input class="form-control" placeholder="Ingrese entrada" />
+                            </div>
+                        </div>
+                        <div class="col-sm-12" id="primer_contenido">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" onclick="ayuda_contenido('Home/AyudaPrincipal')">
+                                        <i class="fas fa-check"></i>
+                                        <span>
+                                            Crear un Proveedor
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" onclick="ayuda_contenido('Home/AyudaPrincipal')">
+                                        <i class="fas fa-check"></i>
+                                        <span>
+                                            Agregar Items a una Factura
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" onclick="ayuda_contenido('Home/AyudaPrincipal')">
+                                        <i class="fas fa-check"></i>
+                                        <span>
+                                            Mover Productos de un Almac&eacute;n
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--<div id="contenido-primer">
+                        RenderBody()
+                    </div>-->
+                    <div id="sidebar">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <a href="#" class="boton-cerrar ml-4" onclick="ocultar_panel()">
+                                    &laquo;
+                                    Volver al Inicio
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-sm-12" id="panel_contenido"></div>
+                    </div>
+                    <div id="contenido">
+                        @RenderBody()
+                    </div>
+                </div>
+                <br />
+                <!-- End Page Content -->
+            </div>
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Mi Negocio 2019</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirmar Salir del Sistema</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body h200">Seleccione "Salir" para cerrar sesion.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-primary" href="@Url.Action("Index", "Login")">Salir</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!----------------------------------------------------------------------------------------------------------------------------->
+    <div class="modal fade" id="m_central" tabindex="-1" role="dialog" aria-labelledby="Modal Central" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document" id="m_tamanio">
+            <div class="modal-content">
+                <div class="modal-header col-sm-12">
+                    <h5 class="modal-title" id="x_titulo"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body h500" id="x_cuerpo"></div>
+                <div class="modal-footer" id="x_pie"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="m_imprimir" tabindex="-1" role="dialog" aria-labelledby="Modal Central" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Par&aacute;metros de Impresi&oacute;n</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body h200">
+                    <div class="row p-1">
+                        <div class="col-sm-9">
+                            Desde
+                            <input type="text" class="form-control alert-warning" id="imp_desde" title="Doble Click para buscar" placeholder="Todos" />
+                        </div>
+                        <div class="col-sm-9">
+                            Hasta
+                            <input type="text" class="form-control alert-warning" id="imp_hasta" title="Doble Click para buscar" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button"><i class='fa fa-print'></i> Imprimir</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="m_middle" tabindex="-1" role="dialog" aria-labelledby="Modal Central" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document" id="m_tamanio">
+            <div class="modal-content">
+                <div class="modal-header col-sm-12">
+                    <h5 class="modal-title" id="m_titulo"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body h500" id="m_cuerpo"></div>
+                <div class="modal-footer" id="m_pie"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="m_normal" tabindex="-1" role="dialog" aria-labelledby="Modal Central" aria-hidden="true">
+        <div class="modal-dialog" role="document" id="m_tamanio">
+            <div class="modal-content">
+                <div class="modal-header col-sm-12">
+                    <h5 class="modal-title" id="n_titulo"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body h500" id="n_cuerpo"></div>
+                <div class="modal-footer" id="n_pie"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="m_small" tabindex="-1" role="dialog" aria-labelledby="Modal Central" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document" id="m_tamanio">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="s_titulo"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body h500" id="s_cuerpo"></div>
+                <div class="modal-footer" id="s_pie"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="m_anular" tabindex="-1" role="dialog" aria-labelledby="Modal Central" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Anular</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">Confirmar Anulado de Registro <b id="document"></b></div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button">Aceptar</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="m_revertir" tabindex="-1" role="dialog" aria-labelledby="Modal Central" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Revertir</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">Revertici&oacute;n del Registro <b id="r_document"></b></div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button">Aceptar</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="m_expotar" tabindex="-1" role="dialog" aria-labelledby="Modal Central" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Exportar Documento</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row col-lg-12">
+                        <div class="col-lg-12 mb-2">Registro <b id="e_document"></b></div>
+                        <div class="col-lg-6">
+                            <input type="radio" name="exportar" /> &nbsp; Excel
+                        </div>
+                        <div class="col-lg-6">
+                            <input type="radio" name="exportar" /> &nbsp; PDF
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button">Aceptar</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ESTA ES SOLO PARA LAS PRUEBAS, TEMPORAL --------------------------------------------------------------------------------->
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Modal Central" id="m_proceso" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Generar Datos de Ventas Mensuales</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button">Aceptar</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="m_arqueo" tabindex="-1" role="dialog" aria-labelledby="Modal Central" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Reporte de arqueo de caja</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row col-sm-12">
+                        <b>
+                            Nota: Seleccione el tipo de moneda en la que desea ver el Total General y active la opci&oacute;n de
+                            "Ver Detalle" si desea ver el detalle de los movimientos
+                        </b>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <label>Moneda</label>
+                            <select class="form-control">
+                                <option>Moneda Nacional</option>
+                                <option>Moneda Extranjera</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-7 text-center">
+                            <input type="checkbox" /><br />
+                            Ver Detalle de los Movimientos
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button"><i class='fa fa-print'></i> Aceptar</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal"><i class='fa fa-times'></i> Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="m_mes" tabindex="-1" role="dialog" aria-labelledby="Modal Central" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document" id="m_tamanio">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Mes del Estado de Cuenta</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label>Seleccione el mes al cual desea consultar su estado de cuenta</label>
+                        <br />
+                        <input class="form-control datepickers" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" onclick="AjaxModalGet('Estado de Cuenta del Mes \'MesEnCurso\'', '/Banco/EstadoCuenta', 'nada');"><i class='fa fa-print'></i> Aceptar</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal"><i class='fa fa-times'></i> Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- AYUDAS ------------------------------------------------------------------------------------------------------------------->
+    <div class="modal fade" id="m_ayudas" tabindex="-1" role="dialog" aria-labelledby="Modal Central" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="a_titulo"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body h500" id="a_cuerpo"></div>
+                <div class="modal-footer" id="a_pie"></div>
+            </div>
+        </div>
+    </div>
+    <!-- SCRIPTS ------------------------------------------------------------------------------------------------------------------->
+    <script src="@Url.Content("~/bower_components/toastr/build/toastr.min.js")"></script>
+    <script src="@Url.Content("~/bower_components/sweetalert2/sweet-alert.init.js")"></script>
+    <script src="@Url.Content("~/bower_components/sweetalert2/dist/sweetalert2.min.js")"></script>
+    <script src="@Url.Content("~/bower_components/loading_modal/js/jquery.loadingModal.js")"></script>
+    <script src="@Url.Content("~/bower_components/icheck/icheck.js")"></script>
+    <script src="@Url.Content("~/bower_components/jquery-easing/jquery.easing.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/sb-admin-2.min.js")"></script>
+    <script src="@Url.Content("~/bower_components/chart/demo/chart-area-demo.js")"></script>
+    <script src="@Url.Content("~/bower_components/chart/demo/chart-pie-demo.js")"></script>
+    <script src="@Url.Content("~/bower_components/datatables/datatables.js")"></script>
+    <!--<script src="Url.Content("~/bower_components/datatables/dataTables.bootstrap4.min.js")"></script>-->
+    <script src="@Url.Content("~/bower_components/datatables/dataTables.checkboxes.js")"></script>
+    <script src="@Url.Content("~/bower_components/jquery-ui/jquery-ui.js")"></script>
+    <script src="@Url.Content("~/bower_components/bootstrap4/js/bootstrap-select.js")"></script>
+    <script src="@Url.Content("~/bower_components/year_calendar/js/bootstrap-year-calendar.js")"></script>
+    <script src="@Url.Content("~/bower_components/year_calendar/js/bootstrap-year-calendar.es.js")"></script>
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script src="@Url.Content("~/Scripts/i18n/grid.locale-en.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.jqGrid.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap3-typeahead.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.mask.js")"></script>
+    <script src="@Url.Content("~/Scripts/jstree.js")"></script>
+    <script src="@Url.Content("~/Scripts/site.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ($("#menu_actual").val() != "") {
+                var arreglo = $("#menu_actual")[0].value.split("-");
+                var i;
+                var padres = arreglo[0].split("_");
+                var hijo = arreglo[1].split("_");
+                for (i = 1; i < padres.length; i++) {
+                    if (parseInt(padres[i]) > 0) {
+                        $("#menu_" + padres[i])[0].click();
+                    }
+                }
+
+                pagina_central(hijo[0], hijo[1], hijo[2]);
+                $("#menu_actual")[0].value = "";
+            }
+
+            $.getJSON(ruta_actual + "/Menu/GridMenu", function (data) {
+                $("#buscador_principal").typeahead({
+                    source: data,
+                    autoSelect: false,
+                    fitToElement: false,
+                    displayText: function (item) { return item.Name; },
+                    updater: function (item) {
+                        loading_show();
+                        var cadena = item.parentId + "_" + item.parentId2 + "_" + item.parentId3 + "-" + item.action + "_" + item.controller + "_" + item.Id;
+                        var url = ruta_actual + "/Menu/Index?id=" + item.parentId + "&acc=" + cadena;
+                        //console.log(url);
+                        window.location.href = url;
+                    }
+                });
+            });            
+
+            if (!$.datepicker.initialized) {
+                $(document).mousedown($.datepicker._checkExternalClick)
+                    .find(document.body).append($.datepicker.dpDiv);
+                $.datepicker.initialized = true;
+            }
+
+            $.datepicker.regional['es'] = {
+                closeText: 'Cerrar',
+                prevText: '< Ant',
+                nextText: 'Sig >',
+                currentText: 'Hoy',
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+                dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+                weekHeader: 'Sm',
+                dateFormat: 'dd-mm-yy',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: ''
+            };
+        });
+
+        $(".modal").on("hidden.bs.modal", function () {
+            $('.modal-dialog').css({
+                top: 0,
+                left: 0
+            });
+        });
+
+        $('.modal-dialog').draggable({
+            handle: ".modal-header"
+        });
+
+        $('.dataTables').DataTable({
+            responsive: true
+        });
+
+        $('[data-toggle="tooltip"]').tooltip({
+            placement: 'top', // or bottom, left, right, and variations
+            title: "Top"
+        });
+
+        $.datepicker.setDefaults($.datepicker.regional['es']);
+
+        $(".datepickers").datepicker({
+            autoclose: true
+        });
+
+        $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+        $('input[type=radio]').iCheck({
+            radioClass: 'iradio_square-blue',
+        });
+
+        $('input[type=checkbox]').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+        });
+
+        function panel_ayuda() {
+            if ($('#sidebar-primer')[0].style.width == '50%') {
+                $('#sidebar-primer')[0].style.width = '0';
+            } else {
+                $('#sidebar-primer')[0].style.width = '50%';
+            }
+        }
+
+        function ayuda_contenido(route) {
+            var ruta = ruta_actual + "/" + route;
+            var param = "";
+            $.ajax({
+                type: 'GET',
+                url: ruta,
+                data: param,
+                cache: false,
+                beforeSend: AjaxWait,
+                success: AjaxSucceeded,
+                error: AjaxFailed
+            });
+            function AjaxWait() {
+                $('#sidebar-primer').html("<img class='w-100' src='../Content/images/loading1.gif' />");
+            }
+            function AjaxSucceeded(result) {
+                $("#sidebar-primer").load(ruta);
+            }
+            function AjaxFailed(result) {
+                $('#sidebar-primer').html("Error al Cargar la Solicitud");
+            }
+        }
+
+        function cambia_icono(valor) {
+            if ($("#icono_"+valor).hasClass( "fa-angle-right")) {
+                $("#icono_" + valor).removeClass("fa-angle-right");
+                $("#icono_" + valor).addClass("fa-angle-down");
+            } else {
+                $("#icono_" + valor).removeClass("fa-angle-down");
+                $("#icono_" + valor).addClass("fa-angle-right");
+            }
+        }
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

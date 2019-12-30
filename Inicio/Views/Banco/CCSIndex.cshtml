@@ -1,0 +1,128 @@
+@model Datos.Models.BancoModel
+@{
+    ViewBag.Title = "Consolidado de Saldos";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Banco", "Index", "Banco")</li>
+                    <li class="breadcrumbs-item">Consultas</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Banco/Ayuda', 'CCSIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-3">
+            <h3>Saldo Consolidado</h3>
+        </div>
+        <div class="col-sm-3">
+            <label>Moneda</label>
+            <select class="form-control">
+                <option>Moneda Nacional</option>
+                <option>Moneda Extranjera</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Tipo de Cambio</label>
+            <input class="form-control" readonly />
+        </div>
+    </div>
+    <hr />
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped pre-scrollable datatables" id="CCSIndexGrid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Cuenta Bancaria</th>
+                        <th>Banco</th>
+                        <th>Saldo</th>
+                        <th>Moneda</th>
+                        <th>Consolidado</th>
+                        <th style="width: 5px"></th>
+                        <th style="width: 5px"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-3">
+            <br />
+            <label>Saldos Totales</label>
+        </div>
+        <div class="col-sm-3">
+            <label>Soles</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>D&oacute;lares</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Consolidado</label>
+            <input class="form-control" readonly />
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#CCSIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            ajax: {
+                url: ruta_actual + "/Banco/GridConsolidado",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+                [{
+                    targets: [5],
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    targets: [6],
+                    orderable: false,
+                    searchable: false
+                }],
+            columns: [
+                { data: "NroCuenta" },
+                { data: "Descripcion" },
+                { data: "Saldo" },
+                { data: "Moneda" },
+                { data: "SaldoConsolidado" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Estado de Cuenta" href="#" onclick="AjaxModalGet(\'Estado de Cuenta del Mes <MesEnCurso>\', \'/Banco/EstadoCuenta\', \'nada\')"><i class="fa fa-chart-line"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-info grid_opt" title="Otros Meses" href="#" onclick="$(\'#m_mes\').modal(\'show\');"><i class="fa fa-chart-bar"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+</script>
+

@@ -1,0 +1,106 @@
+﻿@model Datos.Models.MaestroModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-2">
+            <label>C&oacute;digo</label>
+            @if (Model != null && !String.IsNullOrEmpty(Model.gru_codigo))
+            {
+                @Html.TextBoxFor(m => m.gru_codigo, new { @class = "form-control", @readonly = "true" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.gru_codigo, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_alfanumericos(event)" })
+            }
+        </div>
+        <div class="col-sm-6">
+            <label>Descripci&oacute;n</label>
+            @Html.TextBoxFor(m => m.gru_nombre, new { @class = "form-control", @maxlength = "45", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-2">
+            <label>C&oacute;d. Familia</label>
+            @Html.TextBoxFor(m => m.fam_codigo, new { @class = "form-control alert-warning", @maxlength = "8", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Familia', '/Maestro/Familias', 'agrega_familia', 'm_middle')" })
+        </div>
+        <div class="col-sm-2">
+            <label>C&oacute;d. L&iacute;nea</label>
+            @Html.TextBoxFor(m => m.lin_codigo, new { @class = "form-control alert-warning", @maxlength = "8", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Linea', '/Maestro/Lineas', 'agrega_linea', 'm_middle')" })
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel()" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success" onclick="GuardarTAGADatos()">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>
+<script>
+    function GuardarTAGADatos() {
+        var accion = 0;
+        var gru_codigo = $("#gru_codigo").val().trim();
+        var lin_codigo = $("#lin_codigo").val().trim();
+        var fam_codigo = $("#fam_codigo").val().trim();
+        var gru_nombre = $("#gru_nombre").val().trim().toUpperCase();
+        var datos_enviar = [];
+
+        if ($("#gru_codigo")[0].readOnly) {
+            accion = 1;
+        }
+
+        if ((lin_codigo != "") && (gru_nombre != "") && (fam_codigo != "") && (gru_codigo != "")) {
+            datos_enviar.push({
+                gru_codigo: gru_codigo,
+                lin_codigo: lin_codigo,
+                fam_codigo: fam_codigo,
+                gru_nombre: gru_nombre,
+            });
+
+            var parametros = "datos_enviar=" + JSON.stringify(datos_enviar) + "&accion=" + accion;
+            $.ajax(
+			{
+			    type: "POST",
+			    dataType: "json",
+			    url: ruta_global + "TAGAActualizar",
+			    data: parametros,
+			    beforeSend: function () {
+			        loading_show();
+			    },
+			    cache: false,
+			    success: function (Resultado) {
+			        loading_hide();
+			        window.parent.MostrarMensaje(Resultado.color, Resultado.data);
+			        if (Resultado.respuesta) {
+			            ocultar_panel();
+			            $('#TAGAIndexGrid').DataTable().ajax.reload();
+			        }
+
+			    },
+			    error: function (xhr) { // if error occured
+			        loading_hide();
+			        console.log(xhr);
+			        window.parent.MostrarMensaje("Rojo", "Error");
+			        //$(placeholder).append(xhr.statusText + xhr.responseText);
+			    },
+			});
+        } else {
+            MostrarMensaje("Rojo", "Faltan Datos");
+        }
+    }
+
+    function agrega_familia(valor) {
+        $("#fam_codigo").val(valor);
+        $("#m_middle").modal("hide");
+    }
+
+    function agrega_linea(valor) {
+        $("#lin_codigo").val(valor);
+        $("#m_middle").modal("hide");
+    }
+</script>

@@ -1,0 +1,146 @@
+﻿@model Datos.Models.CuentasPorCobrarModel
+@{
+    ViewBag.Title = "Saldos por Cobrar por Cliente";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Cuentas Por Cobrar", "Index", "CuentasPorCobrar")</li>
+                    <li class="breadcrumbs-item">Transacciones</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("CSCCIndex", "CuentasPorCobrar")'>@ViewBag.Title</a></li>
+                    <li class="breadcrumbs-item active">Detalle</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Cliente</label> #<strong>@Model.Codigo</strong></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/CuentasPorCobrar/Ayuda', 'CSCCDetalle', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-2">
+            <label>R.U.C.</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-4">
+            <label>Cliente</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>Fecha Desde</label><br />
+            <input class="form-control datepickers" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>Fecha Hasta</label><br />
+            <input class="form-control datepickers" readonly />
+        </div>
+        <div class="col-sm-2">
+            <br />
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-search'></i>
+                Buscar
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped pre-scrollable datatables" id="CSCCDetalleGrid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>E.</th>
+                        <th>Documento</th>
+                        <th>Fecha Emisi&oacute;n</th>
+                        <th>Importe</th>
+                        <th>Moneda</th>
+                        <th>Venc. Monto</th>
+                        <th>D&iacute;as</th>
+                        <th>Saldo</th>
+                        <th>E.L.</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-6 text-right">
+            <br />
+            <b>Totales</b>
+        </div>
+        <div class="col-sm-3">
+            <label>Soles</label><br />
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>D&oacute;lares</label><br />
+            <input class="form-control" readonly />
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick="ocultar_panel('CSCCIndex', 'CuentasPorCobrar')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-primary" onclick="AjaxModalGet('Cobranzas Realizadas', '/CuentasPorCobrar/CobranzasRealizadas', '1')">
+                <i class='fa fa-money-check-alt'></i>
+                Cobranzas Realizadas
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(function () {
+        $("#CSCCDetalleGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            ajax: {
+                url: ruta_actual + "/CuentasPorCobrar/GridTDCCTransaccion",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "Estatus" },
+                { data: "Documento" },
+                { data: "FechaEmision" },
+                { data: "ImporteBruto" },
+                { data: "Moneda" },
+                { data: "SaldoActual" },
+                { data: "Dias" },
+                { data: "SaldoActual" },
+                { data: "Estatus" },
+            ]
+        });
+    });
+</script>
+

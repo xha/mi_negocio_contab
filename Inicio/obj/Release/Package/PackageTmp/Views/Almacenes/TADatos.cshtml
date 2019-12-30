@@ -1,0 +1,137 @@
+﻿@model Datos.Models.AlmacenesModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    @Html.HiddenFor(m => m.Codigo)
+        <div class="row">
+            <div class="col-sm-2">
+                <label>Fecha</label>
+                @Html.TextBoxFor(m => m.FechaEmision, new { @class = "form-control datepickers", @readonly = "true" })
+            </div>
+            <div class="col-sm-2">
+                <label>N&uacute;mero</label>
+                @Html.TextBoxFor(m => m.Documento, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_enteros(event)" })
+            </div>
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-6">
+                <label>Trans. Origen</label>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" readonly value="TD" />
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" readonly value="Salida por Transferencia" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Alm. Destino</label>
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(m => m.TipoTransaccion, new { @class = "form-control alert-warning", @maxlength = "2", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Almacenes Destino', '/Almacenes/Almacenes', 'nada2', 'm_middle')" })
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" readonly id="descripcion_almacen" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <label>Trans. Destino</label>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" readonly value="TD" />
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" readonly value="Ingreso por Transferencia" />
+                    </div>
+                </div>
+            </div>
+        </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick='ocultar_panel("TAIndex", "Almacenes")' class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <button class="btn btn-success" onclick="AjaxModalGet('Detalle de Transferencia Automática', '/Almacenes/AgregarTA', 'nada')">
+            <i class='fa fa-plus'></i>
+            Nuevo
+        </button>
+    </div>
+</div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped pre-scrollable datatables" id="TADatosGrid" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>C&oacute;digo</th>
+                    <th>Descripci&oacute;n</th>
+                    <th>Lote/Serie</th>
+                    <th>Cantidad</th>
+                    <th>Und.</th>
+                    <th style="width: 5px"></th>
+                    <th style="width: 5px"></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip({
+            placement: 'top', // or bottom, left, right, and variations
+            title: "Top"
+        });
+
+        $("#TADatosGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Almacenes/GridNIDetalle",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [5],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [6],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "CodigoProducto" },
+                { data: "DescripcionProducto" },
+                { data: "Lote" },
+                { data: "Cantidad" },
+                { data: "Unidad" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="AjaxModalGet(\'Detalle de Transferencia Automática\', \'/Almacenes/AgregarTA\')" ><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CodigoProducto + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+
+    function nada(codigo, descripcion) {
+        $('#m_central').modal('hide');
+    }
+</script>

@@ -1,0 +1,44 @@
+﻿@model Datos.Models.MaestroModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-2">
+            <label>C&oacute;digo</label>
+            @if (Model != null && !String.IsNullOrEmpty(Model.Codigo))
+            {
+                @Html.TextBoxFor(m => m.Codigo, new { @class = "form-control", @readonly = "true" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.Codigo, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_alfanumericos(event)" })
+            }
+        </div>
+        <div class="col-sm-4">
+            <label>Descripci&oacute;n</label>
+            @Html.TextBoxFor(m => m.Descripcion, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-4">
+            <label>Ubicaci&oacute;n</label>
+            @Html.TextBoxFor(m => m.Ubicacion, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-2">
+            <br />
+            @Html.CheckBoxFor(m => m.Activo)&nbsp;
+            Activo
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel()" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>

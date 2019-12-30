@@ -1,0 +1,208 @@
+@model Datos.Models.CuentasPorCobrarModel
+
+@{
+    ViewBag.Title = "Pendientes de Cobro - Canje de Letras";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Cuentas Por Cobrar", "Index", "CuentasPorCobrar")</li>
+                    <li class="breadcrumbs-item">Reportes</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/CuentasPorCobrar/Ayuda', 'RECCIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="datos-tab" data-toggle="tab" href="#datos" role="tab" aria-controls="datos" aria-selected="true">
+                    <span class="fa-stack">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <strong class="fa-stack-1x calendar-text text-white">1</strong>
+                    </span>
+                    Pendiente por Cobrar
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="adicional-tab" data-toggle="tab" href="#adicional" role="tab" aria-controls="adicional" aria-selected="false">
+                    <span class="fa-stack">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <strong class="fa-stack-1x calendar-text text-white">2</strong>
+                    </span>
+                    Canje de Letras
+                </a>
+            </li>
+        </ul>
+        <br />
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active col-sm-12" id="datos" role="tabpanel" aria-labelledby="datos-tab">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="card row">
+                            <div class="card-header text-danger font-weight-bold">Agrupado por</div>
+                            <div class="card-body row">
+                                <div class="col-sm-7 text-center">
+                                    <input type="radio" name="i_agrupado" checked /><br />
+                                    Por Tipo de Documento
+                                </div>
+                                <div class="col-sm-5 text-center">
+                                    <input type="radio" name="i_agrupado" /><br />
+                                    Por Cliente
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="card row">
+                            <div class="card-header text-danger font-weight-bold">Filtrar por Situaci&oacute;n de Letras</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Del</label>
+                                        <input type="text" class="form-control alert-warning" alert-warning"maxlength="11" onkeypress="solo_enteros(event)"  title="Doble Click para buscar" ondblclick="AjaxModalGet('Situación de Letra', '/CuentasPorCobrar/SituacionLetra', 'nada2', 'm_middle')" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label>Al</label>
+                                        <input type="text" class="form-control alert-warning" alert-warning"maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Situación de Letra', '/CuentasPorCobrar/SituacionLetra', 'nada2', 'm_middle')" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="card">
+                            <div class="card-header text-danger font-weight-bold">Filtros</div>
+                            <div class="card-body row">
+                                <div class="col-sm-12 border rounded p-1 m-1">
+                                    <label>Por Fecha de Emisi&oacute;n</label>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>Desde</label>
+                                            <input class="form-control datepickers" readonly />
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label>Hasta</label>
+                                            <input class="form-control datepickers" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 border rounded p-1 m-1">
+                                    <label>Por Fecha de Vencimiento</label>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>Desde</label>
+                                            <input class="form-control datepickers" readonly />
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label>Hasta</label>
+                                            <input class="form-control datepickers" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-sm-12 border rounded p-1 m-1">
+                                    <label>Por Tipo de Documento</label>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>Desde</label>
+                                            <input type="text" class="form-control alert-warning" alert-warning"maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Tipo de Documento', '/Utilitarios/TipoDocumento', 'nada2', 'm_middle')" />
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label>Hasta</label>
+                                            <input type="text" class="form-control alert-warning" alert-warning"maxlength="11" onkeypress="solo_enteros(event)"  title="Doble Click para buscar" ondblclick="AjaxModalGet('Tipo de Documento', '/Utilitarios/TipoDocumento', 'nada2', 'm_middle')" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="card">
+                            <div class="card-header text-danger font-weight-bold">Tipo de Impresi&oacute;n</div>
+                            <div class="card-body row">
+                                <div class="col-sm-6 text-center">
+                                    <input type="radio" name="i_tipo" checked /><br />
+                                    Resumido
+                                </div>
+                                <div class="col-sm-6 text-center">
+                                    <input type="radio" name="i_tipo" /><br />
+                                    Con agrupaciones
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="col-sm-12">
+                    <a href="#" class="btn btn-primary">
+                        <i class='fa fa-print'></i>
+                        Imprimir
+                    </a>
+                </div>
+            </div>
+            <div class="tab-pane fade show" id="adicional" role="tabpanel" aria-labelledby="datos-tab">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="card">
+                            <div class="card-header text-danger font-weight-bold">Filtros</div>
+                            <div class="card-body row">
+                                    <label>Por Fecha de Canje</label>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>Desde</label>
+                                            <input class="form-control datepickers" readonly />
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label>Hasta</label>
+                                            <input class="form-control datepickers" readonly />
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="col-sm-12">
+                    <a href="#" class="btn btn-primary">
+                        <i class='fa fa-print'></i>
+                        Imprimir
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

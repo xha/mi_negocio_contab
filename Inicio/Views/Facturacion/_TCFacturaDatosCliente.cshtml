@@ -1,0 +1,102 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6">
+            <b>DOCUMENTO: </b>&nbsp;
+            <b>FACTURA</b>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <label>Serie</label>
+            <select class="form-control">
+                <option>001</option>
+                <option>002</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>C&oacute;digo</label>
+            <input type="text" class="form-control alert-warning" onkeypress="solo_enteros(event)" maxlength="11" title="Doble Click para buscar" ondblclick="AjaxModalGet('Clientes', '/Cliente/Clientes', 'nada2', 'm_middle')" />
+        </div>
+        <div class="col-sm-3">
+            <label>RUC</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-4">
+            <label>Nombre o Razón Social</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-5">
+            <label>Direcci&oacute;n</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>Tel&eacute;fono</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-5">
+            <label>Referencia</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <br />
+            <input type="checkbox" id="i_rango" />&nbsp;
+            Generar Gu&iacute;a
+        </div>
+        <div class="row col-sm-9 d-none" id="div_guia">
+            <div class="col-sm-3">
+                <label>Serie Gu&iacute;a</label>
+                <select class="form-control">
+                    <option>001</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label>Direcci&oacute;n de Entrega</label>
+                <input type="text" class="form-control alert-warning" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Dirección de Entrega', '/Cliente/DireccionCliente', 'nada2', 'm_middle')" />
+            </div>
+            <div class="col-sm-3">
+                <label>Transportista</label>
+                <input type="text" class="form-control alert-warning" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick=" AjaxModalGet('Transportista', '/Transportista/Transportistas' , 'nada2' , 'm_middle' )" />
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <button class="btn btn-success" onclick="AjaxModalGet('Venta al Público - Factura', '/Facturacion/TCDetalleFacturacion', 'nada2', 'm_middle')">
+                <i class='fa fa-save'></i>
+                Aceptar
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('input[type=checkbox]').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+        });
+
+        $('#i_rango').on('ifChecked', function () {
+            activa_guia(1);
+        })
+
+        $('#i_rango').on('ifUnchecked', function () {
+            activa_guia(0);
+        })
+    });
+
+    function activa_guia(valor) {
+        if (valor == 1) {
+            $("#div_guia").removeClass("d-none");
+        } else {
+            $("#div_guia").addClass("d-none");
+        }
+    }
+</script>

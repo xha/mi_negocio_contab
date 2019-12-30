@@ -1,0 +1,339 @@
+﻿@model Datos.Models.FacturacionModel
+
+@{
+    ViewBag.Title = "Resumen de Facturación";
+    //Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+    </div>
+    <hr />
+    <!-- Cajas de Texto -->
+    <div class="row">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Ingresos</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">$ @ViewBag.total_ventas</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Importe de las Ventas</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">$ @ViewBag.total_importe</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-bar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Ticket Promedio</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.total_ticket</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-area fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Nro. de Ventas</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.nro_ventas</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-pie fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Cajas de Texto -->
+    <!-- Gráficos -->
+    <div class="row p-2">
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Ventas por Vendedor</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_vendedores"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Ventas por Unidad de Negocio</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_unidades"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row p-2">
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Ventas por Regiones</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_regiones"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Global de este mes</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_global"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Gráficos -->
+</div>
+<script type="text/javascript">
+    var vendedor_1 = @Html.Raw(Json.Encode(@ViewData["vendedor_1"]));
+    var vendedor_2 = @Html.Raw(Json.Encode(@ViewData["vendedor_2"]));
+    var vendedor_3 = @Html.Raw(Json.Encode(@ViewData["vendedor_3"]));
+    var vendedor_4 = @Html.Raw(Json.Encode(@ViewData["vendedor_4"]));
+    var vendedor_5 = @Html.Raw(Json.Encode(@ViewData["vendedor_5"]));
+    var unidad_1 = @Html.Raw(Json.Encode(@ViewData["unidad_1"]));
+    var unidad_3 = @Html.Raw(Json.Encode(@ViewData["unidad_2"]));
+    var unidad_2 = @Html.Raw(Json.Encode(@ViewData["unidad_3"]));
+    var meses = @Html.Raw(Json.Encode(@ViewData["meses"]));
+    var region_1 = @Html.Raw(Json.Encode(@ViewData["region_1"]));
+    var region_3 = @Html.Raw(Json.Encode(@ViewData["region_2"]));
+    var region_2 = @Html.Raw(Json.Encode(@ViewData["region_3"]));
+    var pedidos_rechazados = @Html.Raw(Json.Encode(@ViewData["pedidos_rechazados"]));
+    var i;
+
+    Highcharts.chart('div_vendedores', {
+        chart: {
+            height: 310,
+            type: 'line'
+        },
+        title: {
+            text: ' .'
+        },
+        xAxis: {
+            categories: meses
+        },
+        yAxis: {
+            title: {
+                text: 'Vendedores'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: false
+                },
+                enableMouseTracking: true
+            }
+        },
+        series: [{
+            name: 'Vendedor 1',
+            data: vendedor_1,
+            color: '#2f7ed8'
+        },{
+            name: 'Vendedor 2',
+            data: vendedor_2,
+            color: '#0d233a'
+        },{
+            name: 'Vendedor 3',
+            data: vendedor_3,
+            color: '#8bbc21'
+        },{
+            name: 'Vendedor 4',
+            data: vendedor_4,
+            color: '#910000'
+        },{
+            name: 'Vendedor 5',
+            data: vendedor_5,
+            color: '#1aadce'
+        },],
+        /*tooltip: {
+            formatter: function() {
+                return this.x + ', ' + this.y;
+            }
+        },*/
+    });
+
+    Highcharts.chart('div_unidades', {
+        chart: {
+            height: 310,
+            type: 'column'
+        },
+        title: {
+            text: '.'
+        },
+        xAxis: {
+            categories: meses,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Unidad de Negocio'
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} $</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: 'Unidad 1',
+            data: unidad_1
+        },{
+            name: 'Unidad 2',
+            data: unidad_2
+        },{
+            name: 'Unidad 3',
+            data: unidad_3
+        }]
+    });
+
+    Highcharts.chart('div_regiones', {
+        chart: {
+            height: 310,
+            type: 'line'
+        },
+        title: {
+            text: ' .'
+        },
+        xAxis: {
+            categories: meses
+        },
+        yAxis: {
+            title: {
+                text: 'Regiones'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Región 1',
+            data: region_1
+        },{
+            name: 'Región 2',
+            data: region_2
+        },{
+            name: 'Región 3',
+            data: region_3
+        }]
+    });
+
+    Highcharts.chart('div_global', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie',
+            height: 310,
+        },
+        title: {
+            text: '.'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.y}</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f}%',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            name: 'Total',
+            colorByPoint: true,
+            data: [{
+                name: 'Ventas',
+                y: @ViewBag.nro_ventas,
+                sliced: true,
+                selected: true
+            }, {
+                name: 'Notas de Entrega',
+                y: @ViewBag.nro_notas_entrega,
+            }, {
+                name: 'Devoluciones',
+                y: @ViewBag.nro_devoluciones,
+            }, {
+                name: 'Presupuestos',
+                y: @ViewBag.nro_presupuestos,
+            }]
+        }]
+    });
+</script>
+
+

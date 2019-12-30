@@ -1,0 +1,162 @@
+@model Datos.Models.AlmacenesModel
+
+@{
+    ViewBag.Title = "";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Almacenes", "Index", "Almacenes")</li>
+                    <li class="breadcrumbs-item">Reportes</li>
+                    <li class="breadcrumbs-item">Almac&eacute;n</li>
+                    <li class="breadcrumbs-item active">Reporte de Kardex de Art&iacute;culos</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>Reporte de Kardex de Art&iacute;culos</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Reporte de Kardex de Articulos - Inicio', '/Almacenes/Ayuda', 'RAKAIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Art&iacute;culos</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label>Todos</label>
+                                <input type="radio" name="i_articulo" id="i_todos" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label>Rango</label>
+                                <input type="radio" name="i_articulo" id="i_rango" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <label>De</label>
+                            </div>
+                            <div class="col-sm-5">
+                                @Html.TextBoxFor(m => m.CodigoProducto, new { @class = "form-control alert-warning", @id = "i_desde", @maxlength = "20", @disabled = true, onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Artículos', '/Articulo/Articulos', 'nada')" })
+                            </div>
+                            <div class="col-sm-1">
+                                <label>A</label>
+                            </div>
+                            <div class="col-sm-5">
+                                @Html.TextBoxFor(m => m.CodigoProducto, new { @class = "form-control alert-warning", @id = "i_hasta", @maxlength = "20", @disabled = true, onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Artículos', '/Articulo/Articulos', 'nada')" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Rango de Fechas</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Desde</label>
+                                <input type="text" class="form-control datepickers" readonly />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Hasta</label>
+                                <input type="text" class="form-control datepickers" readonly />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Tipo</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="radio" name="i_tipo" />&nbsp;
+                                <label>Detalle</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="radio" name="i_tipo" />&nbsp;
+                                <label>Hasta</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input type="checkbox" name="i_tipo" />&nbsp;
+                                <label>Con Referencia</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="#" class="btn btn-primary">
+                    <i class='fa fa-print'></i>
+                    Imprimir
+                </a>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(function () {
+        $("#i_todos")[0].checked = true;
+    });
+    //$('#opt').on('ifChanged', function (event) { $(event.target).trigger('change'); });
+    $('#i_todos').on('ifChecked', function () {
+        activa_articulos(0);
+    })
+
+    $('#i_rango').on('ifChecked', function () {
+        activa_articulos(1);
+    })
+
+    function activa_articulos(valor) {
+        var desde = $("#i_desde")[0];
+        var hasta = $("#i_hasta")[0];
+
+        if (valor == 1) {
+            desde.disabled = false;
+            hasta.disabled = false;
+        } else {
+            desde.disabled = true;
+            hasta.disabled = true;
+        }
+    }
+
+    function nada(codigo, descripcion) {
+        $('#m_central').modal('hide');
+    }
+</script>

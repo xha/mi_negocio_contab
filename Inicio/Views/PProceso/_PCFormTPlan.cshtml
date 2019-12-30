@@ -1,0 +1,268 @@
+﻿
+<div class="container-fluid">
+
+
+    @model Datos.PlanillaModels.PMaestraModel
+
+    <input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+
+    <div class="container-fluid">
+
+   
+
+
+
+        <div class="row">
+        
+
+
+
+
+            <div class="col-4">
+
+
+
+                <div class="card" style="min-height: 13.3rem">
+                    <div class="card-header">
+                        <h5> Formatos </h5>
+                    </div>
+                    <div class="card-body text-center">
+
+
+                        <div class="list-group">
+                            <a href="#" class="list-group-item list-group-item-action active">
+                                Cras justo odio
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+                            <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
+                            <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+                            <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+                        </div>
+                        <div class="row">
+                            <div class="col-auto mt-2 ">
+                                <button class="btn btn-success" onclick="$('#abrete')[0].style.display='flex'">
+                                    <i class='fa fa-plus'></i>
+                                    Agregar
+                                </button>
+                                <button class="btn btn-primary mt-1" >
+                                    <i class='fa fa-plus'></i>
+                                    Editar
+                                </button>
+                                <button class="btn btn-danger mt-1">
+                                    <i class='fa fa-trash'></i>
+                                    Reporte
+                                </button>
+                            </div>
+                            <div class="col">
+                            <!--Formulario-->
+
+
+                                <div class="card shadow  animated bounce mt-2" s id="abrete" style="display: none">
+                                    <div class="card-header font-weight-bold">
+                                        Formato de Planilla
+                                        <button type="button" class="close" onclick="$('#abrete')[0].style.display='none'" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+
+
+                                        <div class="row">
+                                            <div class="col-md-12 ">
+                                                <label>Nombre del Formato</label>
+                                                <input class="form-control " />
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group row mt-1 text-right">
+                                            <div class="col-sm-12">
+                                                <a href="#" class="btn btn-success">
+                                                    <i class='fa fa-save'></i>
+                                                    Aceptar
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+ 
+
+
+
+            </div>
+
+
+
+
+
+
+
+            <div class="col-8">
+
+
+
+
+                <div class="card" style="min-height: 13.3rem">
+                    <div class="card-header">
+                        <h5> Conceptos de Formato</h5>
+                    </div>
+                    <div class="card-body text-center">
+
+
+                        <div class="row">
+                            <div class="col-auto mb-1 ">
+                                <button class="btn btn-success" onclick="AjaxModalGet('Referencias', '/PMaestra/Referencias', 'nada2', 'm_middle')">
+                                    <i class='fa fa-plus'></i>
+                                    Agregar
+                                </button>
+
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered table-striped pre-scrollable " id="Paso3Grid" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Cod&iacute;go</th>
+                                    <th>Nombre</th>
+                                    <th>Plantilla</th>
+                                    <th>T</th>
+                                    
+                                    <th style="width: 5px" class="text-center"></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+
+
+
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+
+
+    </div>
+
+</div>
+
+    <script>
+    $(function () {
+        $("#Paso3Grid").DataTable({
+            destroy: true,
+            processing: true,
+            serverSide: true,
+            filter: true,
+            orderMulti: false,
+            info: false,
+            ajax: {
+                url: ruta_actual + "/PAsistencia/GridAsistencia",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE_TRABAJADOR" },
+                               { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE_TRABAJADOR" },
+                {
+                     render: function (data, type, row) {
+                         return '<a class="btn btn-info grid_opt" title="Editar" onclick="AjaxModalGet(\'Edición de Plantilla\',\'/PProceso/POCEditRemun\', \'nada2\', \'m_middle\')" href="#"><i class="fa fa-edit"></i></button>';
+                          }
+                      },
+                     {
+                         data: null, render: function (data, type, row) {
+                             return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CODIGO + '\')"><i class="fa fa-trash"></i></button>';
+
+                         }
+
+                     },
+            ]
+        });
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('#c_centro_todas').on('ifUnchecked', function (event) {
+        $("#c_centro_uno")[0].style.display = "flex";
+    });
+
+    $('#c_centro_todas').on('ifChecked', function (event) {
+        $("#c_centro_uno")[0].style.display = "none";
+    });
+
+    $('#c_area_todas').on('ifUnchecked', function (event) {
+        $("#c_area_uno")[0].style.display = "flex";
+    });
+
+    $('#c_area_todas').on('ifChecked', function (event) {
+        $("#c_area_uno")[0].style.display = "none";
+    });
+
+    $('#totals').on('ifChecked', function (event) {
+        $("#Aparecer")[0].style.display = "flex";
+
+    });
+    $('#totals').on('ifUnchecked', function (event) {
+        $("#Aparecer")[0].style.display = "none";
+    });
+
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+    $('#area_radio').on('ifChecked', function (event) {
+        $("#mp_area")[0].style.display = "block";
+        $("#mp_centro")[0].style.display = "none";
+    });
+
+    $('#area_radio').on('ifUnchecked', function (event) {
+        $("#mp_area")[0].style.display = "none";
+        $("#mp_centro")[0].style.display = "block";
+    });
+
+    function cambia_fecha(valor) {
+        if (valor == "") {
+            $("#fecha_ingreso")[0].style.display = "none";
+        } else {
+            $("#fecha_ingreso")[0].style.display = "flex";
+        }
+    }
+    </script>
+
+
+
+
+
+
+
+</div>
+
+ 

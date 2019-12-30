@@ -1,0 +1,28 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Compra</label>
+            @Html.TextBoxFor(m => m.ESCALA_MINIMA, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_decimal(event,this)" })
+        </div>
+        <div class="col-sm-3">
+            <label>Venta</label>
+            @Html.TextBoxFor(m => m.ESCALA_MAXIMA, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_decimal(event,this)" })
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('PTMTCAIndex', 'Maestro')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>

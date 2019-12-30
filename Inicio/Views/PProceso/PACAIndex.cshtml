@@ -1,0 +1,167 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "Cierre y Reapertura de Cronograma";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item">Procesos</li>
+                    <li class="breadcrumbs-item">Aperturas</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda PMaestra - @ViewBag.Title - Inicio ', '/PProceso/Ayuda', 'PACAIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-8"></div>
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label class="left">
+                        <input type="radio" name="i_paca" />&nbsp;
+                        Cierre
+                    </label>
+                </div>
+                <div class="col-sm-6">
+                    <label class="right">
+                        <input type="radio" name="i_paca" />&nbsp;
+                        Reapertura
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-1">
+        <div class="col-sm-4">
+            <div class="card shadow">
+                <div class="card-header text-danger">
+                    Meses Activos
+                </div>
+                <div class="card-body">
+                    <label class="btn btn-outline-secondary text-left w-100" onclick="$('#f_seleccion').html('Enero 2020')">
+                        <i class="fa fa-lock"></i>&nbsp;
+                        Enero 2020
+                    </label>
+                    <label class="btn btn-outline-secondary text-left w-100" onclick="$('#f_seleccion').html('Diciembre 2020')">
+                        <i class="fa fa-lock"></i>&nbsp;
+                        Diciembre 2019
+                    </label>
+                    <label class="btn btn-outline-secondary text-left w-100" onclick="$('#f_seleccion').html('Noviembre 2020')">
+                        <i class="fa fa-lock"></i>&nbsp;
+                        Noviembre 2019
+                    </label>
+                    <label class="btn btn-outline-secondary text-left w-100" onclick="$('#f_seleccion').html('Octubre 2020')">
+                        <i class="fa fa-lock"></i>&nbsp;
+                        Octubre 2019
+                    </label>
+                    <div class="col-sm-12 mt-3 text-center">
+                        <button class="btn btn-secondary">
+                            <i class="fa fa-unlock"></i>&nbsp;
+                            Apertura del Mes
+                        </button>
+                    </div>
+                </div>
+            </div>   
+        </div>
+        <div class="col-sm-8">
+            <div class="card shadow">
+                <div class="card-header text-danger">
+                    Cronogramas de Pago - <b id="f_seleccion"></b>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped pre-scrollable datatables" id="PACAIndexGrid" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Cronograma</th>
+                                    <th>Fecha Inicial</th>
+                                    <th>Fecha Final</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-12 text-right">
+                            <button class="btn btn-primary">
+                                <i class="fa fa-check"></i>&nbsp;
+                                Cierre
+                            </button>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+    $(function () {
+        /*$("#PACAIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+
+            ajax: {
+                url: ruta_actual + "/PMaestra/GridPACA",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [3,4,5],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                { data: "CODIGO" },
+                { data: "DESCRIPCION" },
+                { data: "CUENTA_CONTABLE" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="mostrar_panel(\'PACAEdit?Codigo=' + row.CODIGO + '\', \'PMaestra\')" ><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CODIGO + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Imprimir" href="#"><i class="fa fa-print"></i></a>';
+                    }
+                },
+            ]
+        });*/
+    });
+</script>

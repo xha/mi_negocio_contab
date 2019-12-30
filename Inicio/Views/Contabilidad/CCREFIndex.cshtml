@@ -1,0 +1,112 @@
+@model Datos.ContabilidadModels.ContabilidadModel
+
+@{
+    ViewBag.Title = "Configuracion de Formas en el Plan Contable";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Contabilidad", "Index", "Contabilidad")</li>
+                    <li class="breadcrumbs-item">Base de Datos</li>
+                    <li class="breadcrumbs-item">Plan de Cuentas</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5><b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Contabilidad/Ayuda', 'CCREFIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row mt-1">
+        <div class="col-sm-4">
+            <label>
+              <input type="radio" name="i_ccref" /> &nbsp;
+              Estado de Situaci&oacute;n Financiera
+            </label>  
+        </div>
+        <div class="col-sm-4">
+          <label>
+            <input type="radio" name="i_ccref" /> &nbsp;
+            Estado de Resultados
+          </label>
+        </div>
+        <div class="col-sm-2">
+          <label>
+            <input type="radio" name="i_ccref" /> &nbsp;
+            Todos
+          </label>
+        </div>
+        <div class="col-sm-2">
+          <label>
+            <input type="radio" name="i_ccref" /> &nbsp;
+            Pendientes
+          </label>
+        </div>
+    </div>
+
+    <div class="card shadow mt-1">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="CCREFIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                      <tr>
+                        <th>C&oacute;digo</th>
+                        <th>Descripci&oacute;n</th>
+                        <th>Estandar</th>
+                        <th>Tributario</th>
+                        <th style="width: 5px"></th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+    $(function () {
+        $("#CCREFIndexGrid").DataTable({
+            destroy: true,
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            ajax: {
+                url: ruta_actual + "/Contabilidad/GridPlanCuentas",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [4],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                { data: "CODIGO" },
+                { data: "DESCRIPCION" },
+                { data: "ESTANDAR" },
+                { data: "ESTANDAR" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-secondary grid_opt" title="Replicar" href="#" ><i class="fa fa-undo"></i></a>'; }
+                },
+            ]
+        });
+    });
+</script>

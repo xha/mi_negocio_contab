@@ -1,0 +1,196 @@
+﻿<div class="container-fluid">
+
+
+    <div class="card mt-1">
+      
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-12 col-lg-6">
+                    Nombre Del Cliente
+                    <input type="text" class="form-control text-center"  />
+                </div>
+                <div class="col-md-12 col-lg-6">
+                    Fecha Inicio De C&aacute;lculo
+                    <input class="form-control datepickers" readonly />
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12 col-lg-6">
+                    Fecha de Pago de CTS No Depositada 
+                    <input class="form-control datepickers" readonly  />
+                </div>
+
+                <div class="col-md-12 col-lg-6">
+                
+                        Tasa de inter&egrave;s (%)
+                    <input class="form-control" />
+                </div>
+
+            </div>
+
+
+            <div class="card-body">
+                <div class="bd-example">
+      
+                         <div class="table-responsive">
+                             <p class="text-center border ">Periodos CTS no depositada</p>
+                        <table class="table table-bordered table-striped pre-scrollable datatables dataTable no-footer" style="cursor: pointer; width: 100%;" id="PCBSLIndexGrid" role="grid" aria-describedby="PCBSLIndexGrid_info" width="100%" cellspacing="0">
+                            <thead>
+                                <tr role="row">
+                                    <th class="sorting_asc" tabindex="0" aria-controls="PCBSLIndexGrid" rowspan="1" colspan="1" style="width: 54px;" aria-sort="ascending" aria-label="Codigo: activar para ordenar columnas descendientes">
+                                      #
+                                    </th>   
+                                    <th class="sorting_asc" tabindex="0" aria-controls="PCBSLIndexGrid" rowspan="1" colspan="1" style="width: 54px;" aria-sort="ascending" aria-label="Codigo: activar para ordenar columnas descendientes">
+                                      C&oacute;digo
+                                    </th>
+                                    <th class="sorting_asc" tabindex="0" aria-controls="PCBSLIndexGrid" rowspan="1" colspan="1" style="width: 54px;" aria-sort="ascending" aria-label="Codigo: activar para ordenar columnas descendientes">
+                                    Inicio Periodo
+                                    </th>
+                                    <th class="sorting_asc" tabindex="0" aria-controls="PCBSLIndexGrid" rowspan="1" colspan="1" style="width: 54px;" aria-sort="ascending" aria-label="Codigo: activar para ordenar columnas descendientes">
+                                    Fiin de Periodo
+                                    </th>
+                                    <th class="sorting_asc" tabindex="0" aria-controls="PCBSLIndexGrid" rowspan="1" colspan="1" style="width: 54px;" aria-sort="ascending" aria-label="Codigo: activar para ordenar columnas descendientes">
+                                       Mes
+                                    </th>
+                                    <th class="sorting_asc" tabindex="0" aria-controls="PCBSLIndexGrid" rowspan="1" colspan="1" style="width: 54px;" aria-sort="ascending" aria-label="Codigo: activar para ordenar columnas descendientes">
+                                      D&iacute;as
+                                    </th>
+                                    <th class="sorting_asc" tabindex="0" aria-controls="PCBSLIndexGrid" rowspan="1" colspan="1" style="width: 54px;" aria-sort="ascending" aria-label="Codigo: activar para ordenar columnas descendientes">
+                                       Remuneraci&oacute;n
+                                    </th>
+                                    <th class="sorting_asc" tabindex="0" aria-controls="PCBSLIndexGrid" rowspan="1" colspan="1" style="width: 54px;" aria-sort="ascending" aria-label="Codigo: activar para ordenar columnas descendientes">
+                                      Monto CTS no Depositado
+                                    </th>
+                                    <th class="sorting_asc" tabindex="0" aria-controls="PCBSLIndexGrid" rowspan="1" colspan="1" style="width: 54px;" aria-sort="ascending" aria-label="Codigo: activar para ordenar columnas descendientes">
+                                    Inter&eacute;s CTS
+                                       </th>                            
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <tr role="row" class="odd">
+                                    <td class="sorting_1">
+                                     1
+                                    </td>
+                                    <td>
+                                        01/10/2019
+                                    </td>
+                                    <td>
+                                        01/10/2019
+                                    </td>
+                                    <td>
+                                        30/10/2019
+                                    </td>
+                                    <td class="sorting_1">
+                                        REGISTRO XXX
+                                    </td>
+                                    <td>
+                                        01/10/2019
+                                    </td>
+                                    <td>
+                                        01/10/2019
+                                    </td>
+                                    <td>
+                                        30/10/2019
+                                    </td>
+                                    <td>
+                                        30/10/2019
+                                    </td>
+                                </tr>
+                                <tr role="row" class="even">
+                                    <td class="sorting_1">
+                                        2
+                                    </td>
+                                    <td>
+                                        30/10/2019
+                                    </td>
+                                    <td>
+                                        30/10/2019
+                                    </td>
+                                    <td>
+                                        30/10/2019
+                                    </td>
+                                    <td class="sorting_1">
+                                        REGISTRO XXX
+                                    </td>
+                                    <td>
+                                        01/10/2019
+                                    </td>
+                                    <td>
+                                        01/10/2019
+                                    </td>
+                                    <td>
+                                        30/10/2019
+                                    </td>
+                                    <td>
+                                        30/10/2019
+                                    </td>
+                                </tr>
+                           </tbody>
+                        </table>
+                    </div>
+                  
+                    <hr />
+                    <div class="row justify-content-end">
+
+                        <div class="col-md-6 col-lg-4 ">
+                           Total CTS no depositada
+                            <input type="text" class="form-control" placeholder="00.00" />
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <hr />
+    <div class="row justify-content-between">
+        <div class="col-md-12 justify-content-sm-center col-lg-6 clearfix mt-1">
+            <button class="btn btn-secondary ">
+                <i class="fa fa-print"></i>
+              Eliminar
+            </button>
+
+
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+               Recalcular
+            </a>
+        </div>
+        <div class="col-md-12 col-lg-6 clearfix mt-1 text-md-right  text-ms-center ">
+           
+             <button class="btn btn-secondary ">
+                <i class="fa fa-print"></i>
+                Aceptar
+            </button>
+
+
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Cancelar
+            </a>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+</script>

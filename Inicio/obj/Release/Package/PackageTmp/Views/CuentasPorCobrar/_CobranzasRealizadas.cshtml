@@ -1,0 +1,68 @@
+﻿<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered pre-scrollable datatables tabla_modal" id="MCobranzasRealizadasGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Moneda</th>
+                            <th>Mto MN</th>
+                            <th>Mto ME</th>
+                            <th>Cambio</th>
+                            <th style="width: 5px;" class="asd"></th>
+                            <th style="width: 5px;" class="asd"></th>
+                            <th style="width: 5px;" class="asd"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#MCobranzasRealizadasGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+
+            ajax: {
+                url: ruta_actual + "/CuentasPorCobrar/GridCobranzasRealizadas",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "FechaEmision" },
+                { data: "Moneda" },
+                { data: "MontoMN" },
+                { data: "MontoME" },
+                { data: "TipoCambio" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt asd" title="Cobranzas" href="#" onclick="AjaxModalGet(\'Registro de Cobranzas Realizadas\', \'/CuentasPorCobrar/DetalleCobranzasRealizadas\', \'nada2\', \'m_middle\')"><i class="fa fa-money-check"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-info grid_opt asd " title="Editar" href="#" onclick="AjaxModalGet(\'Registro de Cobranzas Realizadas\', \'/CuentasPorCobrar/DetalleCobranzasRealizadas\', \'nada2\', \'m_middle\')"><i class="fa fa-edit"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt asd" title="Eliminar" href="#" onclick="anular_nota(\'' + row.Id + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+            ],
+            "initComplete": function (settings, json) {
+                if ($("#parametro")[0].value == "1") {
+                    $(".asd").css("display", "none");
+                }
+            }
+        });
+    });
+</script>

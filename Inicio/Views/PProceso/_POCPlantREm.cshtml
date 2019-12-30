@@ -1,0 +1,492 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+
+
+
+
+
+
+    <div class="row">
+        <div class="col-12 col-lg-6">
+
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header">
+                    <h5> Relaci&oacute;n de Trabajadores</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+
+
+                        <div class="col-12">
+
+
+                            <div class="table-responsive">
+
+                                <table class="table table-bordered table-striped pre-scrollable datatables" id="PIRBIndexGrid" cellspacing="0" style="width:2220px;;">
+                                    <thead>
+                                        <tr>
+                                            <th>C&oacute;d. Trab.</th>
+                                            <th>Apellido y Nombres</th>
+                                            <th>B&aacute;sico</th>
+                                            <th>Aasignaci&oacute;n Framiliar</th>
+                                            <th>Tipo de Documento</th>
+                                            <th>N° Documento</th>
+                                            <th>Cod. Centro Costo</th>
+                                            <th>Centro de Costo</th>
+                                            <th>C&oacute;d. Area</th>
+                                            <th>Area de Trabajo</th>
+                                            <th>Fondo de Pensiones</th>
+                                            <th>Nombre Fondo Pensiones</th>
+                                            <th>Situaci&oacute;n</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr>
+                                            <th>xxx</th>
+                                            <th>xxxx</th>
+                                            <th>xxx</th>
+                                            <th>xxxx</th>
+                                            <th>xxx</th>
+                                            <th>xxxx</th>
+                                            <th>xxx</th>
+                                            <th>xxxx</th>
+                                            <th>xxx</th>
+                                            <th>xxxx</th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+
+
+
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-12 col-lg-6">
+
+
+            <div class="card shadow mt-1">
+
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col border-bottom text-center"> <p>INFORMATIVOS</p></div>
+
+                    </div>
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered table-striped pre-scrollable datatables" id="PIRBIndexGrid" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Concepto</th>
+                                    <th>Valor</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <th>xxx</th>
+                                    <th>xxxx</th>
+
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <br />
+    <di class="row">
+        <div class="col-12 ">
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header">
+                    <h5> Informaci&oacute;n por Trabajador</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+
+
+                            <div class="card shadow mt-1">
+
+                                <div class="card-body">
+                                    <div class="row mb-2">
+                                        <div class="col border-bottom text-center"> <p>INGRESOS</p></div>
+
+                                    </div>
+                                    <div class="table-responsive">
+
+                                        <table class="table table-bordered table-striped pre-scrollable datatables" id="PIRBIndexGrid" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Concepto</th>
+                                                    <th>Importe</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr>
+                                                    <th>xxx</th>
+                                                    <th>xxxx</th>
+
+
+
+                                                </tr>
+                                            </tbody>
+
+                                        </table>
+
+                                    </div>
+                                    <div class="row justify-content-end">
+                                        <div class="col-auto">
+                                            <form class="form-inline">
+                                                <label class="col-form-label mr-1">
+                                                    Total ingresos
+                                                </label>
+                                                <input class="form-control" />
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <div class="card shadow mt-1">
+
+                                <div class="card-body">
+                                    <div class="row mb-2">
+                                        <div class="col border-bottom text-center"> <p> EGRESOS</p></div>
+
+                                    </div>
+                                    <div class="table-responsive">
+
+                                        <table class="table table-bordered table-striped pre-scrollable datatables" id="PIRBIndexGrid" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Concepto</th>
+                                                    <th>Importe</th>
+
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr>
+                                                    <th>xxx</th>
+                                                    <th>xxxx</th>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="row justify-content-end">
+                                        <div class="col-auto">
+                                            <form class="form-inline">
+                                                <label class="col-form-label mr-1">
+                                                    Total Egresos
+                                                </label>
+                                                <input class="form-control" />
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-12">
+
+
+                            <div class="card shadow mt-1">
+
+                                <div class="card-body">
+                                    <div class="row mb-2">
+                                        <div class="col border-bottom text-center"> <p> APORTES</p></div>
+
+                                    </div>
+                                    <div class="table-responsive">
+
+                                        <table class="table table-bordered table-striped pre-scrollable datatables" id="PIRBIndexGrid" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Concepto</th>
+                                                    <th>Importe</th>
+
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr>
+                                                    <th>xxx</th>
+                                                    <th>xxxx</th>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="row justify-content-end">
+                                        <div class="col-auto">
+                                            <form class="form-inline">
+                                                <label class="col-form-label mr-1">
+                                                    Total Aportes
+                                                </label>
+                                                <input class="form-control" />
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </di>
+
+
+    <br />
+    <div class="row">
+        <div class="col-12 col-lg-4">
+
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header">
+                    <h5> Totales por Trabajador</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label> Redondeo Anterior</label>
+                                <input class="form-control" />
+
+
+                            </div>
+                            <div class="form-group">
+                                <label> Redondeo</label>
+                                <input class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label> Neto</label>
+                                <input class="form-control" />
+
+
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header">
+                    <h5> Totales Generales</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+
+
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label> Total Gen. Ingresos</label>
+                                <input class="form-control" />
+
+
+                            </div>
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="form-group">
+                                    <label>  Trabajadores</label>
+                                    <input class="form-control" />
+                                </div>
+
+                            </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label> Total Gen. Egresos</label>
+                                <input class="form-control" />
+
+                            </div>
+                           </div>
+
+                       
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label> Total Gen.Neto</label>
+                                    <input class="form-control" />
+                                </div>
+
+                            </div>
+
+                     </div>  
+        </div>
+</div>
+            </div>
+        <div class="col-12 col-lg-4">
+
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header">
+                    <h5> VALIDADOR EPS</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label> Factura</label>
+                                <input class="form-control" />
+
+
+                            </div>
+                            <div class="form-group">
+                                <label> Periodo</label>
+                                <input class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label> Importe (inc.IGV)</label>
+                                <input class="form-control" />
+
+
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <hr />
+    <div class="row justify-content-lg-between">
+    <div class="col-lg-auto">
+       <div class="row">
+      <div class="col-md-12 col-lg-auto">
+
+          <button class="btn col-md-12 btn-secondary">Hoja de Trabajo de la Plantilla</button>
+      </div>
+           <div class="col-md-12 col-lg-auto">
+
+               <button class="btn col-md-12 btn-secondary mt-1">Hoja de Trabajo 5ta. Categor&iacute;a</button>    
+           </div>
+       
+           <div class="col-md-12 col-lg-auto">
+               <button class="btn col-md-12 btn-secondary mt-1 ">C&aacute;lculo EPS</button>
+           </div>
+
+      
+
+       </div>
+    
+    </div>
+
+     <div class="col-lg-auto">
+         <button class="btn col-md-12 btn-success mt-1 ">C&aacute;lculo EPS</button>    
+     </div>
+
+
+     </div>
+
+</div>
+
+
+
+
+
+<script>
+
+    $('#totals').on('ifChecked', function (event) {
+        $("#Aparecer")[0].style.display = "flex";
+
+
+    });
+    $('#totals').on('ifUnchecked', function (event) {
+        $("#Aparecer")[0].style.display = "none";
+
+    });
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+</script>

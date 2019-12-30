@@ -1,0 +1,122 @@
+﻿@model Datos.Models.VendedorModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    @Html.HiddenFor(m => m.Id)
+<div class="container-fluid">
+    <table class="w-100">
+        <tr>
+            <td style="width: 50px">
+                <label class="lbr">C&oacute;digo</label>
+            </td>
+            <td style="width: 230px">
+                @Html.TextBoxFor(m => m.RUC, new { @class = "form-control w-75" })
+            </td>
+            <td colspan="6"></td>
+        </tr>
+        <tr>
+            <td>
+                <label class="lbr">Descripci&oacute;n</label>
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.Descripcion, new { @class = "form-control w-75" })
+            </td>
+            <td style="width: 100px">
+                <label class="lbr">Usuario</label>
+            </td>
+            <td style="width: 230px">
+                @Html.TextBoxFor(m => m.Usuario, new { @class = "form-control w-75" })
+            </td>
+            <td colspan="4"></td>
+        </tr>
+        <tr>
+            <td>
+                <label class="lbr">R.U.C.</label>
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.RUC, new { @class = "form-control w-75" })
+            </td>
+            <td>
+                <label class="lbr">D.N.I.</label>
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.DNI, new { @class = "form-control w-75" })
+            </td>
+            <td style="width: 50px">
+                <label class="lbr">Email</label>
+            </td>
+            <td style="width: 230px">
+                @Html.TextBoxFor(m => m.Fax, new { @class = "form-control", @placeholder = "@" })
+            </td>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td>
+                <label class="lbr">Direcci&oacute;n 1</label>
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.Direccion1, new { @class = "form-control w-75" })
+            </td>
+            <td>
+                <label class="lbr">Direcci&oacute;n 2</label>
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.Direccion2, new { @class = "form-control w-75" })
+            </td>
+            <td colspan="4"></td>
+        </tr>
+        <tr>
+            <td>
+                <label class="lbr">Tel&eacute;fono</label>
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control w-75" })
+            </td>
+            <td>
+                <label class="lbr">Fax</label>
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.Fax, new { @class = "form-control w-75" })
+            </td>
+            <td colspan="4"></td>
+        </tr>
+        <tr>
+            <td>
+                <label class="lbr">Referencia</label>
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.Referencia, new { @class = "form-control w-75" })
+            </td>
+            <td>
+                <label class="lbr">Zona de Venta</label>
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.ZonaVenta, new { @class = "form-control w-75" })
+            </td>
+            <td colspan="4"></td>
+        </tr>
+        <tr>
+            <td>
+                <label class="lbr">Notas</label>
+            </td>
+            <td colspan="3">
+                @Html.TextAreaFor(m => m.Notas, new { @class = "form-control" })
+            </td>
+            <td colspan="4"></td>
+        </tr>
+    </table>
+</div>
+<br />
+<div class="container-fluid">
+    <div class="col-sm-4">
+        <a href="@Url.Action("Index", "Vendedor")" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <button class="btn btn-success">
+            <i class='fa fa-plus'></i>
+            Guardar
+        </button>
+    </div>
+</div>
+}

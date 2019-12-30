@@ -1,0 +1,336 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+   
+    <div class="row">
+        <div class="col-12 col-lg-5">
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header">
+                    <h5 >Plantilla de Utilidades</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="row">
+                      
+                        <div class="col-sm-4 mt-1">
+                           Desde
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                        <div class="col-sm-4 mt-1">
+                            Hasta
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                        <div class="col-sm-4  mt-1">
+                             Descripcion
+                            <input class="form-control " readonly />
+                        </div>
+
+
+
+                    </div>
+                    <div class="row  justify-content-center">
+
+                     
+                        <div class="col-sm-4  mt-1">
+                            C&aacute;lculo  por D&iacute;as <br />
+                            <input class="form-check-input position-static" type="radio" name="blankRadio" id="blankRadio1" value="option1" >
+                        </div>
+
+
+                        <div class="col-sm-4  mt-1">
+                          C&aacute;lculo por horas<br />
+                            <input class="form-check-input position-static" type="radio" name="blankRadio" id="blankRadio1" value="option2">
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Varios</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="row">
+                          <button class="btn  btn-primary btn-block">Configurar Conceptos de D&iacute; Efectivos</button>
+                     </div>
+                    <div class="row">
+                      <button class="btn  mt-1 btn-success btn-block">Configure Conceptos de Ingresos</button>
+                    </div>
+                    <div class="row">
+                        <button class="btn mt-1 btn-secondary btn-block" disabled>Configurar Conceptos de D&iacute; No Efectivos (Sab, Dom y Fer)</button>
+                   </div>
+                    <div class="row">
+                        <div class="col"></div>
+                        <div></div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header">
+                    <h5>Plantilla de Utilidades</h5>
+                </div>
+             
+                   <div class="card-body text-center">
+           
+                           <div class="row">
+
+                        <div class="col-sm-6 mt-1">
+                            % de Participaci&oacute;n
+                            <input class="form-control " placeholder="0"  />
+                        </div>
+                        <div class="col-sm-6 mt-1">
+                            Utilidad
+                            <input class="form-control "  />
+                        </div>
+                      
+                    </div>
+
+                       <div class="row">
+
+                           <div class="col-sm-6 mt-1">
+                               Sub Total de la Part. Distribuir
+                               <input class="form-control" placeholder="0.00" readonly />
+                           </div>
+                           <div class="col-sm-6 mt-1">
+                               Utilidades No Cobradas
+                               <input class="form-control " placeholder="0.00"  />
+                           </div>
+
+                       </div>
+                       <div class="row align-items-center">
+
+                           <div class="col-sm-6 mt-1">
+                               Total de Participaci&oacute;n a distribuir
+                               <input class="form-control " readonly  placeholder="0.00"/>
+                           </div>
+                           <div class="col-sm-6 mt-1">
+                             Tipo de Cambio
+                               <input class="form-control "  placeholder="0.00"/>
+                           </div>
+
+                       </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header">
+                    <h5>Importe por cada hota (50%)</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="row">
+
+                        <div class="col-sm-4 mt-1">
+                           Partic. a Distrib.
+                            <input class="form-control " placeholder="0.00" readonly />
+                        </div>
+                        <div class="col-sm-4 mt-1">
+                            Total de Horas Lab.
+                            <input class="form-control "  placeholder="0" readonly />
+                        </div>
+                        <div class="col-sm-4  mt-1">
+                            Imp. x cada Hora 
+                            <input class="form-control " placeholder="0.00" readonly />
+                        </div>
+
+                    </div>
+  
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header">
+                    <h5>Importe por cada Nuevo Sol de Rem. Percibidas</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="row align-items-center">
+
+                        <div class="col-sm-4 mt-1">
+                            Partic. a Distrib.
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                        <div class="col-sm-3 mt-1">
+                            Total de Rem
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                        <div class="col-sm-5  mt-1">
+                             imp. x cada Nuevo Sol (S%)
+                            <input class="form-control " readonly />
+                        </div>
+
+
+
+                    </div>
+            
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <br />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="PAAQIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Apellido y Nombre</th>
+                            <th>Par. Seg&uacute;n Periodo</th>
+                            <th>Par. Seg&uacute;n Rem. Perc.</th>
+                            <th>Total Participaci&oacute;n.</th>
+                     
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>xx</th>
+                            <th>xx</th>
+                            <th>xx</th>
+                            <th>xx</th>
+                            <th>xx</th>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-12  col-md-3 mt-1">
+                    <label> N&uacute;m. Trabs</label>
+                    <input class="form-control " placeholder="0.00" readonly />
+                </div>
+                <div class="col-sm-12  col-md-3 mt-1">
+                    <label> Total x Periodo</label>
+                    <input class="form-control " placeholder="0.00" readonly />
+                </div>
+                <div class="col-sm-12  col-md-3 mt-1">
+                    <label>Total x Rem</label>
+                    <input class="form-control " placeholder="0.00" readonly />
+                </div>
+                <div class="col-sm-12  col-md-3 mt-1">
+                    <label>Total x Planilla</label>
+                    <input class="form-control " placeholder="0.00" readonly />
+                </div>
+            </div>
+              
+        </div>
+    
+</div>
+
+    <br />
+    <div class="card shadow">
+        <div class="card-body">
+
+
+            <div class="row " >
+              
+                <div class="col-sm-12  col-md-3 mt-1">
+                    <label> F. Ingreso</label>
+                    <input class="form-control "  readonly />
+                </div>
+                <div class="col-sm-12  col-md-3 mt-1">
+                    <label> Dias</label>
+                    <input class="form-control " placeholder="0"  />
+                </div>
+                <div class="col-sm-12  col-md-3 mt-1">
+                    <label> Horas</label>
+                    <input class="form-control " placeholder="0"  />
+                </div>
+                <div class="col-sm-12  col-md-3 mt-1">
+                    <label> Total Remuneraci&oacute;n</label>
+                    <input class="form-control " placeholder="0.00" readonly />
+                </div>
+
+             
+            </div>
+            <hr />
+            <div class="table-responsive">
+                <button class="btn btn-success m-1"> Agregar</button>
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="PAAQIndexGrid" cellspacing="0" width="100%">
+   
+                         <thead>
+                        <tr>
+                            <th>Conceptos Computables</th>
+                            <th>Importe</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                    </tbody>
+                </table>
+            </div>
+         
+       
+        </div>
+
+    </div>
+</div>
+    <br />
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="row  justify-content-center">
+                <div class="col-auto ">
+                    <button class="mr-1col-md-12 col-lg-auto btn btn-primary text-center mt-1" onclick="AjaxModalGet('Fórmulas de Gratificaciones', '/PProceso/PCBGFormGrat', 'nada2', 'm_middle')"> Hojas de Trabajo </button>
+ 
+                    <button class="mr-1 btn col-md-12 col-lg-auto btn-warning text-center mt-1" onclick="AjaxModalGet('Fórmulas de Gratificaciones', '/PProceso/PCBGFormGrat', 'nada2', 'm_middle')">Procesar Utilidades</button>
+            
+                    <button class="btn col-md-12 col-lg-auto btn-secondary text-center mt-1" onclick="AjaxModalGet('Fórmulas de Gratificaciones', '/PProceso/PCBGFormGrat', 'nada2', 'm_middle')">Planilla de Utilidades</button>
+                    <button class="mr-1 col-md-12 col-lg-auto btn btn-success text-center mt-1 " onclick="AjaxModalGet('Fórmulas de Gratificaciones', '/PProceso/PCBGFormGrat', 'nada2', 'm_middle')">Guardar</button>
+                </div>
+             
+
+            </div>
+
+    </div>
+</div>
+  
+<script>
+    $('#totals').on('ifChecked', function (event) {
+        $("#Aparecer")[0].style.display = "flex";
+    
+
+    });
+    $('#totals').on('ifUnchecked', function (event) {
+        $("#Aparecer")[0].style.display = "none";
+     
+    });
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+ 
+</script>

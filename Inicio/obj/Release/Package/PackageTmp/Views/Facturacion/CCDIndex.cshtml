@@ -1,0 +1,176 @@
+@model Datos.Models.FacturacionModel
+
+@{
+    ViewBag.Title = "Consulta de Documento";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Facturacion", "Index", "Facturacion")</li>
+                    <li class="breadcrumbs-item">Consultas</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Facturacion/Ayuda', 'CCDIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label>Fecha Desde</label><br />
+                    <input class="form-control datepickers" readonly />
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <label>Fecha Hasta</label><br />
+                <input class="form-control datepickers" readonly />
+            </div>
+            <div class="col-sm-2">
+                <br />
+                <a href="#" class="btn btn-primary">
+                    <i class='fa fa-search'></i>
+                    Buscar
+                </a>
+            </div>
+        </div>
+        <hr />
+    }
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="CCIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Descripci&oacute;n Cliente</th>
+                            <th>Fecha</th>
+                            <th>Importe</th>
+                            <th>Mon</th>
+                            <th>Sit</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(function () {
+        $("#CCIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Facturacion/GridTCV",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [6],
+                orderable: false,
+                searchable: false
+            }, {
+                targets: [7],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [8],
+                searchable: false,
+                orderable: false
+            },
+            {
+                targets: [9],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "Codigo" },
+                { data: "Descripcion" },
+                { data: "FechaEmision" },
+                { data: "ImporteIGV" },
+                { data: "Moneda" },
+                { data: "Sit" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Consultar" href="#" onclick="mostrar_panel(\'CCDDetalle?Codigo=' + row.Codigo + '\', \'Facturacion\')"><i class="fa fa-clipboard-list"></i></a>'; }
+                },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-primary grid_opt" title="Copiar" href="#" onclick="copiar_documento(' + row.Codigo + ')"><i class="fa fa-copy"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-secondary grid_opt" title="Imprimir" href="#"><i class="fa fa-print"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Revertir Impresión" href="#"><i class="fa fa-undo"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+
+    function copiar_documento(codigo) {
+        swal({
+            title: "Información Relevante",
+            text: "Se copiarán los artículos con el stock disponible, sino hay stock para alguno de ellos será omitido",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            cancelButtonClass: "btn-secondary",
+            confirmButtonText: "Aceptar",
+            closeOnConfirm: true
+        },
+        function () {
+            mostrar_panel('PVVIndex?Codigo=' + codigo, 'PuntoVenta');
+        });
+    }
+
+    function anular_nota(id) {
+        $("#document").html(id);
+        $("#m_anular").modal("show");
+    }
+</script>
+

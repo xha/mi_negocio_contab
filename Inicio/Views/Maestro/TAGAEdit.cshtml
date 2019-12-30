@@ -1,0 +1,32 @@
+﻿@model Datos.Models.MaestroModel
+@{
+    ViewBag.Title = "Grupo de Artículos";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Maestro", "Index", "Maestro")</li>
+                    <li class="breadcrumbs-item active">Tablas de Ayuda</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("TAGAIndex", "Maestro")'>@ViewBag.Title</a></li>
+                    <li class="breadcrumbs-item active">Editar</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Editar Registro</label> #<strong>@Model.GRU_CODIGO</strong></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Maestro - @ViewBag.Title - Crear / Editar', '/Maestro/Ayuda', 'TAGADatos', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    @Html.Partial("TAGADatos")
+</div>

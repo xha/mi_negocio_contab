@@ -1,0 +1,81 @@
+﻿@model Datos.Models.VendedorModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosVendedor" }))
+{
+    <div class="row">
+        <div class="col-sm-2">
+            <label>C&oacute;digo / R.U.C.</label>
+            @if (Model.Codigo == "")
+            {
+                @Html.TextBoxFor(m => m.Codigo, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_enteros(event)" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.Codigo, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_enteros(event)", @readonly = "true" })
+            }
+        </div>
+        <div class="col-sm-6">
+            <label>Descripci&oacute;n</label>
+            @Html.TextBoxFor(m => m.Descripcion, new { @class = "form-control", @maxlength = "70", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-2">
+            <label>R.U.C.</label>
+            @Html.TextBoxFor(m => m.Ruc, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-2">
+            <label>D.N.I.</label>
+            @Html.TextBoxFor(m => m.DocumentoIdentidad, new { @class = "form-control", @maxlength = "8", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-3">
+            <label>Email</label>
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @maxlength = "100", onkeypress = "solo_alfanumericos(event)", @placeholder = "@", onblur = "valida_email(this.id)" })
+            <label class="msj_error" id="msj_Email"></label>
+        </div>
+        <div class="col-sm-3">
+            <label>Referencia</label>
+            @Html.TextBoxFor(m => m.Referencia, new { @class = "form-control", @maxlength = "50", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-2">
+            <label>Tel&eacute;fono</label>
+            @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control telefono", @maxlength = "25", onkeypress = "solo_telefono(event)" })
+        </div>
+        <div class="col-sm-2">
+            <label>Teléfono 2</label>
+            @Html.TextBoxFor(m => m.Telefono2, new { @class = "form-control telefono", @maxlength = "25", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-2">
+            <label>Zona de Venta</label>
+            @Html.TextBoxFor(m => m.ZonaVenta, new { @class = "form-control", @maxlength = "50", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <label>Direcci&oacute;n 1</label>
+            @Html.TextBoxFor(m => m.Direccion, new { @class = "form-control", @maxlength = "200", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-6">
+            <label>Direcci&oacute;n 2</label>
+            @Html.TextBoxFor(m => m.Direccion2, new { @class = "form-control", @maxlength = "200", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <label>Notas</label>
+            @Html.TextAreaFor(m => m.Notas, new { @class = "form-control", @maxlength = "255", onkeyup = "textCounter(this.id, 'n_limite', 255)", onkeypress = "solo_alfanumericos(event)" })
+            <label><b id="n_limite">255</b> caract&eacute;res restantes</label>
+        </div>
+    </div>
+}
+<br />
+<div class="row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('Index', 'Vendedor')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <button class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </button>
+    </div>
+</div>

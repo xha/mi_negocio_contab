@@ -1,0 +1,281 @@
+﻿@model Datos.Models.CuentasPorCobrarModel
+
+@{
+    ViewBag.Title = "Resumen de Cuentas por Cobrar";
+    //Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+    </div>
+    <hr />
+    <!-- Cajas de Texto -->
+    <div class="row">
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Cobrado</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="i_total_cobrado">$ @ViewBag.total_cobrado</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Pendiente</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">$ @ViewBag.total_pendientes</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-bar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Total Atrasado</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">$ @ViewBag.total_atrasados</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-area fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Cajas de Texto -->
+    <!-- Gráficos -->
+    <div class="row p-2">
+        <div class="col-sm-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Cobrado</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_cobrado"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Por regi&oacute;n</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_regiones"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Total</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_totales"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Gráficos -->
+</div>
+<script type="text/javascript">
+    var total_cobrado = "@ViewData["total_cobrado"]";
+    total_cobrado = total_cobrado.replace(/\./g, "");
+    total_cobrado = parseFloat(total_cobrado.replace(",","."));
+
+    var total_pendientes = "@ViewData["total_pendientes"]";
+    total_pendientes = total_pendientes.replace(/\./g, "");
+    total_pendientes = parseFloat(total_pendientes.replace(",","."));
+
+    var total_atrasados = "@ViewData["total_atrasados"]";
+    total_atrasados = total_atrasados.replace(/\./g, "");
+    total_atrasados = parseFloat(total_atrasados.replace(",","."));
+
+    var cobrado = @Html.Raw(Json.Encode(@ViewData["cobrado"]));
+    var meses = @Html.Raw(Json.Encode(@ViewData["meses"]));
+    var region1 = @Html.Raw(Json.Encode(@ViewData["region1"]));
+    var region2 = @Html.Raw(Json.Encode(@ViewData["region2"]));
+    var region3 = @Html.Raw(Json.Encode(@ViewData["region3"]));
+    var i;
+
+    Highcharts.chart('div_cobrado', {
+        chart: {
+            height: 310,
+            type: 'column'
+        },
+        title: {
+            text: '.'
+        },
+        xAxis: {
+            categories: meses,
+            crosshair: true,
+            labels: {
+                rotation: -90,
+                style: {
+                    fontSize: '10px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Indicador'
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<b>{point.x}</b><br/>',
+            pointFormat: '{point.y}'
+        },
+        series: [{
+            name: 'Mes',
+            data: cobrado,
+            dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: '{point.y}', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '10px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        }]
+    });
+
+    Highcharts.chart('div_regiones', {
+        chart: {
+            height: 310,
+            type: 'column'
+        },
+        title: {
+            text: '.'
+        },
+        xAxis: {
+            categories: meses,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Regiones'
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} $</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: 'Región 1',
+            data: region1
+        },{
+            name: 'Región 2',
+            data: region2
+        },{
+            name: 'Región 3',
+            data: region3
+        }]
+    });
+
+    Highcharts.chart('div_totales', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie',
+            height: 310,
+        },
+        title: {
+            text: '.'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.y}</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f}%',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            name: 'Total',
+            colorByPoint: true,
+            data: [{
+                name: 'Cobrado',
+                y: total_cobrado,
+                sliced: true,
+                selected: true
+            }, {
+                name: 'Pendiente',
+                y: total_pendientes,
+            }, {
+                name: 'Atrasadas',
+                y: total_atrasados,
+            }]
+        }]
+    });
+</script>
+
+
+
+

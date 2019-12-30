@@ -1,0 +1,130 @@
+@model Datos.Models.BancoModel
+@{
+    ViewBag.Title = "Movimientos Mensuales";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Banco", "Index", "Banco")</li>
+                    <li class="breadcrumbs-item">Reportes</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Banco/Ayuda', 'RMMIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="card row">
+                <div class="card-header text-danger font-weight-bold">Fecha</div>
+                <div class="card-body">
+                    <div class="row col-sm-12">
+                        <label>Desde</label>
+                        <input class="form-control datepickers" readonly/>
+                    </div>
+                    <div class="row col-sm-12">
+                        <label>Hasta</label>
+                        <input class="form-control datepickers" readonly />
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row col-sm-12">
+                <a href="#" class="btn btn-primary">
+                    <i class='fa fa-print'></i>
+                    Imprimir
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-10">
+            <div class="card">
+                <div class="card-header font-weight-bold">Cuentas corrientes disponibles</div>
+                <div class="card-body table-responsive">
+                    <table class="table table-bordered table-striped pre-scrollable datatables" id="RMMIndexGrid" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Nro. de Cuenta</th>
+                                <th>Tipo de Cuenta</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#RMMIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            ajax: {
+                url: ruta_actual + "/Banco/GridCuentasCorrientes",
+                type: "POST",
+                datatype: "json",
+            },
+            'rowGroup': {
+                'dataSrc': 'BAN_DESCRIPCION',
+                'startRender': function (rows, group) {
+                    // Assign class name to all child rows
+                    var groupName = 'group-' + group.replace(/[^A-Za-z0-9]/g, '');
+                    var rowNodes = rows.nodes();
+                    rowNodes.to$().addClass(groupName);
+
+                    // Get selected checkboxes
+                    var checkboxesSelected = $('.dt-checkboxes:checked', rowNodes);
+
+                    // Parent checkbox is selected when all child checkboxes are selected
+                    var isSelected = (checkboxesSelected.length == rowNodes.length);
+
+                    return '<label class="font-weight-bold"><input type="checkbox" class="group-checkbox icheckbox_square-blue" data-group-name="'
+                        + groupName + '"' + (isSelected ? ' checked' : '') + '> ' + group + ' (' + rows.count() + ')</label>';
+                }
+            },
+            columns: [
+                {
+                    'data': 'BAN_CODIGO',
+                    'checkboxes': {
+                        'selectRow': true
+                    }
+                },
+                { data: "NroCuenta" },
+                { data: "TipoDeCuenta" },
+            ]
+        });
+
+        // Handle click event on group checkbox
+        $('#RMMIndexGrid').on('click', '.group-checkbox', function (e) {
+            // Get group class name
+            var groupName = $(this).data('group-name');
+            // Select all child rows
+            $("#RMMIndexGrid").DataTable().cells('tr.' + groupName, 0).checkboxes.select(this.checked);
+        });
+
+        $('#RMMIndexGrid').on('click', 'thead .dt-checkboxes-select-all', function (e) {
+            var $selectAll = $('input[type="checkbox"]', this);
+            setTimeout(function () {
+                // Select group checkbox based on "Select all" checkbox state
+                $('.group-checkbox').prop('checked', $selectAll.prop('checked'));
+            }, 0);
+        });
+    });
+    
+</script>

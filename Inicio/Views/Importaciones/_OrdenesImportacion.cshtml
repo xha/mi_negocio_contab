@@ -1,0 +1,52 @@
+﻿<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered pre-scrollable datatables tabla_modal" id="MOrdenesImportacionGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Fecha de Emisi&oacute;n</th>
+                            <th>Cod. Prov.</th>
+                            <th>Descripcio&oacute;n Prov.</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#MOrdenesImportacionGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+            ajax: {
+                url: ruta_actual + "/Importaciones/GridOrdenImportacion",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "NroOrden" },
+                { data: "FechaEmision" },
+                { data: "CodigoProveedor" },
+                { data: "DescripcionProveedor" },
+            ]
+        });
+
+        /*$('#MOrdenesImportacionGrid tbody').on('click', 'tr', function () {
+            $('#MOrdenesImportacionGrid').dataTable().$('tr').removeClass('bg-secondary text-white');
+            $(this).addClass('bg-secondary text-white');
+        });*/
+
+        $('#MOrdenesImportacionGrid tbody').on('dblclick', 'tr', function () {
+            eval($("#parametro").val() + "('" + this.cells[0].textContent + "','" + this.cells[1].textContent + "','" + this.cells[2].textContent + "')");
+        });
+    });
+</script>

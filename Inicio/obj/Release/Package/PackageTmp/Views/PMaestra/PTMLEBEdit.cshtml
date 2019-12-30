@@ -1,0 +1,33 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+@{
+    ViewBag.Title = "Listado de Entidades Bancarias";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item active">Base de Datos</li>
+                    <li class="breadcrumbs-item active">Tablas de Ayuda</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("PTMLEBIndex", "Maestro")'>@ViewBag.Title</a></li>
+                    <li class="breadcrumbs-item active">Editar</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Editar Registro</label> #<strong>@Model.CODIGO</strong></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Maestro - @ViewBag.Title - Crear / Editar', '/Maestro/Ayuda', 'PTMLEBDatos', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    @Html.Partial("PTMLEBDatos")
+</div>

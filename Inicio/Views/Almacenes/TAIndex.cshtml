@@ -1,0 +1,117 @@
+@model Datos.Models.AlmacenesModel
+
+@{
+    ViewBag.Title = "";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Almacenes", "Index", "Almacenes")</li>
+                    <li class="breadcrumbs-item">Transacciones</li>
+                    <li class="breadcrumbs-item active">Transferencia Autom&aacute;tica</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>Transferencia Autom&aacute;tica</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Transferencia Automatica - Inicio', '/Almacenes/Ayuda', 'TAIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <a href="#" onclick='mostrar_panel("TACreate", "Almacenes")' class="btn btn-success">
+                <i class='fa fa-plus'></i>
+                Agregar
+            </a>
+        </div>
+    </div>
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="TAIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>No. Doc. Ori.</th>
+                            <th>Trans. Ori.</th>
+                            <th>Alm. Des.</th>
+                            <th>No. Doc. Des</th>
+                            <th>Trans. Des</th>
+                            <th>Fecha</th>
+                            <th>Sit</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#TAIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Almacenes/GridTransferenciaAutomatica",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [7],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [8],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "DocumentoOrigen" },
+                { data: "TransOrigen" },
+                { data: "AlmacenDestino" },
+                { data: "DocumentoDestino" },
+                { data: "TransDestino" },
+                { data: "FechaEmision" },
+                { data: "Sit" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="mostrar_panel(\'TAEdit?Codigo=' + row.Codigo + '\', \'Almacenes\')" ><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.Codigo + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Imprimir" href="#"><i class="fa fa-print"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+
+    function anular_nota(id) {
+        $("#document").html(id);
+        $("#m_anular").modal("show");
+    }
+</script>

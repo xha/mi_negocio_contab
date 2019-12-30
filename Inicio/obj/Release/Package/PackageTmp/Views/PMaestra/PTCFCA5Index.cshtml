@@ -1,0 +1,144 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item active">Base de Datos</li>
+                    <li class="breadcrumbs-item active">Tablas de Conceptos y F&oacute;rmulas</li>
+                    <li class="breadcrumbs-item active">Configuraci&oacute;n de Afectaciones 5ta Categor&iacute;a</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>Configuraci&oacute;n de Afectaciones 5ta Categor&iacute;a</b></h5>
+        </div>
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Tabla de Configuracion 5ta Categoria - Inicio ', '/PMaestra/Ayuda', 'PTCFCA5Index', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Formato de Planilla</label><br />
+                <select class="form-control">
+                    <option>Todos</option>
+                    <option>Informativo</option>
+                    <option>Ingreso</option>
+                    <option>Egreso</option>
+                    <option>Aportaci&oacute;n</option>
+                </select>
+            </div>
+            <div class="col-lg-2">
+                <label>&nbsp;</label><br />
+                <a href="#" class="btn btn-primary">
+                    <i class='fa fa-search'></i>
+                    Buscar
+                </a>
+            </div>
+        </div>
+    }
+    <hr />
+    <div class="card shadow">
+        <div class="card-header font-weight-bold text-center">(<b id="total_conceptos">4</b>) CONCEPTOS DE PLANILLA AFECTOS A 5TA. CATEGORIA</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="PTCFCA5IndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Concepto</th>
+                            <th>Cod. SUNAT-PLAME</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Remuneraci&oacute;n proyectable a 12 meses y 2 gratificaciones</th>
+                            <th>Remuneraci&oacute;n proyectable a 12 meses</th>
+                            <th>Remuneraciones no proyectable</th>
+                            <th>Remuneraciones que se retiran en el mes</th>
+                            <th>Remuneraci&oacute;n variable proyectable por 12 meses</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var global = 0;
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $('.checkboxes').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+    $(function () {
+        var table = $("#PTCFCA5IndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            ajax: {
+                url: ruta_actual + "/PMaestra/GridConceptos",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [4,5,6],
+                orderable: false,
+                searchable: false
+            }],
+            drawCallback: function () {
+                $('input[type="checkbox"]').iCheck({
+                    checkboxClass: 'icheckbox_square-blue'
+                });
+            },
+            columns: [
+                {
+                    data: null, render: function (data, type, row)
+                    {
+                        global++;
+                        return global;
+                    }
+                },
+                { data: "CODIGO_CONCEPTO" },
+                { data: "COLUMNA_PLANILLA" },
+                { data: "DESCRIPCION_CONCEPTO" },
+                {
+                    render: function (data, type, row)
+                    { return '<input type="checkbox" />'; }
+                },
+                {
+                    render: function (data, type, row)
+                    { return '<input type="checkbox" />'; }
+                },
+                {
+                    render: function (data, type, row)
+                    { return '<input type="checkbox" />'; }
+                },
+                {
+                    render: function (data, type, row)
+                    { return '<input type="checkbox" />'; }
+                },
+                {
+                    render: function (data, type, row)
+                    { return '<input type="checkbox" />'; }
+                },
+            ]
+        });
+    });
+</script>

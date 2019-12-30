@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Selección de Artículos por Inventariar";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Almacenes", "Index", "Almacenes")</li>
+                    <li class="breadcrumbs-item">Procesos</li>
+                    <li class="breadcrumbs-item">Inventario F&iacute;sico</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("PSAIIndex", "Almacenes")'>@ViewBag.Title</a></li>
+                    <li class="breadcrumbs-item active">Nuevo</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Nuevo  Registro</label></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Crear / Editar', '/Almacenes/Ayuda', 'PSAIDatos', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    @Html.Partial("PSAIDatos")
+</div>
+
+

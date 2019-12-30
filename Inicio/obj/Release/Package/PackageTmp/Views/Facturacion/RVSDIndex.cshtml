@@ -1,0 +1,104 @@
+@model Datos.Models.FacturacionModel
+
+@{
+    ViewBag.Title = "Ventas por Serie / Documentos";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Facturacion", "Index", "Facturacion")</li>
+                    <li class="breadcrumbs-item">Reportes</li>
+                    <li class="breadcrumbs-item">Informes Diarios</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Facturacion/Ayuda', 'RVSDIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Resumen</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <input type="radio" name="i_resumen" />&nbsp;
+                            Resumen de Ventas por D&iacute;a
+                            <br />&nbsp;
+                        </div>
+                        <div class="row">
+                            <input type="radio" name="i_resumen" />&nbsp;
+                            Resumen de Ventas Acumuladas
+                            <br />&nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Ventas por D&iacute;a</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Desde</label><br />
+                                <input class="form-control datepickers" readonly />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Hasta</label><br />
+                                <input class="form-control datepickers" readonly />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Tipo de Documento</label><br />
+                                <select class="form-control">
+                                    <option>FT</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <br />
+                                <input type="checkbox" />&nbsp;
+                                Todos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-print'></i>
+                Imprimir
+            </a>
+        </div>
+    }
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

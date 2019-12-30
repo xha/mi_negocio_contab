@@ -1,0 +1,54 @@
+﻿@model Datos.Models.MaestroModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row p-1">
+        <div class="col-sm-3">
+            <label>Partida Arancelaria</label>
+            @if (Model != null && !String.IsNullOrEmpty(Model.Codigo))
+            {
+                @Html.TextBoxFor(m => m.Codigo, new { @class = "form-control", @readonly = "true" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.Codigo, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_alfanumericos(event)" })
+            }
+        </div>
+        <div class="col-sm-6">
+            <label>Descripci&oacute;n</label>
+            @Html.TextBoxFor(m => m.Descripcion, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-3">
+            <br />
+            @Html.CheckBoxFor(m => m.Activo)&nbsp;
+            Activo
+        </div>
+    </div>
+    <div class="row p-1">
+        <div class="col-sm-3">
+            <label>Advalorem (%)</label>
+            @Html.TextBoxFor(m => m.Advalorem, new { @class = "form-control", @maxlength = "6", onkeypress = "solo_decimal(event,this)" })
+        </div>
+        <div class="col-sm-3">
+            <label>I.S.C. (%)</label>
+            @Html.TextBoxFor(m => m.ISC, new { @class = "form-control", @maxlength = "6", onkeypress = "solo_decimal(event,this)" })
+        </div>
+        <div class="col-sm-3">
+            <label>Antidumping (%)</label>
+            @Html.TextBoxFor(m => m.Antidumping, new { @class = "form-control", @maxlength = "6", onkeypress = "solo_decimal(event,this)" })
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('TATARIndex', 'Maestro')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>

@@ -1,0 +1,109 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="card shadow">
+        <div class="card-header text-danger">
+            Estas son las variables del sistema que ud. puede usar en sus f&oacute;rmulas de acci&oacute;n de los conceptos de remuneraciones,
+            estas deben ser copiadas exactamente como se describen en el listado de abajo.
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered pre-scrollable datatables tabla_modal" id="FuncionesGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Descripci&oacute;n</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="row mt-1">
+                <div class="col-sm-12">
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)">+</button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)">-</button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)">*</button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)">/</button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)">(</button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)">)</button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)">CASE WHEN</button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)">AND</button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)">OR</button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)">NOT</button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)">ROUND()</button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)">=</button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)"><></button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)">></button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)"><</button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)">>=</button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)"><=</button>
+                    <button class="btn btn-secondary m-1" onclick="$('#i_formulas')[0].innerHTML=''">Borrar Form.</button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)">&</button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)">Date</button>
+                    <button class="btn btn-secondary m-1" onclick="agrega(this.innerHTML)">Val</button>
+                    <button class="btn btn-secondary m-1" onclick="AjaxModalGet('Funciones', '/PMaestra/Referencias', 'nada2','m_middle');">Funciones</button>
+                </div>
+                <div class="col-sm-12 mt-2">
+                    <textarea class="form-control" id="i_formulas"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <button class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Aceptar
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $('input[type=radio]').iCheck({
+            radioClass: 'iradio_square-blue',
+        });
+
+        $('input[type=checkbox]').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+        });
+
+        $("#FuncionesGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            info: false,
+
+            ajax: {
+                url: ruta_actual + "/PMaestra/GridFormulas",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CODIGO" },
+                { data: "DESCRIPCION" },
+            ]
+        });
+
+        $('#FuncionesGrid tbody').on('dblclick', 'tr', function () {
+            //eval($("#parametro").val() + "('" + this.cells[0].textContent + "','" + this.cells[1].textContent +"')");
+            agrega(this.cells[0].textContent);
+        });
+
+        $('.tabla_modal')[0].setAttribute("title", "Doble Click para seleccionar");
+    });
+
+    function agrega(valor) {
+        $('#i_formulas')[0].innerHTML = $('#i_formulas')[0].innerHTML + " " +valor;
+    }
+</script>

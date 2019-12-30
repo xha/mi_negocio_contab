@@ -1,0 +1,232 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "Mantenimiento de Cuentas Corrientes";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item">Procesos</li>
+                    <li class="breadcrumbs-item">Ingresos y Egresos Programados (Cta. Ctes.)</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5><b>@ViewBag.Title</b></h5>
+        </div>
+
+        <div class="col-sm-1">
+            <button onclick="AjaxModalGet('Ayuda @ViewBag.Title', '/PProceso/Ayuda', 'PIMCCIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </button>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-4">
+            <label>Tipo de Cuenta Corriente</label>
+            <select class="form-control">
+                <option>Egreso</option>
+                <option>Ingreso</option>
+            </select>
+        </div>
+        <div class="col-sm-8">
+        </div>
+        <div class="col-sm-5 mt-1">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Grupo de Cuentas</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="row">
+                        <div class="col-sm-12 text-left">
+                            <button class="btn btn-success m-1" onclick="AjaxModalGet('Editar Cuenta', '/PProceso/EditarCuenta', 'nada2', 'm_central')">
+                                <i class='fa fa-plus'></i>
+                                Agregar
+                            </button>
+                        </div>
+                        <div class="col-sm-12 table-responsive">
+                            <table class="table table-bordered table-striped pre-scrollable datatables" id="PIMCC1Grid" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>C&oacute;digo</th>
+                                        <th>Descripci&oacute;n</th>
+                                        <th style="width: 5px"></th>
+                                        <th style="width: 5px"></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-7 mt-1">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Relaci&oacute;n de Trabajadores</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <label>
+                                <input type="radio" name="tp" />&nbsp;
+                                Pendientes
+                            </label>
+                            <label>
+                                <input type="radio" name="tp" />&nbsp;
+                                Canceladas
+                            </label>
+                        </div>
+                        <div class="col-sm-12 text-left">
+                            <button class="btn btn-success m-1" onclick="AjaxModalGet('Editar Cuenta', '/PProceso/CtaCteProgramada', 'nada2', 'm_central')">
+                                <i class='fa fa-plus'></i>
+                                Agregar Prog.
+                            </button>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped pre-scrollable datatables" id="PIMCC2Grid" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Sec</th>
+                                            <th>Codigo</th>
+                                            <th style="min-width: 30%">Nombres</th>
+                                            <th>Capital</th>
+                                            <th>Saldo</th>
+                                            <th>P</th>
+                                            <th style="width: 5px"></th>
+                                            <th style="width: 5px"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <button class="btn btn-secondary m-1 col-sm-2">
+            <i class='fa fa-print'></i><br />
+            Detalle Cta. Cte.
+        </button>
+        <button class="btn btn-secondary m-1 col-sm-2">
+            <i class='fa fa-print'></i><br />
+            Historial Cta. Cte.
+        </button>
+        <button class="btn btn-secondary m-1 col-sm-2">
+            <i class='fa fa-print'></i><br />
+            Recibo Cta. Cte.
+        </button>
+        <button class="btn btn-secondary m-1 col-sm-2">
+            <i class='fa fa-print'></i><br />
+            Consolidado Cta. Cte.
+        </button>
+        <button class="btn btn-danger m-1 col-sm-2" onclick="anular_nota('1')">
+            <i class='fa fa-times'></i><br />
+            Cancelar Cta. Cte.
+        </button>
+        <button class="btn btn-secondary m-1 col-sm-2">
+            <i class='fa fa-print'></i><br />
+            Edo. de Cta. Cte Todos
+        </button>
+        <button class="btn btn-secondary m-1 col-sm-2">
+            <i class='fa fa-print'></i><br />
+            Edo. de Cta. Cte Por Trabajador
+        </button>
+        <button class="btn btn-primary m-1 col-sm-2" onclick="AjaxModalGet('Pagos por Banco', '/PProceso/PagosPorBanco', 'nada2', 'm_central')">
+            <i class='fa fa-money-bill'></i><br />
+            Pagos por Banco
+        </button>
+        <button class="btn btn-primary m-1 col-sm-2">
+            <i class='fa fa-mail-bulk'></i><br />
+            Enviar Notificación de pago
+        </button>            
+    </div>
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(function () {
+        $("#PIMCC1Grid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: false, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            info: false,
+
+            ajax: {
+                url: ruta_actual + "/PMaestra/GridPTMLCC",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CODIGO" },
+                { data: "DESCRIPCION" },
+                {
+                    render: function (data, type, row) {
+                        return '<a class="btn btn-info grid_opt" title="Editar" onclick="AjaxModalGet(\'Editar Cuenta\',\'/PProceso/EditarCuenta\', \'nada2\', \'m_central\')" href="#"><i class="fa fa-edit"></i></button>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CODIGO + '\')"><i class="fa fa-trash"></i></button>';
+                    }
+                },
+            ]
+        });
+
+        $("#PIMCC2Grid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            ajax: {
+                url: ruta_actual + "/PProceso/GridListadoTrabajadores",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE" },
+                { data: "BASICO" },
+                { data: "BASICO" },
+                { data: "CODIGO_TIPO" },
+                {
+                    render: function (data, type, row) {
+                        return '<a class="btn btn-info grid_opt" title="Editar" onclick="AjaxModalGet(\'Agregar Programa\',\'/PProceso/Programa\', \'nada2\', \'m_central\')" href="#"><i class="fa fa-edit"></i></button>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CODIGO_TRABAJADOR + '\')"><i class="fa fa-trash"></i></button>';
+                    }
+                },
+            ]
+        });
+    });
+</script>

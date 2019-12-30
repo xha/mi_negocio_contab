@@ -1,0 +1,126 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+<div class="card">
+    <div class="card-header text-danger">
+        <h5>Definici&oacute;n</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Trabajador</label>
+                <input class="form-control alert-warning" ondblclick="AjaxModalGet('Referencias', '/PMaestra/Referencias', '', 'm_middle')" />
+            </div>
+            <div class="col-sm-4">
+                <label>Descripci&oacute;n</label>
+                <input class="form-control" />
+            </div>
+            <div class="col-sm-4">
+                <label>Documento</label>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <input class="form-control" />
+                    </div>
+                    <div class="col-sm-4">
+                        <input class="form-control" />
+                    </div>
+                    <div class="col-sm-5">
+                        <input class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <label>Capital</label>
+                <input class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <label>Nro. D&eacute;bitos</label>
+                <input class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <label>F. Inicio Descuento</label>
+                <input class="form-control datepickers" readonly />
+            </div>
+            <div class="col-sm-3">
+                <label>F. Desembolso Descuento</label>
+                <input class="form-control datepickers" readonly />
+            </div>
+            <div class="col-sm-3">
+                <label>Moneda</label>
+                <select class="form-control">
+                    <option>Soles</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <br />
+                <label class="form-inline">
+                    D&iacute;as a Programar&nbsp;
+                    <input type="checkbox" />
+                    <input class="form-control w-25 ml-2" />
+                </label>
+                
+            </div>
+            <div class="col-sm-4">
+                <br />
+                <label>
+                    <input type="checkbox" />&nbsp;
+                    A descontar en adelantos de Quincena
+                </label>
+            </div>
+        </div>
+        <div class="form-group row mt-1 text-right">
+            <div class="col-sm-12">
+                <a href="#" class="btn btn-success">
+                    <i class='fa fa-cogs'></i>
+                    Generar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header text-danger">
+        <h5>Definici&oacute;n</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped pre-scrollable" id="CtaCteGrid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Sec</th>
+                        <th>Fecha Inicial</th>
+                        <th>Importe</th>
+                        <th>Mitad</th>
+                        <th>Pago</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>        
+<script type="text/javascript">
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

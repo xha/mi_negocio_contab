@@ -1,0 +1,110 @@
+﻿<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-5">
+            <a href="#" class="btn btn-info" onclick="$('#m_central').modal('hide')">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <hr />
+            <button class="btn btn-secondary" >
+                <i class='fa fa-arrow-up'></i>
+                Alternativo
+            </button>
+            <button class="btn btn-secondary" >
+                <i class='fa fa-circle-notch'></i>
+                Otros Almacenes
+            </button>
+            <hr />
+            <button class="btn btn-secondary" >
+                <i class='fa fa-arrow-right'></i>
+                Transferencia a Otro
+            </button>
+        </div>
+        <div class="card shadow col-sm-7">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-sm-6">
+                        Lista de Precios (Inc. IGV)
+                    </div>
+                    <div class="col-sm-6">
+                        Descto.
+                        <label class="font-weight-bold">0.00</label>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body" style="height: 150px">
+                <div class="table-responsive h-75">
+                    <table class="table table-bordered table-striped pre-scrollable datatables" id="PrecioGrid" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>S/.</th>
+                                <th>$$.</th>
+                                <th>Descripci&oacute;n</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>600.00</td>
+                                <td>181.11</td>
+                                <td>Ventas al P&uacute;blico</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold">Doble click para seleccionar</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered tabla_modal pre-scrollable datatables" id="MArticulosVentaGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Stock</th>
+                            <th>Unidad</th>
+                            <th>Ubicaci&oacute;n</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#MArticulosVentaGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Facturacion/GridArticulosVenta",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CodigoProducto" },
+                { data: "DescripcionProducto" },
+                { data: "Stock" },
+                { data: "CodigoUnidadMedida" },
+                { data: "CodigoAlmacen" },
+            ]
+        });
+        
+        $('#MArticulosVentaGrid tbody').on('dblclick', 'tr', function () {
+            //eval($("#parametro").val() + "('" + this.cells[0].textContent + "','" + this.cells[1].textContent + "','" + this.cells[2].textContent + "')");
+            AjaxModalGet('Selección de Artículos', '/PuntoVenta/DetalleArticulosVenta', 'nada');
+        });
+    });
+</script>

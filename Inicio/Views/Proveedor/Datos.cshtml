@@ -1,0 +1,357 @@
+﻿@model Datos.Models.AnexoModel
+
+<div class="container-fluid">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="datos-tab" data-toggle="tab" href="#datos" role="tab" aria-controls="datos" aria-selected="true">
+                <i class='fa fa-save'></i>
+                Datos
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="adicional-tab" data-toggle="tab" href="#adicional" role="tab" aria-controls="adicional" aria-selected="false">
+                <i class='fa fa-arrow-right'></i>
+                Adicional
+            </a>
+        </li>
+    </ul>
+    <br />
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="datos" role="tabpanel" aria-labelledby="datos-tab">
+            @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosProveedor" }))
+            {
+                @Html.HiddenFor(m => m.TIPOANEX_CODIGO, new { id = "TIPOANEX_CODIGO", Value = "02" })
+                @Html.HiddenFor(m => m.ANEXO_MODELOVEH, new { id = "ANEXO_MODELOVEH", Value = "" })
+                @Html.HiddenFor(m => m.ANEXO_NROINSCRIP, new { id = "ANEXO_NROINSCRIP", Value = "" })
+                @Html.HiddenFor(m => m.ANEXO_PLACA, new { id = "ANEXO_PLACA", Value = "" })
+                @Html.HiddenFor(m => m.ANEXO_BREVE, new { id = "ANEXO_BREVE", Value = "" })
+                @Html.HiddenFor(m => m.ANEX_VENDPROV, new { id = "ANEX_VENDPROV", Value = "" })
+                @Html.HiddenFor(m => m.L_TIP_CLI, new { id = "L_TIP_CLI", Value = "1" })
+                @Html.HiddenFor(m => m.ANEX_DSCTO, new { id = "ANEX_DSCTO", Value = "0" })
+                @Html.HiddenFor(m => m.ANEX_TELEFONO3, new { id = "ANEX_TELEFONO3", Value = "" })
+                @Html.HiddenFor(m => m.ANEX_ZONAVTA, new { id = "ANEX_ZONAVTA", Value = "" })
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label><span class="text-danger">*</span> C&oacute;digo</label>
+                        @if (Model.ANEX_CODIGO == "")
+                        {
+                            @Html.TextBoxFor(m => m.ANEX_CODIGO, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_enteros(event)" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(m => m.ANEX_CODIGO, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_enteros(event)", @readonly = "true" })
+                        }
+                    </div>
+                    <div class="col-sm-5">
+                        <label><span class="text-danger">*</span> Descripci&oacute;n</label>
+                        @Html.TextBoxFor(m => m.ANEX_DESCRIPCION, new { @class = "form-control", @maxlength = "70", onkeypress = "solo_alfanumericos(event)" })
+                    </div>
+                    <div class="col-sm-5">
+                        <label><span class="text-danger">*</span> Descripci&oacute;n Comercial</label>
+                        @Html.TextBoxFor(m => m.ANEX_DESCRIPCOMERC, new { @class = "form-control", @maxlength = "50", onkeypress = "solo_alfanumericos(event)" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label><span class="text-danger">*</span> R.U.C.</label>
+                        @Html.TextBoxFor(m => m.ANEX_RUC, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_enteros(event)" })
+                    </div>
+                    <div class="col-sm-2">
+                        <label>D.N.I.</label>
+                        @Html.TextBoxFor(m => m.ANEX_DOCIDENT, new { @class = "form-control", @maxlength = "8", onkeypress = "solo_enteros(event)" })
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Email</label>
+                        @Html.TextBoxFor(m => m.ANEX_EMAIL, new { @class = "form-control", @placeholder = "@", @maxlength = "100", onkeypress = "solo_alfanumericos(event)", onblur = "valida_email(this.id)" })
+                        <label class="msj_error" id="msj_ANEX_EMAIL"></label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Tel&eacute;fono</label>
+                        @Html.TextBoxFor(m => m.ANEX_TELEFONO, new { @class = "form-control telefono", @maxlength = "25", onkeypress = "solo_telefono(event)" })
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Teléfono 2</label>
+                        @Html.TextBoxFor(m => m.ANEX_TELEFONO2, new { @class = "form-control telefono", @maxlength = "25", onkeypress = "solo_telefono(event)" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>Direcci&oacute;n 1</label>
+                        @Html.TextBoxFor(m => m.ANEX_DIRECCION, new { @class = "form-control", @maxlength = "200", onkeypress = "solo_alfanumericos(event)" })
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Direcci&oacute;n 2</label>
+                        @Html.TextBoxFor(m => m.ANEX_DIRECCION2, new { @class = "form-control", @maxlength = "200", onkeypress = "solo_alfanumericos(event)" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label>Giro de Negocio</label>
+                        @Html.TextBoxFor(m => m.ANEX_GIRO, new { @class = "form-control", @maxlength = "50", onkeypress = "solo_alfanumericos(event)" })
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Representante</label>
+                        @Html.TextBoxFor(m => m.ANEX_REPRESENTANTE, new { @class = "form-control", @maxlength = "50", onkeypress = "solo_alfanumericos(event)" })
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Referencia</label>
+                        @Html.TextBoxFor(m => m.ANEX_REFERENCIA, new { @class = "form-control", @maxlength = "50", onkeypress = "solo_alfanumericos(event)" })
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Vendedor Asignado</label>
+                        @Html.TextBoxFor(m => m.ANEX_VENDASIG, new { @class = "form-control", @maxlength = "50", onkeypress = "solo_alfanumericos(event)" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="row col-sm-3">
+                        <div class="col-sm-12"><label>Banco</label></div>
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(m => m.ANEX_BANCO, new { @class = "form-control alert-warning", @maxlength = "2", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Listado de Bancos', '/Utilitarios/Bancos', 'agregar_banco', 'm_middle')" })
+                        </div>
+                        <div class="col-sm-8">
+                            <input id="descripcion_banco" readonly class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Nro. de Cuenta</label>
+                        @Html.TextBoxFor(m => m.ANEX_NROCTA, new { @class = "form-control", @maxlength = "50", onkeypress = "solo_enteros(event)" })
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Limite de Crédito</label>
+                        @Html.TextBoxFor(m => m.ANEX_CREDITO, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Moneda</label>
+                        @Html.DropDownListFor(m => m.ANEX_MONCREDITO, new List<SelectListItem>
+                    {
+                        new SelectListItem{ Text="Moneda Nacional", Value = "MN" },
+                        new SelectListItem{ Text="Moneda Extranjera", Value = "ME" },
+                    }, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Forma de Pago</label>
+                        @Html.DropDownListFor(m => m.ANEX_FORMPAG, new List<SelectListItem>
+                        {
+                            new SelectListItem{ Text="CONTADO", Value = "01" },
+                            new SelectListItem{ Text="CREDITO 07 DIAS", Value = "02" },
+                            new SelectListItem{ Text="CREDITO 15 DIAS", Value = "03" },
+                            new SelectListItem{ Text="CREDITO 30 DIAS", Value = "04" },
+                        }, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>Notas</label>
+                        @Html.TextAreaFor(m => m.ANEX_NOTAS, new { @class = "form-control", @maxlength = "255", onkeyup = "textCounter(this.id, 'n_limite', 255)", onkeypress = "solo_alfanumericos(event)" })
+                        <label><b id="n_limite">255</b> caract&eacute;res restantes</label>
+                    </div>
+                </div>
+            }
+            <br />
+            <div class="row">
+                <div class="col-sm-12">
+                    <a href="#" onclick="ocultar_panel('Proveedor', 'Proveedor')" class="btn btn-info">
+                        <i class='fa fa-arrow-left'></i>
+                        Regresar
+                    </a>
+                    <button class="btn btn-success" onclick="GuardarDatosProveedor();">
+                        <i class='fa fa-save'></i>
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="adicional" role="tabpanel" aria-labelledby="adicional-tab">
+            @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "AdicionalProveedor" }))
+            {
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>Tipo de Persona</label>
+                        @Html.DropDownListFor(m => m.TRATELEMP, new List<SelectListItem>
+                        {
+                            new SelectListItem{ Text="Per Nat, Soc Cony, Suc Ind, Soc hecho, Otros Entes Colect.", Value = "01" },
+                            new SelectListItem{ Text="Persona Juridica", Value = "02" },
+                            new SelectListItem{ Text="Sujetos No Domiciliados", Value = "03" },
+                            new SelectListItem{ Text="Sin Tipo de Persona", Value = "04" },
+                        }, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Tipo de Documento</label>
+                        @Html.DropDownListFor(m => m.TRATELEMP, new List<SelectListItem>
+                        {
+                            new SelectListItem{ Text="Sin Documento", Value = "01" },
+                            new SelectListItem{ Text="Otros Tipos de Documento", Value = "02" },
+                            new SelectListItem{ Text="DNI", Value = "03" },
+                            new SelectListItem{ Text="Carnet de Fuerzas Policiales", Value = "04" },
+                            new SelectListItem{ Text="Carnet de Fuerzas Armadas", Value = "05" },
+                            new SelectListItem{ Text="Carnet de Extranjeria", Value = "06" },
+                            new SelectListItem{ Text="R.U.C.", Value = "07" },
+                            new SelectListItem{ Text="Pasaporte", Value = "08" },
+                        }, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label>Apellido Paterno</label>
+                        @Html.TextBoxFor(m => m.TRATELEMP, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_letras(event)" })
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Apellido Materno</label>
+                        @Html.TextBoxFor(m => m.TRATELEMP, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_letras(event)" })
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Nombre Paterno</label>
+                        @Html.TextBoxFor(m => m.TRATELEMP, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_letras(event)" })
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Nombre Materno</label>
+                        @Html.TextBoxFor(m => m.TRATELEMP, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_letras(event)" })
+                    </div>
+                </div>
+            }
+            <br />
+            <div class="row">
+                <div class="col-sm-12">
+                    <a href="#" onclick="ocultar_panel('Index', 'Proveedor')" class="btn btn-info">
+                        <i class='fa fa-arrow-left'></i>
+                        Regresar
+                    </a>
+                    <button class="btn btn-success">
+                        <i class='fa fa-save'></i>
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        
+    });
+
+    function agregar_banco(valor,valor2) {
+        $("#ANEX_BANCO").val(valor);
+        $("#descripcion_banco").val(valor2);
+        $("#m_middle").modal("hide");
+    }
+
+    function GuardarDatosProveedor() {
+        var accion              = 0;
+        var ANEX_CODIGO         = $("#ANEX_CODIGO").val().trim();
+        var TIPOANEX_CODIGO     = $("#TIPOANEX_CODIGO").val();
+        var ANEX_REFERENCIA     = $("#ANEX_REFERENCIA").val().trim().toUpperCase();
+        var ANEX_DESCRIPCION    = $("#ANEX_DESCRIPCION").val().trim().toUpperCase();
+        var ANEX_DIRECCION      = $("#ANEX_DIRECCION").val().trim().toUpperCase();
+        var ANEX_TELEFONO       = $("#ANEX_TELEFONO").val();
+        var ANEX_GIRO           = $("#ANEX_GIRO").val().trim().toUpperCase();
+        var ANEX_REPRESENTANTE  = $("#ANEX_REPRESENTANTE").val().trim().toUpperCase();
+        var ANEX_DOCIDENT       = $("#ANEX_DOCIDENT").val().trim();
+        var ANEX_EMAIL          = $("#ANEX_EMAIL").val().trim();
+        var ANEX_RUC            = $("#ANEX_RUC").val().trim();
+        var ANEX_DSCTO          = $("#ANEX_DSCTO").val();
+        var ANEX_CREDITO        = $("#ANEX_CREDITO").val();
+        var ANEX_TELEFONO2      = $("#ANEX_TELEFONO2").val().trim();
+        var ANEX_TELEFONO3      = $("#ANEX_TELEFONO3").val().trim();
+        var ANEX_DIRECCION2     = $("#ANEX_DIRECCION2").val().trim();
+        var ANEX_NOTAS          = $("#ANEX_NOTAS").val().trim().toUpperCase();
+        var ANEX_BANCO          = $("#ANEX_BANCO").val().trim();
+        var ANEX_NROCTA         = $("#ANEX_NROCTA").val().trim();
+        var ANEX_ZONAVTA        = $("#ANEX_ZONAVTA").val().trim();
+        var ANEX_VENDASIG       = $("#ANEX_VENDASIG").val().trim();
+        var ANEX_FORMPAG        = $("#ANEX_FORMPAG").val().trim();
+        var ANEX_DESCRIPCOMERC  = $("#ANEX_DESCRIPCOMERC").val().trim();
+        var ANEXO_MODELOVEH     = $("#ANEXO_MODELOVEH").val().trim();
+        var ANEXO_NROINSCRIP    = $("#ANEXO_NROINSCRIP").val().trim();
+        var ANEXO_PLACA         = $("#ANEXO_PLACA").val().trim();
+        var ANEXO_BREVE         = $("#ANEXO_BREVE").val().trim();
+        var ANEX_VENDPROV       = $("#ANEX_VENDPROV").val().trim();
+        var ANEX_MONCREDITO     = $("#ANEX_MONCREDITO").val();
+        var ANEX_NUMERO         = $("#ANEX_NUMERO").val();
+        var ANEX_ZONA           = $("#ANEX_ZONA").val();
+        var ANEX_DISTRITO       = $("#ANEX_DISTRITO").val();
+        var ANEX_PROVINCIA      = $("#ANEX_PROVINCIA").val();
+        var ANEX_DEPARTAMENTO   = $("#ANEX_DEPARTAMENTO").val();
+        var ANEX_INTERIOR       = $("#ANEX_INTERIOR").val();
+        var L_TIP_CLI           = $("#L_TIP_CLI").val();
+        var datos_enviar        = [];
+
+        if ($("#ANEX_CODIGO")[0].readOnly) {
+            accion = 1;
+        }
+
+        if (ANEX_DSCTO == "") ANEX_DSCTO = 0;
+        if (ANEX_CREDITO == "") ANEX_CREDITO = 0;
+
+        if ((ANEX_CODIGO != "") && (ANEX_DESCRIPCION != "") && (ANEX_RUC != "") && (ANEX_DESCRIPCOMERC != "")) {
+            datos_enviar.push({
+                ANEX_CODIGO: ANEX_CODIGO,
+                TIPOANEX_CODIGO: TIPOANEX_CODIGO,
+                ANEX_REFERENCIA: ANEX_REFERENCIA,
+                ANEX_DESCRIPCION: ANEX_DESCRIPCION,
+                ANEX_DIRECCION: ANEX_DIRECCION,
+                ANEX_GIRO: ANEX_GIRO,
+                ANEX_TELEFONO: ANEX_TELEFONO,
+                ANEX_REPRESENTANTE: ANEX_REPRESENTANTE,
+                ANEX_RUC: ANEX_RUC,
+                ANEX_DOCIDENT: ANEX_DOCIDENT,
+                ANEX_EMAIL: ANEX_EMAIL,
+                ANEX_DSCTO: ANEX_DSCTO,
+                ANEX_CREDITO: ANEX_CREDITO,
+                ANEX_TELEFONO2: ANEX_TELEFONO2,
+                ANEX_TELEFONO3: ANEX_TELEFONO3,
+                ANEX_DIRECCION2: ANEX_DIRECCION2,
+                ANEX_NOTAS: ANEX_NOTAS,
+                ANEX_BANCO: ANEX_BANCO,
+                ANEX_NROCTA: ANEX_NROCTA,
+                ANEX_ZONAVTA: ANEX_ZONAVTA,
+                ANEX_VENDASIG: ANEX_VENDASIG,
+                ANEX_FORMPAG: ANEX_FORMPAG,
+                ANEX_DESCRIPCOMERC: ANEX_DESCRIPCOMERC,
+                ANEXO_MODELOVEH: ANEXO_MODELOVEH,
+                ANEXO_NROINSCRIP: ANEXO_NROINSCRIP,
+                ANEXO_PLACA: ANEXO_PLACA,
+                ANEXO_BREVE: ANEXO_BREVE,
+                ANEX_VENDPROV: ANEX_VENDPROV,
+                ANEX_MONCREDITO: ANEX_MONCREDITO,
+                ANEX_NUMERO: ANEX_NUMERO,
+                ANEX_ZONA: ANEX_ZONA,
+                ANEX_DISTRITO: ANEX_DISTRITO,
+                ANEX_PROVINCIA: ANEX_PROVINCIA,
+                ANEX_DEPARTAMENTO: ANEX_DEPARTAMENTO,
+                ANEX_INTERIOR: ANEX_INTERIOR,
+                L_TIP_CLI: 0,
+            });
+
+            var parametros = "datos_enviar=" + JSON.stringify(datos_enviar) + "&accion=" + accion;
+            $.ajax(
+			{
+			    type: "POST",
+			    dataType: "json",
+			    url: ruta_global + "Proveedor/Actualizar",
+			    data: parametros,
+			    beforeSend: function () {
+			        loading_show();
+			    },
+			    cache: false,
+			    success: function (Resultado) {
+			        loading_hide();
+			        window.parent.MostrarMensaje(Resultado.color, Resultado.data);
+			        if (Resultado.respuesta) {
+			            ocultar_panel();
+			            $('#ProveedorIndexGrid').DataTable().ajax.reload();
+			        }
+
+			    },
+			    error: function (xhr) { // if error occured
+			        loading_hide();
+			        //console.log(xhr);
+			        window.parent.MostrarMensaje("Rojo", xhr.responseText);
+			        //$(placeholder).append(xhr.statusText + xhr.responseText);
+			    },
+			});
+        } else {
+            MostrarMensaje("Rojo", "Faltan Datos");
+        }
+    }
+</script>

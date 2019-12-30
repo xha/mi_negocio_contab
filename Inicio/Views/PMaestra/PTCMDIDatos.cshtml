@@ -1,0 +1,127 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-3">
+            <label>C&oacute;digo</label>
+            @if (Model != null && !String.IsNullOrEmpty(Model.CODIGO))
+            {
+                @Html.TextBoxFor(m => m.CODIGO, new { @class = "form-control", @readonly = "true" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.CODIGO, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_enteros(event)" })
+            }
+        </div>
+        <div class="col-sm-6">
+            <label>Descripci&oacute;n</label>
+            @Html.TextBoxFor(m => m.DESCRIPCION, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+    </div>
+    <div class="row mt-1">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header text-danger">Tipo de Informaci&oacute;n</div>
+                <div class="row card-body">
+                    <div class="col-sm-3">
+                        <label>
+                            <input type="radio" name="tipo" />
+                            Tipo Alfanum&eacute;rico (texto)
+                        </label>
+                    </div>
+                    <div class="col-sm-3">
+                        <label>
+                            <input type="radio" name="tipo" />
+                            Tipo Num&eacute;rico
+                        </label>
+                    </div>
+                    <div class="col-sm-3">
+                        <label>
+                            <input type="radio" name="tipo" />
+                            Tipo Fecha
+                        </label>
+                    </div>
+                    <div class="col-sm-3">
+                        <label>
+                            <input type="radio" name="tipo" />
+                            Tipo SI/NO
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (Model != null && !String.IsNullOrEmpty(Model.CODIGO))
+        {
+            <div class="col-sm-6 mt-1">
+                <div class="card">
+                    <div class="card-header text-danger">Condici&oacute;n</div>
+                    <div class="row card-body">
+                        <div class="col-sm-6">
+                            <label>
+                                <input type="checkbox" />
+                                Es Monetario    
+                            </label>                            
+                        </div>
+                        <div class="col-sm-6">
+                            <label>
+                                <input type="checkbox" />
+                                Es Fijo (sueldo)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 mt-1">
+                <div class="card">
+                    <div class="card-header text-danger">5ta. Categor&iacute;a</div>
+                    <div class="row card-body">
+                        <div class="col-sm-6">
+                            <label>
+                                <input type="radio" name="proy" />
+                                Rem. Proyectable
+                            </label>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>
+                                <input type="radio" name="proy" />
+                                Rem. Var. Proyectable
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>        
+}
+
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('PTCMDIIndex', 'Maestro')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>
+<script>
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $('#activa_upload').on('ifChecked', function () {
+        $("#div_upload")[0].style.display = "flex";
+    })
+
+    $('#activa_upload').on('ifUnchecked', function () {
+        $("#div_upload")[0].style.display = "none";
+    })
+</script>

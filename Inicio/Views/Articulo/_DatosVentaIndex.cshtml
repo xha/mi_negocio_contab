@@ -1,0 +1,160 @@
+﻿@model Datos.Models.ArticuloModel
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">Modificar Registro</div>
+        @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosVentaForm" }))
+        {
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-2">
+                    <label>C&oacute;digo</label>
+                    @Html.TextBoxFor(m => m.ACODIGO, new { @class = "form-control", @readonly = "true" })
+                </div>
+                <div class="col-sm-4">
+                    <label>Descripci&oacute;n</label><br />
+                    @Html.TextBoxFor(m => m.ADESCRI, new { @class = "form-control", @readonly = "true" })
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Unidad de Medida</label>
+                        @Html.TextBoxFor(m => m.AUNIART, new { @class = "form-control alert-warning", @maxlength = "2", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Unidades de Medida', '/Maestro/UnidadMedida', 'nada2', 'm_middle')" })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <label>Costo Promedio</label><br />
+                    <input class="form-control" maxlength = "10" onkeypress = "solo_decimal(event, this)" />
+                </div>
+                <div class="col-sm-2">
+                    <label>Moneda de Venta</label><br />
+                    @Html.DropDownListFor(m => m.TIPOMONVTA_CODIGO, new List<SelectListItem>
+                    {
+                        new SelectListItem{ Text="Moneda Nacional", Value = "MN" },
+                        new SelectListItem{ Text="Moneda Extranjera", Value = "ME" },
+                    }, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1">
+                    <label>% IGV</label><br />
+                    @Html.TextBoxFor(m => m.IGV, new { @class = "form-control", @maxlength = "10", @onkeypress = "solo_decimal(event, this)" })
+                </div>
+                <div class="col-sm-3">
+                    <label>Precio Minimo INC. IGV</label><br />
+                    @Html.TextBoxFor(m => m.PrecioMinimo, new { @class = "form-control", @maxlength = "10", @onkeypress = "solo_decimal(event, this)" })
+                </div>
+                <div class="col-sm-2">
+                    <label>% Descuento</label><br />
+                    @Html.TextBoxFor(m => m.PorcentajeDescuento, new { @class = "form-control", @maxlength = "10", @onkeypress = "solo_decimal(event, this)" })
+                </div>
+                <div class="col-sm-2" align="center">
+                    <label>Precio Autom&aacute;tico</label><br />
+                    @Html.CheckBoxFor(m => m.PrecioAutomatico)
+                </div>
+                <div class="col-sm-2" align="center">
+                    <label>Precio Libre</label><br />
+                    @Html.CheckBoxFor(m => m.PrecioLibre)
+                </div>
+                <div class="col-sm-2" align="center">
+                    <label>Descto. Libre</label><br />
+                    @Html.CheckBoxFor(m => m.DescuentoLibre)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-12">
+                    <a class="btn btn-info" href="#" onclick="$('#m_central').modal('hide');">
+                        <i class='fa fa-arrow-left'></i>
+                        Regresar
+                    </a>
+                    <a class="btn btn-success" href="#" onclick="agregar_datosventa()">
+                        <i class='fa fa-plus'></i>
+                        Agregar
+                    </a>
+                </div>
+            </div>
+        </div>
+        }
+        <div class="card-header" align="center"><b>Lista de Precios</b></div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="DatosVenta" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th style="width: 25%">Tipo de Precio</th>
+                            <th>%</th>
+                            <th>P. Con I.G.V</th>
+                            <th>P. Sin I.G.V</th>
+                            <th>Cantidad</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#codigo_dvi").val($("#t_id").val());
+        $("#descripcion_dvi").val($("#t_descripcion").val());
+
+        $('input[type=checkbox]').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+        });
+
+        $("#DatosVenta").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Articulo/GridDatosVenta",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [6],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [7],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "Codigo" },
+                { data: "DescripcionTipoPrecio" },
+                { data: "Porcentaje" },
+                { data: "PrecioConIGV" },
+                { data: "PrecioSinIGV" },
+                { data: "Cantidad" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" href="#" onclick="agregar_datosventa()"><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.Codigo + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+
+            ]
+        });
+    });
+
+    function agregar_datosventa() {
+        var titulo = "Mantenimiento de Detalle de Lista de Precios";
+        var ruta = "/Articulo/DatosVentaCreate";
+        AjaxModalGet(titulo, ruta, 'nada2', 'm_middle');
+    }
+</script>
+

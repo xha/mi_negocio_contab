@@ -1,0 +1,99 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-2">
+            <label>C&oacute;digo</label>
+            @if (Model != null && !String.IsNullOrEmpty(Model.CODIGO))
+            {
+                @Html.TextBoxFor(m => m.CODIGO, new { @class = "form-control", @readonly = "true" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.CODIGO, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_enteros(event)" })
+            }
+        </div>
+        <div class="col-sm-5">
+            <label>Descripci&oacute;n</label>
+            @Html.TextBoxFor(m => m.DESCRIPCION, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-5">
+            <label>Categor&iacute;a</label>
+            <div class="row">
+                <div class="col-sm-5">
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-7">
+                    <input class="form-control" />
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <label>Misi&oacute;n</label>
+            @Html.TextAreaFor(m => m.MISION, new { @class = "form-control", @maxlength = "255", onkeyup = "textCounter(this.id, 'n_limite', 255)", onkeypress = "solo_alfanumericos(event)" })
+            <label><b id="n_limite">255</b> caract&eacute;res restantes</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <label>Perfil</label>
+            @Html.TextAreaFor(m => m.PERFIL, new { @class = "form-control", @maxlength = "255", onkeyup = "textCounter(this.id, 'n_limite', 255)", onkeypress = "solo_alfanumericos(event)" })
+            <label><b id="n_limite">255</b> caract&eacute;res restantes</label>
+        </div>
+        <div class="col-sm-6">
+            <label>Requisitos</label>
+            @Html.TextAreaFor(m => m.REQUISITOS, new { @class = "form-control", @maxlength = "255", onkeyup = "textCounter(this.id, 'n_limite', 255)", onkeypress = "solo_alfanumericos(event)" })
+            <label><b id="n_limite">255</b> caract&eacute;res restantes</label>
+        </div>
+    </div>
+    <div class="row col-sm-12">
+        <label>Funciones</label>
+        @Html.TextAreaFor(m => m.FUNCION, new { @class = "form-control", @maxlength = "255", onkeyup = "textCounter(this.id, 'n_limite', 255)", onkeypress = "solo_alfanumericos(event)" })
+        <label><b id="n_limite">255</b> caract&eacute;res restantes</label>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <label>Sexo</label>
+            <div class="row">
+                <div class="col-sm-4">
+                    <input name="sexo" type="radio" />
+                    <label>Masculino</label>
+                </div>
+                <div class="col-sm-4">
+                    <input name="sexo" type="radio" />
+                    <label>Femeinino</label>
+                </div>
+                <div class="col-sm-4">
+                    <input name="sexo" type="radio" />
+                    <label>Neutro</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label>Valor</label>
+            <input class="form-control" onkeypress="decimal(event, this)" />
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('PTMLCPTIndex', 'Maestro')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>
+<script>
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+</script>

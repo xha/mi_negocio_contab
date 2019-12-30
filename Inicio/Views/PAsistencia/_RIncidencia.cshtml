@@ -1,0 +1,235 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Centro de Costo</label>
+            <input class="form-control alert-warning" ondblclick="AjaxModalGet('Centros de Costo', '/PMaestra/Referencias', '', 'm_middle');" />
+        </div>
+        <div class="col-sm-3">
+            <label>Trabajador</label>
+            <input class="form-control" />
+        </div>
+        <div class="col-sm-3">
+            <label>Tipo Trabajador</label>
+            <select class="form-control">
+                <option>Ninguno</option>
+                <option>Full Time</option>
+                <option>Part. Time</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>&nbsp;</label><br />
+            <a href="#" class="btn btn-secondary">
+                <i class='fa fa-spinner'></i>
+                Cargar
+            </a>
+        </div>
+        <div class="col-sm-2">
+            <label>Fecha Inicial</label>
+            <input class="form-control datepickers" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>Fecha Fin</label>
+            <input class="form-control datepickers" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>
+                <br />
+                <input type="checkbox" />
+                Mostrar Incidencias Faltantes
+            </label>
+        </div>
+    </div>
+    <br />
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="he-tab" data-toggle="tab" href="#he" role="tab" aria-controls="he" aria-selected="true">
+                <i class='fa fa-tasks'></i>
+                Detallado
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tardanza-tab" data-toggle="tab" href="#tardanza" role="tab" aria-controls="tardanza" aria-selected="false">
+                <i class='fa fa-file'></i>
+                Resumen
+            </a>
+        </li>
+    </ul>
+    <br />
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="he" role="tabpanel" aria-labelledby="he-tab">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered pre-scrollable datatables" id="RIDetalladoGrid" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Cod. Trabajador</th>
+                                    <th>Apellidos y Nombres</th>
+                                    <th>Cod. Horario</th>
+                                    <th>01</th>
+                                    <th>02</th>
+                                    <th>03</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="tardanza" role="tabpanel" aria-labelledby="tardanza-tab">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered pre-scrollable datatables" id="RIResumenGrid" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Cod. Trabajador</th>
+                                    <th style="min-width: 250px">Apellidos y Nombres</th>
+                                    <th>Horas Laboradas</th>
+                                    <th>D&iacute;as Compensados</th>
+                                    <th>D&iacute;as Efectivos</th>
+                                    <th>Descanso M&eacute;dico</th>
+                                    <th>Dominical</th>
+                                    <th>D&iacute;as Trabajados</th>
+                                    <th>Inasistencias</th>
+                                    <th>Feriado</th>
+                                    <th>Licencia con goze de haber</th>
+                                    <th>Licencia sin goze de haber</th>
+                                    <th>Licencia por paternidad</th>
+                                    <th>Subsidio por enfermedad</th>
+                                    <th>Subsidio por maternidad</th>
+                                    <th>Vacaciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row mt-1">
+        <div class="col-sm-12">
+            <a href="#" onclick="AjaxModalGet('Leyenda', '/PMaestra/Referencias', '', 'm_middle');" class="btn btn-secondary btn-sm m-1">
+                <i class='fa fa-copy'></i>
+                Leyenda de Incidencias
+            </a>
+            <a href="#" onclick="AjaxModalGet('Calendario', '/PAsistencia/Calendario', '', 'm_middle');" class="btn btn-secondary btn-sm m-1">
+                <i class='fa fa-calendar-alt'></i>
+                Calendario
+            </a>
+            <a href="#" class="btn btn-secondary btn-sm m-1">
+                <i class='fa fa-arrow-right'></i>
+                Autorelleno horizontal
+            </a>
+            <a href="#" class="btn btn-secondary btn-sm m-1">
+                <i class='fa fa-arrow-up'></i>
+                Autorelleno vertical
+            </a>
+            <a href="#" class="btn btn-secondary btn-sm m-1">
+                <i class='fa fa-times'></i>
+                Borrar fila
+            </a>
+            <a href="#" class="btn btn-secondary btn-sm m-1">
+                <i class='fa fa-trash'></i>
+                Borrar Columna
+            </a>
+        </div>
+    </div>
+    <div class="row mt-1">
+        <div class="col-sm-8"></div>
+        <div class="col-sm-4">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Grabar
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+    
+    $(function () {
+        $("#RIDetalladoGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            info: false,
+
+            ajax: {
+                url: ruta_actual + "/PAsistencia/GridAsistencia",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [3, 4, 5],
+                orderable: false,
+                searchable: false,
+            }],
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE_TRABAJADOR" },
+                { data: "DIA" },
+                { data: "MIN_TARDANZA" },
+                { data: "MIN_TARDANZA" },
+                { data: "MIN_TARDANZA" },
+            ],
+        });
+
+        $("#RIResumenGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            info: false,
+
+            ajax: {
+                url: ruta_actual + "/PAsistencia/GridAsistencia",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [3, 4, 5, 6],
+                orderable: false,
+                searchable: false,
+            }],
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE_TRABAJADOR" },
+                { data: "ENTRADA" },
+                { data: "MIN_TARDANZA" },
+                { data: "MIN_TARDANZA" },
+                { data: "MIN_TARDANZA" },
+                { data: "MIN_TARDANZA" },
+                { data: "MIN_TARDANZA" },
+                { data: "MIN_TARDANZA" },
+                { data: "MIN_TARDANZA" },
+                { data: "MIN_TARDANZA" },
+                { data: "MIN_TARDANZA" },
+                { data: "MIN_TARDANZA" },
+                { data: "MIN_TARDANZA" },
+                { data: "MIN_TARDANZA" },
+                { data: "MIN_TARDANZA" },
+            ],
+        });
+    });
+</script>

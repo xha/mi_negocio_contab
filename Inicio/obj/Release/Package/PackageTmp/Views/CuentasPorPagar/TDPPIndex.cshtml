@@ -1,0 +1,105 @@
+@model Datos.Models.CuentasPorPagarModel
+
+@{
+    ViewBag.Title = "Descuentos por Pagar y Pagos";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Cuentas Por Pagar", "Index", "CuentasPorPagar")</li>
+                    <li class="breadcrumbs-item">Transacciones</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/CuentasPorPagar/Ayuda', 'TDPPIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="card shadow">
+        <div class="card-header text-danger font-weight-bold">Proveedores</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="TDPPIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Saldo MN</th>
+                            <th>Saldo ME</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#TDPPIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/CuentasPorPagar/GridTDPP",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [4],
+                orderable: false,
+                searchable: false
+            }, {
+                targets: [5],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [6],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "Codigo" },
+                { data: "Descripcion" },
+                { data: "SaldoMinimo" },
+                { data: "SaldoMaximo" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-info grid_opt" title="Mantenimiento" href="#" onclick="mostrar_panel(\'TDPPMantenimiento?Codigo=' + row.Codigo + '\', \'CuentasPorPagar\')"><i class="fa fa-brush"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-secondary grid_opt" title="Canje" href="#" onclick="mostrar_panel(\'TDPPCanje?Codigo=' + row.Codigo + '\', \'CuentasPorPagar\')" ><i class="fa fa-money-bill-wave "></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-success grid_opt" title="Transacciones" href="#" onclick="mostrar_panel(\'TDPPTransaccion?Codigo=' + row.Codigo + '\', \'CuentasPorPagar\')" ><i class="fa fa-file-signature"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+</script>
+

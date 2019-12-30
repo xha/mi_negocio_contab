@@ -1,0 +1,110 @@
+@model Datos.Models.MaestroModel
+
+@{
+    ViewBag.Title = "Monedas de ";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Maestro", "Index", "Maestro")</li>
+                    <li class="breadcrumbs-item active">Tablas de Ayuda</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title Importaci&oacute;n</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title Importaci&oacute;n</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Maestro - @ViewBag.Title Importacion - Inicio ', '/Maestro/Ayuda', 'TAUMIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="#" onclick="mostrar_panel('TAMICreate', 'Maestro')" class="btn btn-success">
+                    <i class='fa fa-plus'></i>
+                    Agregar
+                </a>
+            </div>
+        </div>
+        <br />
+    }
+
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold">
+                Listado de @ViewBag.Title  Importaci&oacute;n
+                <label class='btn btn-primary grid_opt' onclick="imprimir_global('Tipos de Moneda', '/Utilitarios/TipoMoneda')"><i class='fa fa-print'></i></label>
+            </h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="TAMIIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>S&iacute;mbolo</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#TAMIIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Maestro/GridTATM",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [3],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [4],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "Codigo" },
+                { data: "Descripcion" },
+                { data: "Simbolo" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="mostrar_panel(\'TAMIEdit?Codigo=' + row.Codigo + '\', \'Maestro\')" ><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.Codigo + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+</script>

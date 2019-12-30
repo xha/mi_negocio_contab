@@ -1,0 +1,199 @@
+﻿<div class="container-fluid">
+    <h5><b>CRONOGRAMAS DE PAGO </b></h5>
+    <p>Los Cronogramas de Pagos son rangos de fechas según la forma de pago de la Empresa es decir que tienen como finalidad dividir los pagos de la empresa y es considerado como una Boleta de Pago independiente una con otra. </p>
+
+    <div class="row col-sm-12">
+        <table class="table pre-scrollable tabla_cero">
+            <thead>
+                <tr>
+                    <th class="text-center" style="width: 30%">Opci&oacute;n</th>
+                    <th class="text-center">Acci&oacute;n</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <b>RUTA</b>
+                    </td>
+                    <td>
+                        Procesos \ Apertura \ Cronograma de Pago
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>CONFIGURACION REQUERIDA</b>
+                    </td>
+                    <td>
+                        Ninguna
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>PROCEDIMIENTO</b>
+                    </td>
+                    <td>
+                        Aquí podrá ingresar, editar y eliminar los Cronogramas de Pago. Solo se visualizarán todos los cronogramas de los meses que estén abiertos.
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <label class="btn btn-success">
+                            <i class='fa fa-plus'></i>
+                            Agregar
+                        </label>
+                    </td>
+                    <td>
+                        Registrar un Nuevo Cronograma de Pago
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <label class="btn btn-info">
+                            <i class='fa fa-edit'></i>
+                            Editar
+                        </label>
+                    </td>
+                    <td>
+                        Editar un Cronograma de Pago
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <label class="btn btn-danger">
+                            <i class='fa fa-trash'></i>
+                            Eliminar
+                        </label>
+                    </td>
+                    <td>
+                        Eliminar un Cronograma de Pago
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        MANTENIMIENTO
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        Mes de cargo
+                    </td>
+                    <td>
+                        Mes donde se asignará el cronograma, también sirve para indicar el mes donde se tributará.
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        Fecha Inicio
+                    </td>
+                    <td>
+                        Inicio del Cronograma
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        Fecha Final
+                    </td>
+                    <td>
+                        Fin del Cronograma
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        Fecha Pago
+                    </td>
+                    <td>
+                        Cuando se realizará el pago
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        Fecha Adel. Quincena
+                    </td>
+                    <td>
+                        Fecha del adelanto de quincena***
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        Descripción
+                    </td>
+                    <td>
+                        Breve descripción del pago a realizar, este dato también se puede mostrar en la Boleta de Pago.
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        Semana Cronograma N°
+                    </td>
+                    <td>
+                        Registrar el número de semana en el caso de cronogramas semanales.
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        Cálculo 5ta. Cat. Semanal
+                    </td>
+                    <td>
+                        Con esta opción el sistema calculará de forma automática el impuesto a la renta 5ta Categoría de forma semanal según la configuración establecida.
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        5ta Categoría Automática
+                    </td>
+                    <td>
+                        Con esta opción el sistema calculará de forma automática el impuesto a la renta 5ta Categoría de forma mensual según la configuración establecida.
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        Devolución de 5ta. Categoría
+                    </td>
+                    <td>
+                        Esta opción permite realizar la devolución del impuesto de 5ta. Categoría retenido en exceso. Se utiliza en los cronogramas de liquidación y en los últimos cronogramas del año.
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        Regulariza Pago mínimo EsSalud
+                    </td>
+                    <td>
+                        Esta opción se marca para indicar al sistema que debe de regularizar los pagos a Essalud ya que como mínimo se debe de abonar el 9% de la RMV (Remuneración Mínima Vital), esta opción solo se tiene que marcar cuando el usuario desee esta regularización, como regla estándar se recomienda marcar esta opción cuando el pago es de:<br />
+                        - Empleados: En el Cronograma de pagos de sueldo<br />
+                        - Obreros: En el último cronograma de pago para estos trabajadores.<br />
+                        - Y siempre y cuando el usuario lo requiera.<br />
+                        Con esta opción marcada el sistema realiza una búsqueda de todos los cronogramas de pago que participo el trabajador y va acumulando el total aportado a ESSALUD si es menos del 9% del RMV(S/.85.00) el sistema muestra la diferencia y si es mayor el monto aportado a ESSALUD no se realizara ningún proceso.
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        Activar Adelanto de Pago
+                    </td>
+                    <td>
+                        Si el cronograma de pago es de Empleados y Mensual se puede habilitar esta opción ya que el requisito mínimo es que tenga que estar dentro de la fecha de inicio y final del Cronograma de Pago
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        Incluir Adelanto de Gratificación
+                    </td>
+                    <td>
+                        Permite incluir en los adelantos de quincena, un porcentaje del cálculo de gratificación. Para poder utilizar esta opción es necesario haber realizado el cálculo de gratificación correspondiente.
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        Última semana del cronograma (semanal)
+                    </td>
+                    <td>
+                        Se utiliza en los cronogramas semanales para el cálculo adecuado de la regularización del pago mínimo de EsSalud.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p>
+        NOTA: - Antes de crear los cronogramas de pago primero se tiene que habilitar el mes de trabajo.
+        * Activar adelanto de quincena solo cuando el pago es mensual
+    </p>
+</div>

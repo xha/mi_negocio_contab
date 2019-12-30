@@ -1,0 +1,328 @@
+﻿@model Datos.Models.CuentasPorPagarModel
+
+@{
+    ViewBag.Title = "Resumen de Cuentas por Pagar";
+    //Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+    </div>
+    <hr />
+    <!-- Cajas de Texto -->
+    <div class="row">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total de CxP</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="i_total_total_cuentas">$ @ViewBag.total</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Facturas Pagadas</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">$ @ViewBag.facturas_pagadas</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-bar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Notas de Cr&eacute;dito</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">$ @ViewBag.notas_cedito</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-area fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Deuda Actual</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="i_total_total_cuentas">$ @ViewBag.deuda</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Cajas de Texto -->
+    <!-- Gráficos -->
+    <div class="row p-2">
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Total Acumulado</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_total_cuentas"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Global</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_total"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row p-2">
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Gastos Directos</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_directos"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Gastos Indirectos</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_indirectos"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Gráficos -->
+</div>
+<script type="text/javascript">
+    var notas_cedito = "@ViewData["notas_cedito"]";
+    notas_cedito = notas_cedito.replace(/\./g, "");
+    notas_cedito = parseFloat(notas_cedito.replace(",","."));
+
+    var facturas_pagadas = "@ViewData["facturas_pagadas"]";
+    facturas_pagadas = facturas_pagadas.replace(/\./g, "");
+    facturas_pagadas = parseFloat(facturas_pagadas.replace(",","."));
+
+    var total = "@ViewData["total"]";
+    total = total.replace(/\./g, "");
+    total = parseFloat(total.replace(",","."));
+
+    var deuda = "@ViewData["deuda"]";
+    deuda = deuda.replace(/\./g, "");
+    deuda = parseFloat(deuda.replace(",","."));
+
+    var meses = @Html.Raw(Json.Encode(@ViewData["meses"]));
+    var tipo_indirectos = @Html.Raw(Json.Encode(@ViewData["tipo_indirectos"]));
+    var tipo_directos = @Html.Raw(Json.Encode(@ViewData["tipo_directos"]));
+    var gastos_indirectos = @Html.Raw(Json.Encode(@ViewData["gastos_indirectos"]));
+    var gastos_directos = @Html.Raw(Json.Encode(@ViewData["gastos_directos"]));
+    var total_cuentas = @Html.Raw(Json.Encode(@ViewData["total_cuentas"]));
+    var i;
+    
+    Highcharts.chart('div_total_cuentas', {
+        chart: {
+            height: 310,
+            type: 'line'
+        },
+        title: {
+            text: ' .'
+        },
+        xAxis: {
+            categories: meses
+        },
+        yAxis: {
+            title: {
+                text: '.'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: false
+                },
+                enableMouseTracking: true
+            }
+        },
+        series: [{
+            name: 'Mes',
+            data: total_cuentas,
+            color: '#2f7ed8'
+        }],
+    });
+
+    Highcharts.chart('div_total', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie',
+            height: 310,
+        },
+        title: {
+            text: '.'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.y}</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f}%',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            name: 'Total',
+            colorByPoint: true,
+            data: [{
+                name: 'Facturas Pagadas',
+                y: facturas_pagadas,
+                sliced: true,
+                selected: true
+            }, {
+                name: 'Notas de Crédito',
+                y: notas_cedito,
+            }, {
+                name: 'Deuda',
+                y: deuda,
+            }]
+        }]
+    });
+
+    Highcharts.chart('div_directos', {
+        chart: {
+            height: 310,
+            type: 'column'
+        },
+        title: {
+            text: '.'
+        },
+        xAxis: {
+            categories: tipo_directos,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Consolidado'
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} $</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: 'Gastos Directos',
+            data: gastos_directos,
+            color: '#910000'
+        }]
+    });
+
+    Highcharts.chart('div_indirectos', {
+        chart: {
+            height: 310,
+            type: 'column'
+        },
+        title: {
+            text: '.'
+        },
+        xAxis: {
+            categories: tipo_indirectos,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Consolidado'
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} $</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: 'Gastos Indirectos',
+            data: gastos_indirectos
+        }]
+    });
+</script>
+
+

@@ -1,0 +1,99 @@
+@model Datos.Models.CuentasPorPagarModel
+@{
+    ViewBag.Title = "Actualiza Saldos Proveedores";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Cuentas Por Pagar", "Index", "CuentasPorPagar")</li>
+                    <li class="breadcrumbs-item">Procesos</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/CuentasPorPagar/Ayuda', 'PASPIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row col-sm-12 text-center">
+            <h3><i class='fa fa-database'></i> Actualiza saldos de cuentas corrientes enviado a hist&oacute;rico aquellos documentos con saldo igual a cero en ambas monedas</h3>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Opciones</div>
+                    <div class="card-body row">
+                        <div class="col-sm-6">
+                            <input type="radio" checked name="i_opciones" />&nbsp;
+                            Clientes
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="radio" name="i_opciones" />&nbsp;
+                            Proveedores
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Par&aacute;metros de Documentos</div>
+                    <div class="card-body row">
+                        <div class="col-sm-9">
+                            <label>Por Fecha de Emisi&oacute;n</label>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>Del</label>
+                                    <input class="form-control datepickers" readonly />
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Al</label>
+                                    <input class="form-control datepickers" readonly  />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <br /><br />
+                            <input type="checkbox" />&nbsp;
+                            Todos
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <hr />
+    <div class="row col-sm-12">
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-cogs'></i>
+            Procesar
+        </a>
+    </div>
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

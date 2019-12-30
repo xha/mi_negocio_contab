@@ -1,0 +1,145 @@
+@model Datos.Models.UtilitariosModel
+
+@{
+    ViewBag.Title = "Ubicación de Datos de Contabilidad";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Utilidades", "Index", "Utilitarios")</li>
+                    <li class="breadcrumbs-item active">Interface con Software Contable</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Utilitarios - Inicio', '/Utilitarios/Ayuda', 'ISCUDCIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="datos-tab" data-toggle="tab" href="#datos" role="tab" aria-controls="datos" aria-selected="true">
+                    <i class='fa fa-cogs'></i>
+                    Configuraci&oacute;n
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="adicional-tab" data-toggle="tab" href="#adicional" role="tab" aria-controls="adicional" aria-selected="false">
+                    <i class='fa fa-file'></i>
+                    Par&aacute;metros
+                </a>
+            </li>
+        </ul>
+        <br />
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="datos" role="tabpanel" aria-labelledby="datos-tab">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header text-danger font-weight-bold">
+                                Starsoft Contabilidad
+                            </div>
+                            <div class="card-body">
+                                <h5>
+                                    Si ud cuenta con una versi&oacute;n del Sistema de Contabilitad de Enterprise Solutions - Starsoft Contabilidad, marque la
+                                    casilla de abajo para que el sistema trabaje en l&iacute;nea con sus funciones
+                                </h5>
+                                <div class="card">
+                                    <div class="card-header font-weight-bold">
+                                        <input type="checkbox" />&nbsp;
+                                        Contamos con una instalaci&oacute;n de Starsoft Contabilidad
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <input type="radio" name="i_" />&nbsp;
+                                                Contabilidad Access
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input type="radio" name="i_" />&nbsp;
+                                                Contabilidad SQL Server
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="adicional" role="tabpanel" aria-labelledby="adicional-tab">
+                <div class="row p-1">
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card">
+                                    <div class="card-header text-danger font-weight-bold">
+                                        Empresa de relaci&oacute;n en  Contabilidad
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <input class="form-control" />
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <input class="form-control" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card">
+                                    <div class="card-header font-weight-bold">
+                                        Configuraci&oacute;n de Anexos y SubDiarios
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label>Anexo de Clientes</label>
+                                                <input class="form-control" />
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label>Anexo de Proveedores</label>
+                                                <input class="form-control" />
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label>Subdiario Compras</label>
+                                                <input class="form-control" />
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label>Subdiario Ventas</label>
+                                                <input class="form-control" />
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label>Subdiario Cancelaci&oacute;n</label>
+                                                <input class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

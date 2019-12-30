@@ -1,0 +1,174 @@
+@model Datos.Models.CajaModel
+
+@{
+    ViewBag.Title = "Apertura";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Caja", "Index", "Caja")</li>
+                    <li class="breadcrumbs-item">Transacciones</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Caja/Ayuda', 'TAIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>Punto de Venta</label><br />
+                        @Html.TextBoxFor(m => m.APC_PV, new { @class = "form-control alert-warning", @maxlength = "2", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Puntos de Venta', '/PuntoVenta/PuntosVenta', 'nada2', 'm_middle')" })
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Vendedor</label><br />
+                        @Html.TextBoxFor(m => m.APC_ANEX, new { @class = "form-control alert-warning", @maxlength = "11", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Vendedores', '/Vendedor/Vendedores', 'nada2', 'm_middle')" })
+                    </div>
+                </div>
+                <hr />
+                <div class="row col-sm-12">
+                    <a href="#" class="btn btn-success" onclick='aperturar_caja()'>
+                        <i class='fa fa-plus'></i>
+                        Aceptar
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Saldo Efectivo de Apertura</div>
+                    <div class="card-body row">
+                        <div class="col-sm-6">
+                            <label>Soles</label>
+                            <input type="text" class="form-control" readonly />
+                        </div>
+                        <div class="col-sm-6">
+                            <label>D&oacute;lares</label><br />
+                            <input type="text" class="form-control" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <hr />
+    <div class="card shadow">
+        <div class="card-header text-danger font-weight-bold">Cajas Aperturadas</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="TAIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Cod.</th>
+                            <th>Vendedor</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Usuario</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#TAIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Caja/GridCajaAperturada",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "APC_PV" },
+                { data: "APC_ANEX" },
+                { data: "APC_FECHA" },
+                { data: "APC_HORA" },
+                { data: "APC_USUARIO" },
+            ]
+        });
+    });
+
+    function aperturar_caja() {
+        var datos_enviar = [];
+        datos_enviar.push({
+            APC_COD: 0,
+            APC_PV: "00",
+            APC_TIPOANEX: "3",
+            APC_ANEX: "00",
+            APC_FECHA: "14/10/2009",
+            APC_HORA: "13:46:56",
+            APC_ESTADO: "A",
+            APC_USUARIO: "Enter",
+        });
+
+        var parametros = "datos_enviar=" + JSON.stringify(datos_enviar) + "&accion=0";
+        $.ajax(
+        {
+            type: "POST",
+            dataType: "json",
+            url: ruta_global + "TAActualizar",
+            data: parametros,
+            beforeSend: function () {
+                loading_show();
+            },
+            cache: false,
+            success: function (Resultado) {
+                loading_hide();
+                window.parent.MostrarMensaje(Resultado.color, Resultado.data);
+                if (Resultado.respuesta) {
+                    ocultar_panel();
+                    $('#TAIndexGrid').DataTable().ajax.reload();
+                }
+
+            },
+            error: function (xhr) { // if error occured
+                loading_hide();
+                console.log(xhr);
+                window.parent.MostrarMensaje("Rojo", xhr.responseText);
+            },
+        });
+    }
+
+    function chequear_caja() {
+        swal({
+            title: "Alerta",
+            text: "Ya hay una caja aperturada para el Punto de Venta \n Fecha: 10-10-2019\n  Hora: 14:00\n \u00BF\Desea Cerrarla?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            cancelButtonClass: "btn-secondary",
+            confirmButtonText: "Aceptar",
+            cancelButtonText: "Cancelar",
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+
+            } else {
+
+            }
+        });
+    }
+</script>

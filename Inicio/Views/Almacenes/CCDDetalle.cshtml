@@ -1,0 +1,130 @@
+﻿@model Datos.Models.AlmacenesModel
+
+@{
+    ViewBag.Title = "Consulta Documento de Almacén";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Almacenes", "Index", "Almacenes")</li>
+                    <li class="breadcrumbs-item">Consultas</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("CCDIndex", "Almacenes")'>@ViewBag.Title</a></li>
+                    <li class="breadcrumbs-item active">Editar</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Editar Registro</label> #<strong>@Model.Codigo</strong></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Almacenes/Ayuda', 'CCDDetalle', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="card">
+            <div class="card-header text-danger font-weight-bold">Gu&iacute;a de Remisi&oacute;n: SALIDA POR AJUSTE</div>
+            <div class="card-body" align="left">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>Doc. No.</label>
+                        @Html.TextBoxFor(m => m.Documento, new { @class = "form-control", @readonly = "true" })
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Fecha Emisi&oacute;n</label>
+                        @Html.TextBoxFor(m => m.FechaEmision, new { @class = "form-control", @readonly = "true" })
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Doc. Referencia</label>
+                        @Html.TextBoxFor(m => m.DocumentoIngreso, new { @class = "form-control", @readonly = "true" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-4">
+            <label>Cliente</label>
+            @Html.TextBoxFor(m => m.CodigoCliente, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="col-sm-2">
+            <label>Moneda</label>
+            @Html.TextBoxFor(m => m.Moneda, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="col-sm-4">
+            <label>Transporte</label>
+            @Html.TextBoxFor(m => m.CodigoTransportista, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="col-sm-2">
+            <label>Cambio</label>
+            @Html.TextBoxFor(m => m.TipoCambio, new { @class = "form-control", @readonly = "true" })
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick='ocultar_panel("CCDIndex", "Almacenes")' class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+        </div>
+    </div>
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary text-center">Detalle de Art&iacute;culo</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="CCDDetalle" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Lote/Serie</th>
+                            <th>Cantidad</th>
+                            <th>U.M.</th>
+                            <th>V. Unitario</th>
+                            <th>V. Total</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#CCDDetalle").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Almacenes/GridNIDetalle",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CodigoProducto" },
+                { data: "DescripcionProducto" },
+                { data: "Lote" },
+                { data: "Cantidad" },
+                { data: "Unidad" },
+                { data: "Precio" },
+                { data: "Total" },
+            ]
+        });
+    });
+</script>

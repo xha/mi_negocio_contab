@@ -1,0 +1,159 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Hora Inicial</label>
+            <input class="form-control horas" placeholder="00:00" />
+        </div>
+        <div class="col-sm-3">
+            <label>
+                <input type="checkbox" class="dcheckes" id="activa_r" />
+                Inicio Refrigerio
+            </label>
+            <input class="form-control horas" id="a_ir" placeholder="00:00" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Fin Refrigerio</label>
+            <input class="form-control horas" id="a_fr" placeholder="00:00" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Hora Fin</label>
+            <input class="form-control horas" placeholder="00:00" />
+        </div>
+        <div class="col-sm-6">
+            <label>D&iacute;a de descanso semanal</label>
+            <select class="form-control w-75">
+                <option>Lunes</option>
+                <option>Martes</option>
+                <option>Miercoles</option>
+                <option>Jueves</option>
+                <option>Viernes</option>
+                <option>S&aacute;bada</option>
+                <option>Domingo</option>
+            </select>
+        </div>
+        <div class="col-sm-6">
+            <br />
+            <a href="#" onclick="AjaxModalGet('Detalle Horario Fijo', '/PAsistencia/DetalleHorarioFijo', 'nada', 'm_middle');" class="btn btn-primary">
+                <i class='fa fa-plus'></i>
+                Agregar
+            </a>
+        </div>
+    </div>
+    <br />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered pre-scrollable datatables" id="DHorarioFijoGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" id="c_todos" class="dcheckes" />
+                            </th>
+                            <th>D&iacute;as</th>
+                            <th>Hora Inicio</th>
+                            <th>Inicio Refrigerio</th>
+                            <th>Fin Refrigerio</th>
+                            <th>Hora Fin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox" class="dcheckes" id="c_l" /></td>
+                            <td>Lunes</td>
+                            <td><input class="form-control" id="lhi" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="lir" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="lfr" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="lhf" value="00:00" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="dcheckes" id="c_m" /></td>
+                            <td>Martes</td>
+                            <td><input class="form-control" id="mhi" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="mir" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="mfr" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="mhf" value="00:00" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="dcheckes" id="c_i" /></td>
+                            <td>Miercoles</td>
+                            <td><input class="form-control" id="ihi" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="iir" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="ifr" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="ihf" value="00:00" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="dcheckes" id="c_j" /></td>
+                            <td>Jueves</td>
+                            <td><input class="form-control" id="jhi" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="jir" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="jfr" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="jhf" value="00:00" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="dcheckes" id="c_v" /></td>
+                            <td>Viernes</td>
+                            <td><input class="form-control" id="vhi" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="vir" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="vfr" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="vhf" value="00:00" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="dcheckes" id="c_s" /></td>
+                            <td>S&aacute;bado</td>
+                            <td><input class="form-control" id="shi" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="sir" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="sfr" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="shf" value="00:00" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="dcheckes" id="c_d" /></td>
+                            <td>Domingo</td>
+                            <td><input class="form-control" id="dhi" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="dir" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="dfr" value="00:00" readonly /></td>
+                            <td><input class="form-control" id="dhf" value="00:00" readonly /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_middle').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Guardar
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.dradios').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('.dcheckes').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(".horas").mask('99:99', { numericInput: true });
+
+    $('#activa_r').on('ifChecked', function (event) {
+        $("#a_ir")[0].readOnly = false;
+        $("#a_fr")[0].readOnly = false;
+    });
+
+    $('#activa_r').on('ifUnchecked', function (event) {
+        $("#a_ir")[0].readOnly = true;
+        $("#a_fr")[0].readOnly = true;
+    });
+</script>

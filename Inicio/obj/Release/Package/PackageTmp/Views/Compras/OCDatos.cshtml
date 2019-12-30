@@ -1,0 +1,221 @@
+@model Datos.Models.ComprasModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    @Html.HiddenFor(m => m.Codigo)
+        <div class="row">
+          <div class="col-sm-2">
+            <label>Proveedor</label>
+            @Html.TextBoxFor(m => m.CodigoProveedor, new { @class = "form-control alert-warning", @maxlength = "11", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Listado de Proveedores', '/Proveedor/Proveedores', 'nada2', 'm_middle')" })
+          </div>
+            <div class="col-sm-4">
+                <label>Descripci&oacute;n Prov.</label>
+                <input type="text" readonly class="form-control" id="descripcion_proveedor" />
+            </div>
+            <div class="col-sm-2">
+              <label>Serie</label>
+              @Html.DropDownListFor(m => m.Serie, new List<SelectListItem>
+              {
+                  new SelectListItem{ Text="001", Value = "001" },
+                  new SelectListItem{ Text="002", Value = "002" },
+              }, new { @class = "form-control w-75" })
+            </div>
+            <div class="col-sm-3">
+                <label>No.</label>
+                @Html.TextBoxFor(m => m.Documento, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_enteros(event)" })
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2">
+            <label>Embarcador</label>
+            @Html.TextBoxFor(m => m.CodigoEmbarcador, new { @class = "form-control alert-warning", @maxlength = "11", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Listado de Embarcadores', '/Proveedor/Embarcadores', 'nada2', 'm_middle')" })
+          </div>
+            <div class="col-sm-4">
+                <label>Descripci&oacute;n Emb.</label>
+                <input type="text" readonly class="form-control" id="descripcion_embarcador" />
+            </div>
+            <div class="col-sm-2">
+                <label>Estado</label>
+                <select class="form-control">
+                    <option>E</option>
+                    <option>A</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <br />
+                <b>Emitida</b>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <label>Emisi&oacute;n</label>
+                @Html.TextBoxFor(m => m.FechaEmision, new { @class = "form-control datepickers", @readonly = "true" })
+            </div>
+            <div class="col-sm-1">
+                <label>D&iacute;as</label>
+                <input class="form-control" maxlength = "10" onkeypress = "solo_enteros(event)" />
+            </div>
+            <div class="col-sm-2">
+                <label>Entrega</label>
+                @Html.TextBoxFor(m => m.FechaVencimiento, new { @class = "form-control datepickers", @readonly = "true" })
+            </div>
+            <div class="col-sm-2">
+                <label>Moneda</label>
+                <select class="form-control">
+                    <option>Moneda Nacional</option>
+                    <option>Moneda Extranjera</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <label>T/C</label>
+                <input class="form-control" maxlength = "10" onkeypress = "solo_decimal(event, this)" />
+            </div>
+            <div class="col-sm-2">
+                <label>Tasa IGV</label>
+                <input class="form-control" maxlength = "10" onkeypress = "solo_decimal(event, this)" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Glosa:</label>
+                @Html.TextBoxFor(m => m.Glosa, new { @class = "form-control", maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+            </div>
+            <div class="col-sm-6">
+                <label>Lugar Entrega: </label>
+                <input class="form-control" maxlength = "60" onkeypress = "solo_alfanumericos(event)" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <br />
+                <label>Ingreso de Precios Incluyendo IGV: </label>
+                <input type="checkbox" />
+            </div>
+            <div class="col-sm-4">
+                <br />
+                <input type="checkbox" />&nbsp;
+                <label>Imprimir Orden de Compra Alterna </label>
+            </div>
+        </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <button class="btn btn-primary" onclick="AjaxModalGet('Detalle de Orden de Compra', '/Compras/OCAgregar');">
+            <i class='fa fa-plus'></i>
+            Nuevo
+        </button>
+    </div>
+</div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped pre-scrollable datatables" id="Demogrid" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>C&oacute;digo</th>
+                    <th>Descripci&oacute;n</th>
+                    <th>Lote/Serie</th>
+                    <th>Cantidad</th>
+                    <th>Unidad</th>
+                    <th>Precio</th>
+                    <th>Bruto</th>
+                    <th>Descto</th>
+                    <th>Total Vta.</th>
+                    <th>IGV</th>
+                    <th>Valor Vta.</th>
+                    <th>Descto 2</th>
+                    <th style="width: 5px"></th>
+                    <th style="width: 5px"></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<div class="border rounded">
+    <div class="row">
+        <div class="col-sm-2">
+            <label>Precio Bruto</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>Descto</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Valor Vta.</label><br />
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>I.G.V.</label><br />
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Precio Vta</label><br />
+            <input type="text" class="form-control" readonly />
+        </div>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-sm-12">
+        <a href="#" onclick='ocultar_panel("OCIndex", "Compras")' class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <button class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </button>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#Demogrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+            ajax: {
+                url: ruta_actual + "/Compras/GridProductos",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [12],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [13],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "CodigoProducto" },
+                { data: "DescripcionProducto" },
+                { data: "Lote" },
+                { data: "Cantidad" },
+                { data: "CodigoUnidad" },
+                { data: "Precio" },
+                { data: "Bruto" },
+                { data: "Descuento" },
+                { data: "TotalVta" },
+                { data: "IGV" },
+                { data: "ValorVta" },
+                { data: "DescuentoDetalle" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" href="#" onclick="AjaxModalGet(\'Detalle de Orden de Compra\', \'/Compras/OCAgregar\')" ><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CodigoProducto + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                }
+            ]
+        });
+    });
+</script>

@@ -1,0 +1,202 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="direccion1-tab" data-toggle="tab" href="#direccion1" role="tab" aria-controls="direccion1" aria-selected="true">
+                <i class='fa fa-file'></i>
+                Direcci&oacute;n 1
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="direccion2-tab" data-toggle="tab" href="#direccion2" role="tab" aria-controls="direccion2" aria-selected="false">
+                <i class='fa fa-file'></i>
+                Direcci&oacute;n 2
+            </a>
+        </li>
+    </ul>
+    <br />
+    <div class="tab-content" id="myTabContent">
+        <!-- INICIO direccion1 -->
+        <div class="tab-pane fade show active" id="direccion1" role="tabpanel" aria-labelledby="direccion1-tab">
+            <div class="row">
+                <div class="col-sm-3 pt-1">
+                    <label>Tipo V&iacute;a</label>
+                    <select class="form-control">
+
+                    </select>
+                </div>
+                <div class="col-sm-3 pt-1">
+                    <label>Nombre V&iacute;a</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-3 pt-1">
+                    <label>N&uacute;mero V&iacute;a</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-3 pt-1">
+                    <label>Interior</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-2 pt-1">
+                    <label>Mz</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-2 pt-1">
+                    <label>Lote</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-2 pt-1">
+                    <label>Km</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-2 pt-1">
+                    <label>Block</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-2 pt-1">
+                    <label>Etapa</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-2 pt-1">
+                    <label>Departamento</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-3 pt-1">
+                    <label>Tipo Zona</label>
+                    <select class="form-control"></select>
+                </div>
+                <div class="col-sm-5 pt-1">
+                    <label>Nombre Zona</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-4 pt-1">
+                    <label>Ubigeo (INEI) - T - Registro</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-12 pt-1">
+                    <label>Referencia</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-12 p-3">
+                    <input type="checkbox" class="checkboxes" />&nbsp;
+                    Marcar direcci&oacute;n como predeterminada
+                </div>
+                <div class="col-sm-12 p-1">
+                    <h5>
+                        <i class="fa fa-exclamation-triangle"></i>
+                        La direcci&oacute;n marcada como predeterminada ser&aacute; considerada por su Centro Asistencial de EsSalud (Solo para asegurados por EsSalud)
+                    </h5>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                        <i class='fa fa-arrow-left'></i>
+                        Regresar
+                    </a>
+                    <button class="btn btn-success">
+                        <i class='fa fa-save'></i>
+                        Aceptar
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- FIN direccion1 -->
+        <!-- INICIO direccion2 -->
+        <div class="tab-pane fade" id="direccion2" role="tabpanel" aria-labelledby="direccion2-tab">
+            <div class="row">
+                <div class="col-sm-3 pt-1">
+                    <label>Tipo V&iacute;a</label>
+                    <select class="form-control"></select>
+                </div>
+                <div class="col-sm-3 pt-1">
+                    <label>Nombre V&iacute;a</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-3 pt-1">
+                    <label>N&uacute;mero V&iacute;a</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-3 pt-1">
+                    <label>Interior</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-2 pt-1">
+                    <label>Mz</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-2 pt-1">
+                    <label>Lote</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-2 pt-1">
+                    <label>Km</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-2 pt-1">
+                    <label>Block</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-2 pt-1">
+                    <label>Etapa</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-2 pt-1">
+                    <label>Departamento</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-3 pt-1">
+                    <label>Tipo Zona</label>
+                    <select class="form-control"></select>
+                </div>
+                <div class="col-sm-5 pt-1">
+                    <label>Nombre Zona</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-4 pt-1">
+                    <label>Ubigeo (INEI) - T - Registro</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-12 pt-1">
+                    <label>Referencia</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-12 p-3">
+                    <input type="checkbox" class="checkboxes" />&nbsp;
+                    Marcar direcci&oacute;n como predeterminada
+                </div>
+                <div class="col-sm-12 p-1">
+                    <h5>
+                        <i class="fa fa-exclamation-triangle"></i>
+                        La direcci&oacute;n marcada como predeterminada ser&aacute; considerada por su Centro Asistencial de EsSalud (Solo para asegurados por EsSalud)
+                    </h5>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                        <i class='fa fa-arrow-left'></i>
+                        Regresar
+                    </a>
+                    <button class="btn btn-success">
+                        <i class='fa fa-save'></i>
+                        Aceptar
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- FIN direccion2 -->
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.checkboxes').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+        });
+    });
+</script>

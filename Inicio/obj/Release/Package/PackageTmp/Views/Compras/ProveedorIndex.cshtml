@@ -1,0 +1,109 @@
+@model Datos.Models.ComprasModel
+
+@{
+    ViewBag.Title = "Consulta de Compras por Proveedor";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Compras", "Index", "Compras")</li>
+                    <li class="breadcrumbs-item">Consultas</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Compras/Ayuda', 'ProveedorIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-2">
+                <label>Fecha Desde</label><br />
+                <input class="form-control datepickers" readonly />
+            </div>
+            <div class="col-sm-2">
+                <label>Fecha Hasta</label><br />
+                <input class="form-control datepickers" readonly />
+            </div>
+            <div class="col-sm-2">
+                <br />
+                <a href="#" class="btn btn-primary">
+                    <i class='fa fa-search'></i>
+                    Buscar
+                </a>
+            </div>
+        </div>
+    }
+    <br />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="CProveedorIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Tel&eacute;fono</th>
+                            <th>RUC</th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $(function () {
+        $("#CProveedorIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+
+            ajax: {
+                url: ruta_actual + "/Proveedor/GridProveedores",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [4],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                { data: "Codigo" },
+                { data: "Descripcion" },
+                { data: "Telefono" },
+                { data: "Ruc" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-light grid_opt" href="#" onclick="mostrar_panel(\'ProveedorDetalle?Codigo=' + row.Codigo + '\', \'Compras\')" ><i class="fa fa-search"></i></a>';
+                    }
+                },
+
+            ]
+        });
+    });
+</script>

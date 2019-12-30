@@ -1,0 +1,286 @@
+@model Datos.Models.FacturacionModel
+
+@{
+    ViewBag.Title = "";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Punto de Venta", "Index", "PuntoVenta")</li>
+                    <li class="breadcrumbs-item active">Ventas M&uacute;ltiples</li>
+                    <li class="breadcrumbs-item active">Nuevo</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>Ventas M&uacute;ltiples</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Ventas Multiples - Inicio', '/PuntoVenta/Ayuda', 'PVVMIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-6">
+        @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+        {
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>Fecha Vta</label><br />
+                    @Html.TextBoxFor(m => m.FechaEmision, new { @class = "form-control datepickers", @readonly = true })
+                </div>
+                <div class="col-sm-4">
+                    <label>Cambio</label><br />
+                    @Html.TextBoxFor(m => m.TipoCambio, new { @class = "form-control", @readonly = true })
+                </div>
+                <div class="col-sm-4">
+                    <label>Moneda</label><br />
+                    @Html.DropDownListFor(m => m.Moneda, new List<SelectListItem>
+                    {
+                        new SelectListItem{ Text="Moneda Nacional", Value = "MN" },
+                        new SelectListItem{ Text="Moneda Extranjera", Value = "ME" },
+                    }, new { @class = "form-control" }) 
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>Filtrar por Descripci&oacute;n</label><br />
+                    @Html.TextBoxFor(m => m.Descripcion, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_alfanumericos(event)" })
+                </div>
+                <div class="col-sm-4" align="center">
+                    <br />
+                    <input type="checkbox" /><br />
+                    Ver Solo Vendidos
+                </div>
+                <div class="col-sm-4">
+                    <br />
+                    <a href="#" class="btn btn-primary">
+                        <i class='fa fa-search'></i>
+                        Buscar
+                    </a>
+                </div>
+            </div>
+        }
+        </div>
+        <div class="card shadow col-sm-4">
+            <div class="card-header">
+                Lista de Precios con IGV
+            </div>
+            <div class="card-body" style="height: 150px">
+                <div class="table-responsive h-75">
+                    <table class="table table-bordered table-striped pre-scrollable datatables" id="PrecioGrid" cellspacing="0" width="100%">
+                        <tbody>
+                            <tr>
+                                <td>181.11</td>
+                                <td>Ventas al P&uacute;blico</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2" align="center">
+            <b>Total</b>
+            <input class="form-control" readonly />
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a class="btn btn-primary" href="#" onclick="AjaxModalGet('Stock en Otros Almacenes', '/PuntoVenta/ArticulosOtroAlmacen', 'nada')">
+                <i class='fa fa-building'></i>
+                Otros Almacenes
+            </a>
+            <button class="btn btn-secondary">
+                <i class='fa fa-trash'></i>
+                Limpiar Todo
+            </button>
+        </div>
+    </div>
+    <hr />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="PVVMIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th colspan="4" class="text-center">Listado de Art&iacute;culos <br />(Precios Incluyen IGV)</th>
+                            <th colspan="2" class="text-center"><i class="fa fa-file"></i> Factura</th>
+                            <th colspan="2" class="text-center"><i class="fa fa-file"></i> Boleta de Venta</th>
+                            <th colspan="2" class="text-center"><i class="fa fa-file"></i> Nota de Pedido</th>
+                        </tr>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Stock</th>
+                            <th>Unidad</th>
+                            <th>Cant.</th>
+                            <th>Pre. Unit.</th>
+                            <th>Cant.</th>
+                            <th>Pre. Unit.</th>
+                            <th>Cant.</th>
+                            <th>Pre. Unit.</th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row border rounded">
+        <div class="col-sm-3">
+            <b>Totales Parciales <br />(Inc. IGV)</b>
+        </div>
+        <div class="col-sm-3" align="center">
+            <b>Factura</b>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3" align="center">
+            <b>Boleta Venta</b>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3" align="center">
+            <b>Nota Pedido</b>
+            <input class="form-control" readonly />
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-3" align="center">
+            <a class="btn btn-success" href="#" onclick="AjaxModalGet('Datos del Cliente', '/PuntoVenta/DatosCliente', 'nada2', 'm_middle')">
+                <i class='fa fa-save'></i>
+                Generar Factura
+            </a>
+        </div>
+        <div class="col-sm-3" align="center">
+            <a class="btn btn-success" href="#" onclick="AjaxModalGet('Datos del Cliente', '/PuntoVenta/DatosCliente', 'nada2', 'm_middle')">
+                <i class='fa fa-save'></i>
+                Generar Boleta V.
+            </a>
+        </div>
+        <div class="col-sm-3" align="center">
+            <a class="btn btn-success" href="#" onclick="AjaxModalGet('Datos del Cliente', '/PuntoVenta/DatosCliente', 'nada2', 'm_middle')">
+                <i class='fa fa-save'></i>
+                Generar Nota Ped.
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(function () {
+        $("#PVVMIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: false, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            searchable: false,
+            orderable: false,
+            paging:   false,
+            ordering: false,
+            info:     false,
+
+            ajax: {
+                url: ruta_actual + "/Facturacion/GridArticulosVenta",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [4],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [5],
+                searchable: false,
+                orderable: false
+            },
+            {
+                targets: [6],
+                searchable: false,
+                orderable: false
+            },
+            {
+                targets: [7],
+                searchable: false,
+                orderable: false
+            },
+            {
+                targets: [8],
+                searchable: false,
+                orderable: false
+            },
+            {
+                targets: [9],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "CodigoProducto" },
+                { data: "DescripcionProducto" },
+                { data: "Stock" },
+                { data: "CodigoUnidadMedida" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<input class="form-control" onkeypress = "solo_decimal(event,this)" />';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<input class="form-control" onkeypress = "solo_decimal(event,this)" />';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<input class="form-control" onkeypress = "solo_decimal(event,this)" />';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<input class="form-control" onkeypress = "solo_decimal(event,this)" />';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<input class="form-control" onkeypress = "solo_decimal(event,this)" />';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<input class="form-control" onkeypress = "solo_decimal(event,this)" />';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Transf. de Otro Almacén" onclick="AjaxModalGet(\'Generador de Transferencia por Convesión de Unidades\', \'/PuntoVenta/TransferenciaAlmacen?CodigoProducto=' + row.CodigoProducto + '\',\'nada\')" href="#"><i class="fa fa-angle-double-right"></i></a>';
+                    }
+                },
+            ],
+        });
+    });
+</script>

@@ -1,0 +1,123 @@
+@model Datos.Models.ComprasModel
+
+@{
+    ViewBag.Title = "";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Compras", "Index", "Compras")</li>
+                    <li class="breadcrumbs-item">Reportes</li>
+                    <li class="breadcrumbs-item active">Hist&oacute;rico de Precios de Compra</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>Hist&oacute;rico de Precios de Compra</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Historico de Precios de Compra - Inicio', '/Compras/Ayuda', 'RhistoricoPrecioIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Opciones</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>Art&iacute;culos</label><br />
+                                <input name="opt" type="radio" />
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Familiares</label><br />
+                                <input name="opt" type="radio" />
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Lineas</label><br />
+                                <input name="opt" type="radio" />
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Grupos</label><br />
+                                <input name="opt" type="radio" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Fecha</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Desde</label><br />
+                                <input class="form-control datepickers" readonly />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Hasta</label><br />
+                                <input class="form-control datepickers" readonly />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Por Ar&iacute;culos</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label>Todos los Art&iacute;culos</label><br />
+                                <input type="checkbox" />
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Desde</label><br />
+                                <input class="form-control alert-warning" maxlength = "2"  onkeypress="solo_enteros(event)" ondblclick = "AjaxModalGet('Listado de Artículos', '/Articulo/Articulos', 'nada2', 'm_middle')" />
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Hasta</label><br />
+                                <input class="form-control alert-warning" maxlength="2" onkeypress="solo_enteros(event)" ondblclick="AjaxModalGet('Listado de Artículos', '/Articulo/Articulos', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-print'></i>
+                Imprimir
+            </a>
+        </div>
+    }
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

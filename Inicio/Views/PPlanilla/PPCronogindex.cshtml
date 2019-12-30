@@ -1,0 +1,336 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "Por Cronograma ";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<style>
+    .oculto {
+        display: none;
+    }
+</style>
+<div class="container-fluid animated fadeInRight">
+
+
+
+
+
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item">Administraci&oacute;n de Planillas</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5><b>@ViewBag.Title</b></h5>
+        </div>
+
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title', '/PProceso/Ayuda', 'PACPIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+
+    <div class="card shadow">
+        <div class="card-header">
+            <h5>Panel de Administración de Plantillas</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-sm-9">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card shadow">
+                                <div class="card-header text-danger">
+                                    Periodo
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+
+                                            <select class="form-control" name="select" id="select">
+                                                <option value="opc1">Por mes Procesado</option>
+                                                <option value="opc2">Por Rango de Meses</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-6 rangoDefaul">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <select class="form-control">
+                                                        <option>Periodos</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="col-6 rango oculto">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <input type="text" class="form-control datepickers" placeholder="Fecha inicial" readonly>
+                                                </div>
+                                                <div class="col-6">
+                                                    <input type="text" class="form-control datepickers" placeholder="Fecha final" readonly>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <br />
+                    <div class="card shadow">
+                        <div class="card-header text-danger ">
+                            Plantillas (Cronogramas)
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped pre-scrollable datatables" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+
+                                            <th><input type="checkbox" /> Nombre</th>
+                                            <th>Fecha Inicio</th>
+                                            <th>Fecha Termino</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+
+                                            <th><input type="checkbox" id="chet" name="sele" /> XXX</th>
+                                            <th>XX/XX/XXX</th>
+                                            <th>XX/XX/XXX</th>
+
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-sm-12">
+
+                            <div class="card shadow">
+
+                                <div class="card-body">
+
+                                    <div class="row">
+                                        <div class="col-md-12 col-lg-auto p-2 ml-1">
+                                            <form class="form-inline">
+                                                <label class="mr-1">Ver Filtrado Por:</label>
+                                                <input class="form-control w-25 mr-1" />
+                                                <input class="form-control w-25" />
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                    <di class="row my-2">
+                                        <div class="col-12 text-center">
+                                            <hr />
+                                            <p>Boletas de Remuneraciones</p>
+                                            <hr style="margin:0px;" />
+                                        </div>
+                                    </di>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped pre-scrollable datatables" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>C&oacute;digo</th>
+                                                    <th>Trabajador</th>
+                                                    <th>Mon</th>
+                                                    <th> Total Ingresos</th>
+                                                    <th>Total Egresos</th>
+                                                    <th>Neto a Pagar</th>
+                                                    <th>Aportesr</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th>XX/XX/XXX</th>
+                                                    <th>XX/XX/XXX</th>
+                                                    <th>XX/XX/XXX</th>
+                                                    <th>XX/XX/XXX</th>
+                                                    <th>XX/XX/XXX</th>
+                                                    <th>XX/XX/XXX</th>
+                                                    <th>XX/XX/XXX</th>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-12 col-lg-3">
+                                            <form class="form-group">
+                                                <label> Total Ingresos MN</label>
+                                                <input class="form-control" />
+                                            </form>
+                                        </div>
+                                        <div class="col-12 col-lg-3">
+                                            <form class="form-group">
+                                                <label> Redondeo Anterior</label>
+                                                <input class="form-control" />
+                                            </form>
+                                        </div>
+                                        <div class="col-12 col-lg-3">
+                                            <form class="form-group">
+                                                <label>Total Neto</label>
+                                                <input class="form-control" />
+                                            </form>
+                                        </div>
+                                        <div class="col-12 col-lg-3">
+                                            <form class="form-group">
+                                                <label>MN</label>
+                                                <input class="form-control" />
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-12 col-lg-3">
+                                            <form class="form-group">
+                                                <label> Total Ingresos MN</label>
+                                                <input class="form-control" />
+                                            </form>
+                                        </div>
+                                        <div class="col-12 col-lg-3">
+                                            <form class="form-group">
+                                                <label> Redondeo Anterior</label>
+                                                <input class="form-control" />
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <button class="btn btn-secondary"> Enviar boleta Rem. por Correo</button>
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                                
+                
+
+                          
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <button class="btn btn-secondary btn-block mt-1">Bol. Seleccionada</button>
+                                    <button class="btn btn-secondary btn-block mt-1">Todas Boletas...</button>
+                                    <button class="btn btn-secondary btn-block mt-1">Planilla...</button>
+                                    <button class="btn btn-secondary btn-block mt-1">D&eacute;bitos Cta. Cte..</button>
+                                    <button class="btn btn-secondary btn-block mt-1">Resumen...</button>
+                                    <button class="btn btn-secondary btn-block mt-1">Libro de Plantilla...</button>
+                                    <button class="btn btn-secondary btn-block mt-1">Resumen de horas</button>
+                                    <button class="btn btn-secondary btn-block mt-1">Pagós por banco</button>
+                                    <button class="btn btn-secondary btn-block mt-1">Enviar Notificaci&oacute;n de Pago</button>
+                                    <br />
+                                    <br />
+                                    <select class="form-control">
+                                        <option> Otros Procesos</option>
+                                    </select>
+                                  <button class="btn btn-secondary btn-block mt-1">Cálculos EPS</button>
+                                    <button class="btn btn-secondary btn-block mt-1">Eliminar Boleta Sel.</button>
+                                    <button class="btn btn-secondary btn-block mt-1">Eliminar Todas las Boletas</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(function () {
+        $("#PACPIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            info: false,
+
+            ajax: {
+                url: ruta_actual + "/PProceso/GridMesesActivos",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [4,5],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                { data: "CODIGO" },
+                { data: "NOMBRE" },
+                { data: "MES" },
+                { data: "FECHA" },
+                { data: "MES" },
+                { data: "FECHA" }
+            ],
+        });
+    });
+
+
+
+    $('#select').on('change', function () {
+        var selectValor = $(this).val();
+
+        if (selectValor == 'opc2') {
+            $('.rango').removeClass('oculto');
+
+            $('.rangoDefaul').addClass('oculto');
+
+        } else {
+            $('.rango').addClass('oculto');
+
+            $('.rangoDefaul').removeClass('oculto');
+        }
+    });
+
+
+</script>

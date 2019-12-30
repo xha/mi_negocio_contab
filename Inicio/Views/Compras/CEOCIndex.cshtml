@@ -1,0 +1,117 @@
+@model Datos.Models.ComprasModel
+
+@{
+    ViewBag.Title = "Cambio de Estado de Ordenes de Compras";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Compras", "Index", "Compras")</li>
+                    <li class="breadcrumbs-item">Compras Nacionales</li>
+                    <li class="breadcrumbs-item">&Oacute;rdenes de Compra</li>
+                    <li class="breadcrumbs-item">Cambio de Estado</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Compras/Ayuda', 'CEOCIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label>Fecha Desde</label><br />
+                    <input class="form-control datepickers" readonly />
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <label>Fecha Hasta</label><br />
+                <input class="form-control datepickers" readonly />
+            </div>
+            <div class="col-sm-2">
+                <br />
+                <a href="#" class="btn btn-primary">
+                    <i class='fa fa-search'></i>
+                    Buscar
+                </a>
+            </div>
+        </div>
+    }
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="CEOCIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo Prov.</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Documento</th>
+                            <th>Fecha</th>
+                            <th>IGV</th>
+                            <th>Importe</th>
+                            <th>Monto</th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+    $(function () {
+        $("#CEOCIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Compras/GridPrincipal",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [7],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                { data: "CodigoProveedor" },
+                { data: "DescripcionProveedor" },
+                { data: "Documento" },
+                { data: "FechaEmision" },
+                { data: "IGV" },
+                { data: "ImporteNeto" },
+                { data: "Monto" },
+                {
+                    data: null, render: function (data, type, row) {
+                      return '<a class="btn btn-light grid_opt" href="#" onclick="AjaxModalGet(\'Seleccion\', \'/Compras/CEOCAgregar?Documento=' + row.Documento+'\');"><i class="fa fa-search"></i></a>';
+                    }
+                },
+
+            ]
+        });
+    });
+</script>

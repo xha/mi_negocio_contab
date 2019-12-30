@@ -1,0 +1,203 @@
+﻿@{
+    ViewBag.Title = "Resumen de Gerencia";
+    //Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+    </div>
+    <hr />
+    <!-- Cajas de Texto -->
+    <div class="row">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Compras</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="i_total_total_cuentas">$ @ViewBag.t_compras.ToString()</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Documentos de Compras</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.total_documentos</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-bar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Ventas</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">$ @ViewBag.t_ventas</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-area fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Facturas</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="i_total_total_cuentas">@ViewBag.total_facturas</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Cajas de Texto -->
+    <!-- Gráficos -->
+    <div class="row p-2">
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Total Acumulado</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_total"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Productos</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_productos"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Gráficos -->
+</div>
+<script type="text/javascript">var meses = @Html.Raw(Json.Encode(@ViewData["meses"]));
+    var total_compras = @Html.Raw(Json.Encode(@ViewData["total_compras"]));
+    var total_ventas = @Html.Raw(Json.Encode(@ViewData["total_ventas"]));
+    var productos_salida = @Html.Raw(Json.Encode(@ViewData["productos_salida"]));
+    var productos_entrada = @Html.Raw(Json.Encode(@ViewData["productos_entrada"]));
+    var i;
+
+    Highcharts.chart('div_productos', {
+        chart: {
+            height: 310,
+            type: 'line'
+        },
+        title: {
+            text: ' .'
+        },
+        xAxis: {
+            categories: meses
+        },
+        yAxis: {
+            title: {
+                text: '.'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: false
+                },
+                enableMouseTracking: true
+            }
+        },
+        series: [{
+            name: 'Entrada',
+            data: productos_entrada,
+            color: '#2f7ed8'
+        },{
+            name: 'Salida',
+            data: productos_salida,
+            color: '#0d233a'
+        }],
+    });
+
+    Highcharts.chart('div_total', {
+        chart: {
+            height: 310,
+            type: 'column'
+        },
+        title: {
+            text: '.'
+        },
+        xAxis: {
+            categories: meses,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Consolidado'
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} $</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: 'Compras',
+            data: total_compras,
+            color: '#910000'
+        },{
+            name: 'Ventas',
+            data: total_ventas
+        }]
+    });
+</script>
+
+
+

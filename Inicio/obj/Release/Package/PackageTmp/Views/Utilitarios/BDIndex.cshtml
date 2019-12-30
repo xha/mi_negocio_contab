@@ -1,0 +1,174 @@
+@model Datos.Models.UtilitariosModel
+
+@{
+    ViewBag.Title = "Utilidad de Base de Datos";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Utilidades", "Index", "Utilitarios")</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Utilitarios - Inicio', '/Utilitarios/Ayuda', 'BDIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="datos-tab" data-toggle="tab" href="#datos" role="tab" aria-controls="datos" aria-selected="true">
+                <i class='fa fa-cog'></i>
+                Compactar y Reparar
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="adicional-tab" data-toggle="tab" href="#adicional" role="tab" aria-controls="adicional" aria-selected="false">
+                <i class='fa fa-copy'></i>
+                Backup Base de Datos
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="actualizador-tab" data-toggle="tab" href="#actualizador" role="tab" aria-controls="actualizador" aria-selected="false">
+                <i class='fa fa-list'></i>
+                Actualizador
+            </a>
+        </li>
+    </ul>
+        <br />
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="datos" role="tabpanel" aria-labelledby="datos-tab">
+                <h5>
+                    Nota: La base de datos utilizada no debe estar en uso; si est&aacute; abierta por otros usuarios, estos deber&aacute;n
+                    abandonar las sesiones de Mi Negocio para que usted pueda ejecutar esta opci&oacute;n otra vez
+                </h5>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-header text-danger font-weight-bold">
+                                Acci&oacute;n
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <input type="checkbox" />&nbsp;
+                                        Reparar
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="checkbox" />&nbsp;
+                                        Compactar
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-success">
+                            <i class='fa fa-cogs'></i>
+                            Procesar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="adicional" role="tabpanel" aria-labelledby="adicional-tab">
+                <h5>
+                    Nota: Esta opci&oacute;n genera una copia de seguridad de la base de datos dentro del servidor
+                </h5>
+                <div class="row p-1">
+                    <div class="col-sm-6">
+                        <button class="btn btn-success">
+                            <i class='fa fa-cogs'></i>
+                            Generar Backup
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="actualizador" role="tabpanel" aria-labelledby="actualizador-tab">
+                <h5>
+                    Nota: Antes de ejecutar estos procesos debe cerrar todos los dem&aacute;s procesos y asegurarse de que
+                    el sistema no est&eacute; siendo usado por otro usuario. Se recomienda generar antes un Backup de la base
+                    de datos
+                </h5>
+                <div class="row p-1">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header text-danger font-weight-bold">
+                                Acci&oacute;n
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-4 p-1">
+                                        <input type="checkbox" />&nbsp;
+                                        Actualizar base de datos
+                                    </div>
+                                    <div class="col-sm-4 p-1">
+                                        <input type="checkbox" />&nbsp;
+                                        Restaurar opciones del men&uacute;
+                                    </div>
+                                    <div class="col-sm-4 p-1">
+                                        <input type="checkbox" />&nbsp;
+                                        Actualizar numeraci&oacute;n de documentos
+                                    </div>
+                                    <div class="col-sm-4 p-1">
+                                        <input type="checkbox" />&nbsp;
+                                        Estandarizar movimientos de almac&eacute;n
+                                    </div>
+                                    <div class="col-sm-4 p-1">
+                                        <input type="checkbox" />&nbsp;
+                                        Depurar tablas relacionadas de art&iacute;culos
+                                    </div>
+                                    <div class="col-sm-4 p-1">
+                                        <input type="checkbox" />&nbsp;
+                                        Depurar transacciones incompletas
+                                    </div>
+                                    <div class="col-sm-4 p-1">
+                                        <input type="checkbox" />&nbsp;
+                                        Depurar transacciones con art&iacute;culos no existentes
+                                    </div>
+                                    <div class="col-sm-4 p-1">
+                                        <input type="checkbox" />&nbsp;
+                                        Depurar transacciones Facturaci&oacute;n - Almac&eacute;n
+                                    </div>
+                                    <div class="col-sm-4 p-1">
+                                        <input type="checkbox" />&nbsp;
+                                        Depurar campos inconsistentes
+                                    </div>
+                                    <div class="col-sm-4 p-1">
+                                        <input type="checkbox" />&nbsp;
+                                        Reparar transacciones de almac&eacute;n
+                                    </div>
+                                    <div class="col-sm-4 p-1">
+                                        <input type="checkbox" />&nbsp;
+                                        Sincronizar direcciones de entrega
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-success">
+                            <i class='fa fa-cogs'></i>
+                            Procesar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>

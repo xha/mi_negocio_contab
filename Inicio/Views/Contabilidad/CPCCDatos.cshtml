@@ -1,0 +1,57 @@
+@model Datos.ContabilidadModels.ContabilidadModel
+
+<div class="row">
+  <div class="col-sm-2">
+    <label>C&oacute;digo de Cuenta</label>
+    <input class="form-control alert-warning" ondblclick="AjaxModalGet('Centros de Costo', '/PMaestra/Referencias', '', 'm_middle');" />
+  </div>
+  <div class="col-sm-4">
+    <label>Descripci&oacute;n</label>
+    <input class="form-control" readonly />
+  </div>
+  <div class="col-sm-3">
+    <label>Fecha Inicio</label>
+    <input class="form-control datepickers" readonly />
+  </div>
+  <div class="col-sm-3">
+    <label>Fecha Final</label>
+    <input class="form-control datepickers" readonly />
+  </div>
+</div>
+<hr />
+<div class="row">
+  <div class="col-sm-12">
+    <a href="#" onclick="ocultar_panel('CPCCIndex', 'Contabilidad')" class="btn btn-info">
+      <i class='fa fa-arrow-left'></i>
+      Regresar
+    </a>
+    <button class="btn btn-success">
+      <i class='fa fa-save'></i>
+      Guardar
+    </button>
+  </div>
+</div>
+<hr />
+<hr />
+<div class="card shadow">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped pre-scrollable datatables" id="CPCCDatosGrid" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            <th>C&oacute;digo</th>
+            <th>Descripci&oacute;n</th>
+            <th>Monto MN</th>
+            <th>Monto ME</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+  $(".datepickers").datepicker({
+    autoclose: true
+  });
+</script>

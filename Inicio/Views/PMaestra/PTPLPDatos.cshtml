@@ -1,0 +1,779 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+<div class="card">
+    <div class="card-header text-danger">Datos B&aacute;sicos</div>
+    <div class="row card-body">
+        <div class="col-sm-9">
+            <div class="row">
+                <div class="col-sm-3 pt-1">
+                    <label>C&oacute;digo</label>
+                    <input class="form-control" readonly />
+                </div>
+                <div class="col-sm-3 pt-1">
+                    <label>C&oacute;digo Alt.</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-6"></div>
+                <div class="col-sm-4">
+                    <label>Apellido Paterno</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-4">
+                    <label>Apellido Materno</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-4">
+                    <label>Nombres</label>
+                    <input class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 pt-1">
+            <div class="row">
+                <div class="col-sm-8">
+                    <img src="@Url.Content("~/Content/images/no-avatar.png")" width="100%" />
+                    <div class="row pt-1">
+                        <button class="btn btn-primary ml-2">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <button class="btn btn-danger ml-2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>            
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<h4>Datos del Trabajador</h4>
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="true">
+            <i class='fa fa-file'></i>
+            Personales
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="laboral-tab" data-toggle="tab" href="#laboral" role="tab" aria-controls="laboral" aria-selected="false">
+            <i class='fa fa-file'></i>
+            Laborales
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="rem-tab" data-toggle="tab" href="#rem" role="tab" aria-controls="rem" aria-selected="false">
+            <i class='fa fa-file'></i>
+            Rem. Fijas
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="complementario-tab" data-toggle="tab" href="#complementario" role="tab" aria-controls="complementario" aria-selected="false">
+            <i class='fa fa-file'></i>
+            Complementarios
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="educativo-tab" data-toggle="tab" href="#educativo" role="tab" aria-controls="educativo" aria-selected="false">
+            <i class='fa fa-file'></i>
+            Educativos
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="establecimiento-tab" data-toggle="tab" href="#establecimiento" role="tab" aria-controls="establecimiento" aria-selected="false">
+            <i class='fa fa-file'></i>
+            Establecimientos del Trab.
+        </a>
+    </li>
+</ul>
+<br />
+<div class="tab-content" id="myTabContent">
+    <!-- INICIO personal -->
+    <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+        <div class="row">
+            <div class="col-sm-3 pt-1">
+                <label>Tipo de Doc.</label>
+                <input class="form-control alert-warning" ondblclick="AjaxModalGet('Referencias', '/PMaestra/Referencias', 'nada2', 'm_middle')" />                
+            </div>
+            <div class="col-sm-3 pt-1">
+                <label>Sexo</label>
+                <select class="form-control">
+                    <option>Femenino</option>
+                    <option>Masculino</option>
+                </select>
+            </div>
+            <div class="col-sm-3 pt-1">
+                <label>Pais Emisor</label>
+                <select class="form-control"></select>
+            </div>
+            <div class="col-sm-3 pt-1">
+                <label>Edo. Civil</label>
+                <select class="form-control">
+                    <option>Soltero</option>
+                    <option>Casado</option>
+                    <option>Conviviente</option>
+                    <option>Viudo</option>
+                    <option>Divorciado</option>
+                </select>
+            </div>
+            <div class="col-sm-3 pt-1">
+                <label>Nro. Documento</label>
+                <input class="form-control" />
+            </div>
+            <div class="col-sm-4 pt-1">
+                <label>Carnet Seguro</label>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <a href="#" class="btn btn-sm btn-success">
+                            <i class="fa fa-cogs"></i>
+                        </a>
+                    </div>
+                    <div class="col-sm-10">
+                        <input class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2 pt-1">
+                <label>Fecha Nac.</label>
+                <input class="form-control datepickers" readonly />
+            </div>
+            <div class="col-sm-3 pt-1">
+                <label>Nacionalidad</label>
+                <select class="form-control">
+                    <option>Per&uacute;</option>
+                </select>
+            </div>
+            <div class="col-sm-3 pt-1">
+                <label>Correo Electr&oacute;ncio</label>
+                <input class="form-control" />
+            </div>
+            <div class="col-sm-3 pt-1">
+                <label>Tel&eacute;fono</label>
+                <input class="form-control" />
+            </div>
+            <div class="col-sm-3 pt-1">
+                <label>Cod. de Larga Distancia Nac.</label>
+                <input class="form-control" />
+            </div>
+            <div class="col-sm-3 pt-1 text-center">
+                <input type="checkbox" /><br />
+                Envio de Boleta de Rem. por Email
+            </div>
+            <div class="col-sm-12 pt-2 pb-2">
+                <a href="#">
+                    <i class="fa fa-search"></i>
+                    Consultas en L&iacute;nea
+                </a>
+            </div>
+        </div>
+        <div class="card row pt-1">
+            <div class="card-header text-danger">Pensiones</div>
+            <div class="row card-body">
+                <div class="col-sm-3 pt-1">
+                    <label>AFP/ONP/Otros</label>
+                    <input class="form-control alert-warning" ondblclick="AjaxModalGet('Referencias', '/PMaestra/Referencias', 'nada2', 'm_middle')" />
+                </div>
+                <div class="col-sm-3 pt-1">
+                    <label>C.U.S.P.P.</label>
+                    <input class="form-control" />
+                </div>
+                <div class="col-sm-3 pt-1">
+                    <label>Fecha Inscripci&oacute;n</label>
+                    <input class="form-control datepickers" readonly />
+                </div>
+                <div class="col-sm-3 pt-1">
+                    <label>Esquema de Comisi&oacute;n</label>
+                    <input class="form-control alert-warning" ondblclick="AjaxModalGet('Referencias', '/PMaestra/Referencias', 'nada2', 'm_middle')" />
+                </div>
+            </div>
+        </div>
+        <div class="row pt-1">
+            <div class="row col-sm-5 pt-1">
+                <div class="col-sm-8 pt-1">
+                    <input type="checkbox" />&nbsp;
+                    Domicilio T-Registro
+                </div>
+                <div class="col-sm-4">
+                    <a href="#" class="btn btn-sm btn-secondary" onclick="AjaxModalGet('Dirección T Registro', '/PMaestra/Direcciones', 'nada2', 'm_central')">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </div>
+                <div class="col-sm-12">
+                    <textarea class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="col-sm-7 pt-1">
+                <div class="card row">
+                    <div class="card-header text-danger">Pensiones</div>
+                    <div class="row card-body">
+                        <div class="col-sm-8">
+                            <input type="checkbox" />&nbsp;
+                            No Considerar en el C&aacute;lculo
+                        </div>
+                        <div class="col-sm-4 pt-1">
+                            <input class="form-control" placeholder="Opción A" />
+                        </div>
+                        <div class="col-sm-8 pt-1">
+                            <input type="checkbox" />&nbsp;
+                            No Declarar al PTD
+                        </div>
+                        <div class="col-sm-4 pt-1">
+                            <input class="form-control" placeholder="Opción B" />
+                        </div>
+                        <div class="col-sm-12 pt-2">
+                            <input type="checkbox" />&nbsp;
+                            Afecto a Quinta
+                        </div>
+                        <div class="col-sm-12 pt-2">
+                            <input type="checkbox" />&nbsp;
+                            Opci&oacute;n 02
+                        </div>
+                        <div class="col-sm-12 pt-2">
+                            <input type="checkbox" />&nbsp;
+                            Opci&oacute;n 01
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <a href="#" onclick="ocultar_panel('PTPLPIndex', 'Maestro')" class="btn btn-info">
+                    <i class='fa fa-arrow-left'></i>
+                    Regresar
+                </a>
+                <a href="#" class="btn btn-success">
+                    <i class='fa fa-save'></i>
+                    Guardar
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- FIN personal -->
+    <!-- INICIO laboral -->
+    <div class="tab-pane fade" id="laboral" role="tabpanel" aria-labelledby="laboral-tab">
+        <div class="row border rounded p-1">
+            <div class="col-sm-3">
+                <label>Fecha de Ingreso</label>
+                <input class="form-control datepickers" readonly />
+            </div>
+            <div class="col-sm-3">
+                <label>Tipo de Trabajador</label>
+                <input class="form-control alert-warning" ondblclick="AjaxModalGet('Tipo de Trabajador', '/PMaestra/Referencias', 'nada2', 'm_middle')" />
+            </div>
+            <div class="col-sm-6 border-left">
+                <h5>Categoria Ocupacional</h5>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input type="radio" name="co" />&nbsp; Ejecutivo
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="radio" name="co" />&nbsp; Obrero
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="radio" name="co" />&nbsp; Empleado
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row border rounded p-1 mt-2">
+            <div class="col-sm-3">
+                <label>Centro de Costo</label>
+                <input class="form-control alert-warning" ondblclick="AjaxModalGet('Tipo de Trabajador', '/PMaestra/Referencias', 'nada2', 'm_middle')" />
+            </div>
+            <div class="col-sm-3">
+                <label>&Aacute;rea de Trabajo</label>
+                <input class="form-control alert-warning" ondblclick="AjaxModalGet('Tipo de Trabajador', '/PMaestra/Referencias', 'nada2', 'm_middle')" />
+            </div>
+            <div class="col-sm-3">
+                <label>Cargo</label>
+                <input class="form-control alert-warning" ondblclick="AjaxModalGet('Tipo de Trabajador', '/PMaestra/Referencias', 'nada2', 'm_middle')" />
+            </div>
+            <div class="col-sm-3">
+                <label>Reg. Laboral</label>
+                <select class="form-control"></select>
+            </div>
+        </div>
+        <div class="row border rounded p-1 mt-2">
+            <div class="col-sm-3 pt-1">
+                <input type="checkbox" /> &nbsp;
+                Contrato Asignado
+            </div>
+            <div class="col-sm-6">
+                <input class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <button class="btn btn-secondary">
+                    <i class="fa fa-search"></i>
+                    Contratos
+                </button>
+            </div>
+        </div>
+        <div class="row border rounded p-1 mt-2">
+            <div class="col-sm-3 text-center">
+                <input type="checkbox" /><br />
+                ¿Afiliado EPS/Servicios Propios?
+            </div>
+            <div class="col-sm-3">
+                <label>Situaci&oacute;n</label>
+                <input class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <label>Fecha de Cese</label>
+                <input class="form-control datepickers" readonly />
+            </div>
+            <div class="col-sm-3">
+                <label>&nbsp;</label><br />
+                <button class="btn btn-secondary" disabled>
+                    <i class="fa fa-search"></i>
+                    Datos de EPS
+                </button>
+            </div>
+        </div>
+        <div class="card row mt-2">
+            <div class="card-header text-danger">B&aacute;sico y Asignaci&oacute;n Familiar</div>
+            <div class="row card-body">
+                <div class="col-sm-4">
+                    <select class="form-control w-75">
+                        <option>Rem. Mensual</option>
+                        <option>Jornal Diario</option>
+                    </select>
+                    <input class="form-control w-75 mt-1 mb-1" />
+                    <input type="checkbox" />
+                    <label>Sueldo m&iacute;nimo</label>
+                </div>
+                <div class="col-sm-4">
+                    <label class="pt-1">Asig. Familiar</label>
+                    <input class="form-control w-75" />
+                    <input type="checkbox" />
+                    <label>Asigaci&oacute;n Familiar</label>
+                </div>
+                <div class="col-sm-4">
+                    <label class="pt-1">Moneda</label>
+                    <select class="form-control w-75">
+                        <option>Moneda Nacional</option>
+                        <option>Moneda Extranjera</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-sm-6">
+                <div class="card row mr-1">
+                    <div class="card-header text-danger">Cuentas Bancarias Haberes</div>
+                    <div class="row card-body">
+                        <div class="col-sm-4">
+                            <label>Banco</label>
+                            <input class="form-control alert-warning" ondblclick="AjaxModalGet('Tipo de Trabajador', '/PMaestra/Referencias', 'nada2', 'm_middle')" />
+                        </div>
+                        <div class="col-sm-8">
+                            <label>Cuenta Bancaria</label>
+                            <input class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card row ml-1">
+                    <div class="card-header text-danger">Cuentas Bancarias Dep&oacute;sito CTS</div>
+                    <div class="row card-body">
+                        <div class="col-sm-4">
+                            <label>Banco CTS</label>
+                            <input class="form-control alert-warning" ondblclick="AjaxModalGet('Tipo de Trabajador', '/PMaestra/Referencias', 'nada2', 'm_middle')" />
+                        </div>
+                        <div class="col-sm-8">
+                            <label>Cuenta Bancaria CTS</label>
+                            <input class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <a href="#" onclick="ocultar_panel('PTPLPIndex', 'Maestro')" class="btn btn-info">
+                    <i class='fa fa-arrow-left'></i>
+                    Regresar
+                </a>
+                <a href="#" class="btn btn-success">
+                    <i class='fa fa-save'></i>
+                    Guardar
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- FIN laboral -->
+    <!-- INICIO rem -->
+    <div class="tab-pane fade" id="rem" role="tabpanel" aria-labelledby="rem-tab">
+        <div class="card">
+            <div class="card-header text-danger">Remuneraciones Fijas</div>
+            <div class="row card-body">
+                <div class="col-sm-9">
+                    <div class="table-responsive">
+                        <table class="table table-bordered dataTables pre-scrollable tabla_modal" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Concepto</th>
+                                    <th>Descripci&oacute;n</th>
+                                    <th>Tipo</th>
+                                    <th>Monto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>001</td>
+                                    <td>Sueldo</td>
+                                    <td>A</td>
+                                    <td>2.800,00</td>
+                                </tr>
+                                <tr>
+                                    <td>501</td>
+                                    <td>SSO</td>
+                                    <td>D</td>
+                                    <td>500,00</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-right">
+                                        <b>Total:</b>
+                                    </td>
+                                    <td>
+                                        <b>0.00</b>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12 mt-1">
+                            Concepto
+                            <input class="form-control" readonly />
+                        </div>
+                        <div class="col-sm-12 mt-1">
+                            Descripci&oacute;n
+                            <input class="form-control" readonly />
+                        </div>
+                        <div class="col-sm-12 mt-1">
+                            Monto
+                            <input class="form-control" />
+                        </div>
+                        <div class="col-sm-12 text-center mt-1">
+                            <button class="btn btn-success">
+                                <i class="fa fa-check"></i>
+                                Aplicar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <a href="#" onclick="ocultar_panel('PTPLPIndex', 'Maestro')" class="btn btn-info">
+                    <i class='fa fa-arrow-left'></i>
+                    Regresar
+                </a>
+                <a href="#" class="btn btn-success">
+                    <i class='fa fa-save'></i>
+                    Guardar
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- FIN rem -->
+    <!-- INICIO complementario -->
+    <div class="tab-pane fade" id="complementario" role="tabpanel" aria-labelledby="complementario-tab">
+        <div class="row">
+            <div class="col-sm-3">
+                <label>Situaci&oacute;n Especial</label>
+                <select class="form-control">
+                    <option>NINGUNO</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label>Periodicidad</label>
+                <select class="form-control">
+                    <option>MENSUAL</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label>Tipo Pago</label>
+                <select class="form-control">
+                    <option>DEP&Oacute;SITO EN CUENTA</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label>Convenio para evitar doble imposici&oacute;n</label>
+                <select class="form-control">
+                    <option>NINGUNO</option>
+                </select>
+            </div>
+        </div>
+        <div class="card row mt-1">
+            <div class="card-header text-danger">
+                Seguro complementario de trabajo de riesgo
+            </div>
+            <div class="row card-body">
+                <div class="col-sm-3">
+                    <label>Centro Riesgo</label>
+                    <input class="form-control alert-warning" ondblclick="AjaxModalGet('Tipo de Trabajador', '/PMaestra/Referencias', 'nada2', 'm_middle')" />
+                </div>
+                <div class="col-sm-3">
+                    <label>SCTR Salud</label>
+                    <select class="form-control">
+                        <option>NINGUNO</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <label>SCTR Pensi&oacute;n</label>
+                    <select class="form-control">
+                        <option>NINGUNO</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="card row mt-1">
+            <div class="card-header text-danger">
+                El trabajador esta sujeto a
+            </div>
+            <div class="row card-body">
+                <div class="col-sm-4 text-center">
+                    <input type="checkbox" /><br />
+                    Trabajador sujeto a r&eacute;gimen, alternativo, acumulativo, o at&iacute;pico de jornada de trabajo y descanso
+                </div>
+                <div class="col-sm-4 text-center">
+                    <input type="checkbox" /><br />
+                    Trabajador sujeto a jornada de trabajo m&aacute;xima
+                </div>
+                <div class="col-sm-4 text-center">
+                    <input type="checkbox" /><br />
+                    Trabajador sujeto a horario nocturno
+                </div>
+            </div>
+        </div>
+        <div class="card row mt-1">
+            <div class="card-header text-danger">
+                Otras opciones
+            </div>
+            <div class="row card-body">
+                <div class="col-sm-4">
+                    <label>
+                        <input type="checkbox">
+                        Otros ingresos de 5ta Categor&iacute;a
+                    </label>         
+                </div>        
+                <div class="col-sm-2">
+                    <label>
+                        <input type="checkbox">
+                        Es sindicalizado
+                    </label>
+                </div>
+                <div class="col-sm-2">
+                    <label>
+                        <input type="checkbox">
+                        Es discapacitado
+                    </label>
+                </div>
+                <div class="col-sm-2">
+                    <label>
+                        <input type="checkbox">
+                        Es domiciliado
+                    </label>
+                </div>
+                <div class="col-sm-2">
+                    <label>
+                        <input type="checkbox">
+                        Es Salud Vida
+                    </label>
+                </div>
+                <div class="col-sm-4">
+                    <label>
+                        <input type="checkbox">
+                        ¿Afiliaci&oacute;n asegura tu pensi&oacute;n?
+                    </label>
+                </div>
+                <div class="col-sm-4">
+                    <label>
+                        <input type="checkbox">
+                        Rentas exoneradas - Art. 19 inc e) LIR
+                    </label>
+                </div>
+                <div class="col-sm-4">
+                    <label disabled>
+                        <input type="checkbox">
+                        Retiene pensi&oacute;n 4ta. 5ta. Cat.
+                    </label>
+                </div>
+                <div class="col-sm-12">
+                    <label class="m3-5">Datos del Per&iacute;odo Laboral</label>
+                    <button class="btn btn-secondary">
+                        <i class="fa fa-plus"></i>
+                        Cargar Per&iacute;odos
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-sm-7">
+                <label>Profesi&oacute;n / Ocupaci&oacute;n</label>
+                <input class="form-control" />
+            </div>
+            <div class="col-sm-5">
+                <label>R&eacute;gimen de Aseguramiento de EsSalud</label>
+                <select class="form-control">
+                    <option>ESSALUD REGULAR</option>
+                </select>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <a href="#" onclick="ocultar_panel('PTPLPIndex', 'Maestro')" class="btn btn-info">
+                    <i class='fa fa-arrow-left'></i>
+                    Regresar
+                </a>
+                <a href="#" class="btn btn-success">
+                    <i class='fa fa-save'></i>
+                    Guardar
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- FIN complementario -->
+    <!-- INICIO educativo -->
+    <div class="tab-pane fade" id="educativo" role="tabpanel" aria-labelledby="educativo-tab">
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Situaci&oacute;n Educativa</label>
+                <select class="form-control">
+                    <option>SELECCIONE</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label>Tipo R&eacute;gimen</label>
+                <select class="form-control">
+                    <option>P&Uacute;BLICA</option>
+                    <option>PRIVADA</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label>Tipo Instituci&oacute;n</label>
+                <select class="form-control">
+                    <option>SELECCIONE</option>
+                </select>
+            </div>
+            <div class="col-sm-4 pt-1">
+                <label>Instituci&oacute;n</label>
+                <select class="form-control">
+                    <option>SELECCIONE</option>
+                </select>
+            </div>
+            <div class="col-sm-4 pt-1">
+                <label>Carrera Educativa</label>
+                <select class="form-control">
+                    <option>SELECCIONE</option>
+                </select>
+            </div>
+            <div class="col-sm-4 pt-1">
+                <label>Año de Egresado</label>
+                <input class="form-control datepickers w-75" readonly />
+            </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <a href="#" onclick="ocultar_panel('PTPLPIndex', 'Maestro')" class="btn btn-info">
+                    <i class='fa fa-arrow-left'></i>
+                    Regresar
+                </a>
+                <a href="#" class="btn btn-success">
+                    <i class='fa fa-save'></i>
+                    Guardar
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- FIN educativo -->
+    <!-- INICIO establecimiento -->
+    <div class="tab-pane fade" id="establecimiento" role="tabpanel" aria-labelledby="establecimiento-tab">
+        <div class="row">
+            <div class="col-sm-12">
+                <label>
+                    <input type="radio" name="i_establecimiento" />
+                    Establecimientos Propios 
+                </label>
+                <div class="table-responsive">
+                    <table class="table table-bordered dataTables pre-scrollable tabla_modal" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Establecimiento</th>
+                                <th>Tipo</th>
+                                <th>Local</th>
+                                <th>Denominaci&oacute;n</th>
+                                <th>Vigente</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-12 mt-1">
+                <label>
+                    <input type="radio" name="i_establecimiento" />
+                    Establecimientos donde se destaca Personal
+                </label>
+                <div class="table-responsive">
+                    <table class="table table-bordered dataTables pre-scrollable tabla_modal" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Empresa</th>
+                                <th>Establecimiento</th>
+                                <th>Denominaci&oacute;n</th>
+                                <th>Vigente</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-12 mt-1">
+                <a href="#" class="btn btn-primary">
+                    <i class='fa fa-plus'></i>
+                    Nuevo Establecimiento
+                </a>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <a href="#" onclick="ocultar_panel('PTPLPIndex', 'Maestro')" class="btn btn-info">
+                    <i class='fa fa-arrow-left'></i>
+                    Regresar
+                </a>
+                <a href="#" class="btn btn-success">
+                    <i class='fa fa-save'></i>
+                    Guardar
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- FIN establecimiento -->
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

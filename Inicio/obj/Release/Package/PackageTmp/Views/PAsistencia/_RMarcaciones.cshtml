@@ -1,0 +1,171 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Centro de Costo</label>
+            <input class="form-control alert-warning" ondblclick="AjaxModalGet('Centros de Costo', '/PMaestra/Referencias', '', 'm_middle');" />
+        </div>
+        <div class="col-sm-3">
+            <label>Tipo Trabajador</label>
+            <select class="form-control">
+                <option>Ninguno</option>
+                <option>Full Time</option>
+                <option>Part. Time</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Trabajador</label>
+            <input class="form-control" />
+        </div>
+        <div class="col-sm-3">
+            <label>&nbsp;</label><br />
+            <a href="#" class="btn btn-secondary">
+                <i class='fa fa-spinner'></i>
+                Cargar
+            </a>
+        </div>
+        <div class="col-sm-3">
+            <label>Fecha Inicial</label>
+            <input class="form-control datepickers" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Fecha Fin</label>
+            <input class="form-control datepickers" readonly />
+        </div>
+    </div>
+    <br />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered pre-scrollable datatables" id="RMarcacionesGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Cod. Trabajador</th>
+                            <th>Apellidos y Nombres</th>
+                            <!-- LUNES -->
+                            <th>Hora Entrada</th>
+                            <th>Inicio Refrigerio</th>
+                            <th>Fin Refrigerio</th>                            
+                            <th>Hora Salida</th>
+                            <!-- MARTES -->
+                            <th>Hora Entrada</th>
+                            <th>Inicio Refrigerio</th>
+                            <th>Fin Refrigerio</th>
+                            <th>Hora Salida</th>
+                            <!-- MIERCOLES -->
+                            <th>Hora Entrada</th>
+                            <th>Inicio Refrigerio</th>
+                            <th>Fin Refrigerio</th>
+                            <th>Hora Salida</th>
+                            <!-- JUEVES -->
+                            <th>Hora Entrada</th>
+                            <th>Inicio Refrigerio</th>
+                            <th>Fin Refrigerio</th>
+                            <th>Hora Salida</th>
+                            <!-- VIERNES -->
+                            <th>Hora Entrada</th>
+                            <th>Inicio Refrigerio</th>
+                            <th>Fin Refrigerio</th>
+                            <th>Hora Salida</th>
+                            <!-- SABADO -->
+                            <th>Hora Entrada</th>
+                            <th>Inicio Refrigerio</th>
+                            <th>Fin Refrigerio</th>
+                            <!-- DOMINGO -->
+                            <th>Hora Entrada</th>
+                            <th>Inicio Refrigerio</th>
+                            <th>Fin Refrigerio</th>
+                            <th>Hora Salida</th>
+                            <th>Hora Salida</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2"></th>
+                            <th colspan="4" class="text-center">Lunes</th>
+                            <th colspan="4" class="text-center">Martes</th>
+                            <th colspan="4" class="text-center">Miércoles</th>
+                            <th colspan="4" class="text-center">Jueves</th>
+                            <th colspan="4" class="text-center">Viernes</th>
+                            <th colspan="4" class="text-center">Sábado</th>
+                            <th colspan="4" class="text-center">Domingo</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-1">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Grabar
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+    
+    $(function () {
+        $("#RMarcacionesGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            info: false,
+
+            ajax: {
+                url: ruta_actual + "/PAsistencia/GridAsistencia",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [3, 4, 5, 6],
+                orderable: false,
+                searchable: false,
+            }],
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE_TRABAJADOR" },
+                { data: "ENTRADA" },
+                { data: "HORA_INICIO" },
+                { data: "HORA_INICIO" },
+                { data: "SALIDA" },
+                { data: "ENTRADA" },
+                { data: "HORA_INICIO" },
+                { data: "HORA_INICIO" },
+                { data: "SALIDA" },
+                { data: "ENTRADA" },
+                { data: "HORA_INICIO" },
+                { data: "HORA_INICIO" },
+                { data: "SALIDA" },
+                { data: "ENTRADA" },
+                { data: "HORA_INICIO" },
+                { data: "HORA_INICIO" },
+                { data: "SALIDA" },
+                { data: "ENTRADA" },
+                { data: "HORA_INICIO" },
+                { data: "HORA_INICIO" },
+                { data: "SALIDA" },
+                { data: "ENTRADA" },
+                { data: "HORA_INICIO" },
+                { data: "HORA_INICIO" },
+                { data: "SALIDA" },
+                { data: "ENTRADA" },
+                { data: "HORA_INICIO" },
+                { data: "HORA_INICIO" },
+                { data: "SALIDA" },
+            ],
+        });
+    });
+</script>

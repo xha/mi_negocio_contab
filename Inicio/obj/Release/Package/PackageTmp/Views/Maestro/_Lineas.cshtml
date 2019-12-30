@@ -1,0 +1,44 @@
+﻿<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered pre-scrollable datatables tabla_modal" id="LineaGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Descripci&oacute;n</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#LineaGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Maestro/GridLineas",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "lin_codigo" },
+                { data: "lin_nombre" },
+            ]
+        });
+        $('#LineaGrid tbody').on('dblclick', 'tr', function () {
+            eval($("#parametro").val() + "('" + this.cells[0].textContent + "','" + this.cells[1].textContent + "')");
+        });
+        $('.tabla_modal')[0].setAttribute("title", "Doble Click para seleccionar");
+    });
+</script>

@@ -1,0 +1,114 @@
+﻿<div class="container-fluid">
+    
+   
+    <div class="card mt-1">
+        <div class="card-header text-danger">
+            1. Vacaciones Truncadas
+        </div>
+        <div class="card-body">
+           
+               
+            <div class="row justify-content-end">
+                <div class="col-sm-12 col-md-4">
+                    <label>Por los Meses</label>
+                    <input class="form-control w-100" readonly="">
+                </div>
+                <div class="col-sm-12 col-md-4">
+                    <label>Por los dias </label>
+                    <input class="form-control w-100" readonly="">
+                </div>
+            
+                <div class="col-sm-12 col-md-4">
+                    <label>Equivale</label>
+                    <input class="form-control w-100" readonly="">
+                </div>
+            
+            </div>
+      
+        </div>
+
+
+        <div class="col border-bottom text-danger">
+            2. Vacaciones Por Cancelar
+        </div>
+
+        <div class="card-body">
+            <div class="row justify-content-end">
+                <div class="col-sm-12 col-md-4 text-center">
+                    <label>Permitir Modificaciones</label> <br />
+                    <input type="checkbox">
+                </div>
+                <div class="col-sm-12 col-md-4">
+                    <label>Dias Pendientes </label>
+                    <input class="form-control w-100" readonly="">
+                </div>
+
+                <div class="col-sm-12 col-md-4">
+                    <label>Equivale</label>
+                    <input class="form-control w-100" readonly="">
+                </div>
+
+            </div>
+        </div>
+
+     
+        <div class="col border-bottom text-danger">
+            3. Vacaciones a Cuenta
+        </div>
+        <div class="card-body">
+            <div class="row justify-content-end">
+                <div class="col-sm-12 col-md-4 text-center">
+                    <label>Permitir Modificaciones</label> <br />
+                    <input type="checkbox">
+                </div>
+                <div class="col-sm-12 col-md-4 text-center">
+                    <label>Dias Pendientes </label>
+                    <input class="form-control w-100" readonly="">
+                </div>
+
+                <div class="col-sm-12 col-md-4 text-center">
+                    <label>Equivale</label>
+                    <input class="form-control w-100" readonly="">
+                </div>
+         
+            </div>
+            <hr />
+            <div class="row justify-content-end ">
+                        <div class="col-sm-3">
+                            <button class="btn btn-outline-secondary" onclick="AjaxModalGet('Detalle de Pagos Vacacionales', '/PProceso/CTSDDetalle', '', 'm_middle')">Ver Detalle</button>
+                </div>
+             </div>
+        </div>
+    </div>
+
+    
+
+        <hr />
+        <div class="row">
+            <div class="col-sm-12">
+                          <button class="btn btn-secondary ">
+                    <i class="fa fa-print"></i>
+                    Kardex de Vacaciones
+                </button>
+
+
+                <a href="#" class="btn btn-success">
+                    <i class='fa fa-save'></i>
+                   Aceptar
+                </a>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

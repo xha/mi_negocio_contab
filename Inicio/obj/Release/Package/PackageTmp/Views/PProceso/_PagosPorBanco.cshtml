@@ -1,0 +1,198 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header font-weight-bold">Entidades Bancarias</div>
+            <div class="row card-body">
+                <div class="col-sm-12 table-responsive">
+                    <table class="table table-bordered table-striped pre-scrollable datatables" id="PagosPorBanco1Grid" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Seleccione</th>
+                                <th>C&oacute;digo</th>
+                                <th style="min-width: 250px">Banco</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header font-weight-bold">
+                <h5>Banco</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>Banco</label>
+                        <select class="form-control">
+                            <option>Banco de Cr&eacute;digo de Per&uacute;</option>                            
+                        </select>
+                    </div>
+                    <div class="col-sm-12 mt-1">
+                        <label>Moneda Cta.</label>
+                        <select class="form-control">
+                            <option>Moneda Nacional</option>
+                            <option>Moneda Extranjera</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 mt-1 text-center">
+                        <button class="btn btn-success">
+                            <i class="fa fa-cogs"></i>
+                            Procesar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-1">
+    <div class="col-sm-12 my-1">
+        <label>
+            <input type="checkbox" class="checkboxs" />&nbsp;
+            Solo trabajadores activos
+        </label>
+    </div>
+    <div class="col-sm-12 mt-1">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped pre-scrollable" id="PagosPorBanco2Grid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Sel.</th>
+                        <th>Nombres</th>
+                        <th>Neto</th>
+                        <th>Cta. Banco</th>
+                        <th>Banco</th>
+                        <th>CCosto</th>
+                        <th>Area</th>
+                        <th>Moneda</th>
+                        <th style="width: 5px"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row my-1 border-default border rounded">
+    <div class="col-sm-2">
+        <br />
+        <b>0</b> Trabajadores
+    </div>
+    <div class="col-sm-2">
+        <label>Total MN:</label>
+        <input class="form-control" readonly />
+    </div>
+    <div class="col-sm-2">
+        <label>Total ME:</label>
+        <input class="form-control" readonly />
+    </div>
+    <div class="col-sm-2">
+        <label>Total MN:</label>
+        <input class="form-control" />
+    </div>
+    <div class="col-sm-2">
+        <label>Tipo Cambio:</label>
+        <input class="form-control" />
+    </div>
+    <div class="col-sm-2">
+        <label>Fecha Abono:</label>
+        <input class="form-control datepickers" readonly />
+    </div>
+    <div class="col-sm-12 my-1">
+        <label>
+            <input type="checkbox" class="checkboxs" />&nbsp;
+            Solo banco seleccionado
+        </label>
+    </div>
+</div>
+
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-primary">
+            <i class='fa fa-print'></i>
+            Reporte
+        </a>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#PagosPorBanco2Grid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            ajax: {
+                url: ruta_actual + "/PProceso/GridListadoTrabajadores",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                {
+                    data: 'CODIGO_TRABAJADOR',
+                    'checkboxes': {
+                        'selectRow': true
+                    }
+                },
+                { data: "NOMBRE" },
+                { data: "BASICO" },
+                { data: "CUENTA_BANCO" },
+                { data: "DOCUMENTO" },
+                { data: "BASICO" },
+                { data: "CENTRO_COSTO" },
+                { data: "CUENTA_BANCO" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CODIGO_TRABAJADOR + '\')"><i class="fa fa-trash"></i></button>';
+                    }
+                },
+            ]
+        });
+
+        $("#PagosPorBanco1Grid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            ajax: {
+                url: ruta_actual + "/PMaestra/GridPTMLCC",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                {
+                    data: 'CODIGO',
+                    'checkboxes': {
+                        'selectRow': true
+                    }
+                },
+                { data: "CODIGO" },
+                { data: "DESCRIPCION" },
+            ]
+        });
+    });
+
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('.checkboxs').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

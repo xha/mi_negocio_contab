@@ -1,0 +1,341 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="paso1-tab" data-toggle="tab" href="#paso1" role="tab" aria-controls="paso1" aria-selected="true">
+                <i class='fa fa-arrow-right'></i>
+                Paso 1
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="paso2-tab" data-toggle="tab" href="#paso2" role="tab" aria-controls="paso2" aria-selected="false">
+                <i class='fa fa-arrow-right'></i>
+                Paso 2
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="paso3-tab" data-toggle="tab" href="#paso3" role="tab" aria-controls="paso3" aria-selected="false">
+                <i class='fa fa-arrow-right'></i>
+                Paso 3
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="paso4-tab" data-toggle="tab" href="#paso4" role="tab" aria-controls="paso4" aria-selected="false">
+                <i class='fa fa-arrow-down'></i>
+                Paso 4
+            </a>
+        </li>
+    </ul>
+    <br />
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="paso1" role="tabpanel" aria-labelledby="paso1-tab">
+            <div class="card">
+                <div class="card-header">Tipo de Trabajador</div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-sm-3">
+                            <label>
+                                <input type="checkbox" /><br />
+                                No mostrar trabajadores de baja
+                            </label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label>
+                                <input type="checkbox" /><br />
+                                Todos los tipos de trabajador
+                            </label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label>
+                                <input type="checkbox" /><br />
+                                No incluir los marcados
+                            </label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label>
+                                <input type="checkbox" /><br />
+                                No incluir las Vacaciones
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="paso2" role="tabpanel" aria-labelledby="paso2-tab">
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>
+                        <input type="radio" name="m_paso2" id="area_radio" checked />
+                        &Aacute;rea de Trabajo
+                    </label>
+                </div>
+                <div class="col-sm-4">
+                    <label>
+                        <input type="radio" name="m_paso2" />
+                        Centro de Costo
+                    </label>
+                </div>
+                <div class="col-sm-4"></div>
+                <div class="col-sm-8 mt-1" id="mp_area">
+                    <div class="card">
+                        <div class="card-header">&Aacute;rea de Trabajo</div>
+                        <div class="card-body">
+                            <div class="row col-sm-12">
+                                <label>
+                                    <input type="checkbox" id="c_area_todas" checked />
+                                    Todas las &aacute;reas de trabajo
+                                </label>
+                            </div>
+                            <div class="row" style="display: none" id="c_area_uno">
+                                <div class="col-sm-4">
+                                    <label>
+                                        <input type="checkbox" />
+                                        No incluir
+                                    </label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input class="form-control alert-warning" placeholder="Desde" ondblclick="AjaxModalGet('Referencias', '/PMaestra/Referencias', '', 'm_middle');" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <input class="form-control alert-warning" placeholder="Hasta" ondblclick="AjaxModalGet('Referencias', '/PMaestra/Referencias', '', 'm_middle');" />
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>
+                                        <input type="checkbox" />
+                                        Filtro Preciso de &aacute;rea de trabajo
+                                    </label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>
+                                        <input type="checkbox" />
+                                        Todos los Trabajadores
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 mt-1" id="mp_centro" style="display: none">
+                    <div class="card">
+                        <div class="card-header">Centro de Trabajo</div>
+                        <div class="card-body">
+                            <div class="row col-sm-12">
+                                <label>
+                                    <input type="checkbox" id="c_centro_todas" checked />
+                                    Todas los Centros de Trabajo
+                                </label>
+                            </div>
+                            <div class="row" style="display: none" id="c_centro_uno">
+                                <div class="col-sm-4">
+                                    <label>
+                                        <input type="checkbox" />
+                                        No incluir
+                                    </label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input class="form-control alert-warning" placeholder="Desde" ondblclick="AjaxModalGet('Referencias', '/PMaestra/Referencias', '', 'm_middle');" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <input class="form-control alert-warning" placeholder="Hasta" ondblclick="AjaxModalGet('Referencias', '/PMaestra/Referencias', '', 'm_middle');" />
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>
+                                        <input type="checkbox" />
+                                        Filtro Preciso de centro de trabajo
+                                    </label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>
+                                        <input type="checkbox" />
+                                        Todos los Trabajadores
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 mt-1">
+                    <div class="card">
+                        <div class="card-header">Fecha de Ingreso</div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-sm-12">
+                                    <label>Fecha de Ingreso</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <select class="form-control" onchange="cambia_fecha(this.value)">
+                                        <option value=""></option>
+                                        <option value="=">=</option>
+                                        <option value=">">></option>
+                                        <option value="=>">=></option>
+                                        <option value="<"><</option>
+                                        <option value="<="><=</option>  
+                                        <option value="/">Entre</option>  
+                                    </select>
+                                </div>
+                                <div class="col-sm-8" id="fecha_ingreso" style="display: none">
+                                    <input class="form-control datepickers" readonly />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="paso3" role="tabpanel" aria-labelledby="paso3-tab">
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-plus'></i>
+                Agregar
+            </a>
+            <br />
+            <br />
+            <table class="table table-bordered table-striped pre-scrollable " id="Paso3Grid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Cod.</th>
+                        <th>Nombre</th>
+                        <th>Fecha Ing.</th>
+                        <th style="width: 5px"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="paso4" role="tabpanel" aria-labelledby="paso4-tab">
+            <h5>
+                <i class="fa fa-2x fa-file-alt"></i>
+                La informaci&oacute;n seleccionada se agrupar&aacute; y combinar&aacute; respectivamente con el proceso que esta ejecutando.
+            </h5>
+        </div>
+    </div>
+    <br />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable " id="SelectorTrabajadoresGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Trabajador</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <a href="#" class="btn btn-secondary">
+                            Vacaciones
+                        </a>
+                    </div>
+                    <div class="col-sm-6">
+                        <label>
+                            <input type="checkbox" />
+                            No Calculados
+                        </label>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-users'></i>
+                Todos los Trabajadores
+            </a>
+        </div>
+        <div class="col-sm-6">
+            <a href="#" class="btn btn-secondary">
+                <i class='fa fa-arrow-left'></i>
+                Anterior
+            </a>
+            <a href="#" class="btn btn-secondary">
+                <i class='fa fa-arrow-right'></i>
+                Siguiente
+            </a>
+        </div>
+        <div class="col-sm-2">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-danger">
+                <i class='fa fa-times'></i>
+                Salir
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#Paso3Grid").DataTable({
+            destroy: true,
+            processing: true,
+            serverSide: true,
+            filter: true, 
+            orderMulti: false,
+            info: false,
+            ajax: {
+                url: ruta_actual + "/PAsistencia/GridAsistencia",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE_TRABAJADOR" },
+                { data: "DIA" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger" title="Quitar" href="#" ><i class="fa fa-times"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('#c_centro_todas').on('ifUnchecked', function (event) {
+        $("#c_centro_uno")[0].style.display = "flex";
+    });
+
+    $('#c_centro_todas').on('ifChecked', function (event) {
+        $("#c_centro_uno")[0].style.display = "none";
+    });
+
+    $('#c_area_todas').on('ifUnchecked', function (event) {
+        $("#c_area_uno")[0].style.display = "flex";
+    });
+
+    $('#c_area_todas').on('ifChecked', function (event) {
+        $("#c_area_uno")[0].style.display = "none";
+    });
+
+    $('#area_radio').on('ifChecked', function (event) {
+        $("#mp_area")[0].style.display = "block";
+        $("#mp_centro")[0].style.display = "none";
+    });
+
+    $('#area_radio').on('ifUnchecked', function (event) {
+        $("#mp_area")[0].style.display = "none";
+        $("#mp_centro")[0].style.display = "block";
+    });
+
+    function cambia_fecha(valor) {
+        if (valor == "") {
+            $("#fecha_ingreso")[0].style.display = "none";
+        } else {
+            $("#fecha_ingreso")[0].style.display = "flex";
+        }
+    }
+</script>

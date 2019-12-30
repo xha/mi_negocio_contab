@@ -1,0 +1,248 @@
+﻿@model Datos.Models.CajaModel
+
+@{
+    ViewBag.Title = "Resumen de Caja";
+    //Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Caja/Ayuda', 'Index', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <!-- Cajas de Texto -->
+    <div class="row">
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Ingresos</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="i_total_total_cuentas">$ @ViewBag.total_ingreso</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Egresos</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">$ @ViewBag.total_egreso</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-bar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="i_total_total_cuentas">$ @ViewBag.total</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Cajas de Texto -->
+    <!-- Gráficos -->
+    <div class="row p-2">
+        <div class="col-sm-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Ingreso Detallado</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_ingresos"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Egreso Detallado</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_egresos"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Resumen Total</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_totales"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Gráficos -->
+</div>
+<script type="text/javascript">
+    var meses = @Html.Raw(Json.Encode(@ViewData["meses"]));
+    var ingreso_1 = @Html.Raw(Json.Encode(@ViewData["ingreso_1"]));
+    var ingreso_2 = @Html.Raw(Json.Encode(@ViewData["ingreso_2"]));
+    var ingreso_3 = @Html.Raw(Json.Encode(@ViewData["ingreso_3"]));
+    var egreso_1 = @Html.Raw(Json.Encode(@ViewData["egreso_1"]));
+    var egreso_2 = @Html.Raw(Json.Encode(@ViewData["egreso_2"]));
+    var egreso_3 = @Html.Raw(Json.Encode(@ViewData["egreso_3"]));
+    var egreso_4 = @Html.Raw(Json.Encode(@ViewData["egreso_4"]));
+    var ingresos = @Html.Raw(Json.Encode(@ViewData["ingresos"]));
+    var egresos = @Html.Raw(Json.Encode(@ViewData["egresos"]));
+    var i;
+
+    Highcharts.chart('div_ingresos', {
+        chart: {
+            height: 310,
+            type: 'line'
+        },
+        title: {
+            text: ' .'
+        },
+        xAxis: {
+            categories: meses
+        },
+        yAxis: {
+            title: {
+                text: 'Ingresos'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Ingreso 1',
+            data: ingreso_1
+        }, {
+            name: 'Ingreso 2',
+            data: ingreso_2
+        }, {
+            name: 'Ingreso 3',
+            data: ingreso_3
+        }]
+    });
+
+    Highcharts.chart('div_egresos', {
+        chart: {
+            height: 310,
+            type: 'line'
+        },
+        title: {
+            text: ' .'
+        },
+        xAxis: {
+            categories: meses
+        },
+        yAxis: {
+            title: {
+                text: 'Egresos'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Egreso 1',
+            data: egreso_1
+        }, {
+            name: 'Egreso 2',
+            data: egreso_2
+        }, {
+            name: 'Egreso 3',
+            data: egreso_3
+        }, {
+            name: 'Egreso 4',
+            data: egreso_4
+        }]
+    });
+
+    Highcharts.chart('div_totales', {
+        chart: {
+            height: 310,
+            type: 'column'
+        },
+        title: {
+            text: '.'
+        },
+        xAxis: {
+            categories: meses,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Resumen'
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} $</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: 'Ingresos',
+            data: ingresos
+        }, {
+            name: 'Egresos',
+            data: egresos
+        }]
+    });
+</script>

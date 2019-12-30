@@ -1,0 +1,175 @@
+﻿@model Datos.Models.CuentasPorPagarModel
+@{
+    ViewBag.Title = "Administración de Letras de Canje";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Cuentas Por Pagar", "Index", "CuentasPorPagar")</li>
+                    <li class="breadcrumbs-item">Transacciones</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("TDPPIndex", "CuentasPorPagar")'>Descuentos por Pagar y Pagos</a></li>
+                    <li class="breadcrumbs-item active">Mantenimiento</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Proveedor</label> #<strong>@Model.Codigo</strong></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/CuentasPorPagar/Ayuda', 'TDPPMantenimiento', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-7">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped pre-scrollable datatables" id="TDPPMantenimientoGrid" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Planilla</th>
+                                <th>Codigo Proveedor</th>
+                                <th>Descripci&oacute;n</th>
+                                <th style="width: 5px"></th>
+                                <th style="width: 5px"></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5">
+        @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+        {
+            <div class="card">
+                <div class="card-header font-weight-bold">Informaci&oacute;n de la Planilla</div>
+                <div class="card-body">
+                    <div class="row p-1">
+                        <div class="col-sm-5 text-right">
+                            <label>Fecha de Canje</label>
+                        </div>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(m => m.FechaEmision, new { @class = "form-control", @readonly = "true" })
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-5 text-right">
+                            <label>Estado</label>
+                        </div>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(m => m.Estatus, new { @class = "form-control", @readonly = "true" })
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-5 text-right">
+                            <label>Acoplado el</label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input class="form-control" readonly />
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-5 text-right">
+                            <label>Moneda</label>
+                        </div>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(m => m.Moneda, new { @class = "form-control", @readonly = "true" })
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-5 text-right">
+                            <label>Tipo de Cambio</label>
+                        </div>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(m => m.TipoCambio, new { @class = "form-control", @readonly = "true" })
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-5 text-right">
+                            <label>Total de Canje</label>
+                        </div>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(m => m.Total, new { @class = "form-control", @readonly = "true" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-8">
+            <label>Estado de Letra de Cambio</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-2">
+            <br />
+            <a href="#" class="btn btn-info">
+                <i class='fa fa-exchange-alt'></i>
+                Cambiar Estado
+            </a>
+        </div>
+        <div class="col-sm-2">
+            <br />
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-print'></i>
+                Imprimir Letra
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick="ocultar_panel('TDPPIndex', 'CuentasPorPagar')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#TDPPMantenimientoGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            ajax: {
+                url: ruta_actual + "/CuentasPorPagar/GridTDPPMantenimiento",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "Documento" },
+                { data: "Codigo" },
+                { data: "Descripcion" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.Codigo + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Imprimir" href="#"><i class="fa fa-print"></i></a>';
+                    }
+                },
+            ]
+        });
+
+        $('#TDPPMantenimientoGrid tbody').on('click', 'tr', function () {
+            $('#TDPPMantenimientoGrid').dataTable().$('tr').removeClass('bg-secondary text-white');
+            $(this).addClass('bg-secondary text-white');
+        });
+    });
+</script>
+

@@ -1,0 +1,205 @@
+@model Datos.Models.AnexoModel
+
+@{
+    ViewBag.Title = "Cliente";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li class="breadcrumbs-item">Base de Datos</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Cliente - Inicio', '/Cliente/Ayuda', 'Index', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick="mostrar_panel('Create', 'Cliente')" class="btn btn-success">
+                <i class='fa fa-plus'></i>
+                Agregar
+            </a>
+        </div>
+    </div>
+    <br />
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold">Listado de Clientes 
+                <label class='btn btn-primary grid_opt' onclick="imprimir_global('Listado de Clientes','/Cliente/Clientes')"><i class='fa fa-print'></i></label>
+            </h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="ClienteIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>RUC</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>DNI</th>
+                            <th>Interior</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#ClienteIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Cliente/GridClientes",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [5],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [6],
+                searchable: false,
+                orderable: false
+            },
+            {
+                targets: [7],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "ANEX_CODIGO" },
+                { data: "ANEX_RUC" },
+                { data: "ANEX_DESCRIPCION" },
+                { data: "ANEX_DOCIDENT" },
+                { data: "ANEX_INTERIOR" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="mostrar_panel(\'Edit?Codigo=' + row.ANEX_CODIGO + '\', \'Cliente\')"><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_ClienteIndex(\'' + JSON.stringify(row) + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Imprimir" href="#"><i class="fa fa-print"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+
+    function anular_ClienteIndex(row) {
+        swal({
+            title: "¿Estás seguro?",
+            text: "Confirmar Anulado del registro: " + row.ANEX_CODIGO,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            cancelButtonClass: "btn-secondary",
+            confirmButtonText: "Aceptar",
+            cancelButtonText: "Cancelar",
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                var accion = 2;
+                var datos_enviar = [];
+
+                datos_enviar.push({
+                    ANEX_CODIGO: row.ANEX_CODIGO,
+                    TIPOANEX_CODIGO: row.TIPOANEX_CODIGO,
+                    ANEX_REFERENCIA: row.ANEX_REFERENCIA,
+                    ANEX_DESCRIPCION: row.ANEX_DESCRIPCION,
+                    ANEX_DIRECCION: row.ANEX_DIRECCION,
+                    ANEX_GIRO: row.ANEX_GIRO,
+                    ANEX_TELEFONO: row.ANEX_TELEFONO,
+                    ANEX_REPRESENTANTE: row.ANEX_REPRESENTANTE,
+                    ANEX_RUC: row.ANEX_RUC,
+                    ANEX_DOCIDENT: row.ANEX_DOCIDENT,
+                    ANEX_EMAIL: row.ANEX_EMAIL,
+                    ANEX_DSCTO: row.ANEX_DSCTO,
+                    ANEX_CREDITO: row.ANEX_CREDITO,
+                    ANEX_TELEFONO2: row.ANEX_TELEFONO2,
+                    ANEX_TELEFONO3: row.ANEX_TELEFONO3,
+                    ANEX_DIRECCION2: row.ANEX_DIRECCION2,
+                    ANEX_NOTAS: row.ANEX_NOTAS,
+                    ANEX_BANCO: row.ANEX_BANCO,
+                    ANEX_NROCTA: row.ANEX_NROCTA,
+                    ANEX_ZONAVTA: row.ANEX_ZONAVTA,
+                    ANEX_VENDASIG: row.ANEX_VENDASIG,
+                    ANEX_FORMPAG: row.ANEX_FORMPAG,
+                    ANEX_DESCRIPCOMERC: row.ANEX_DESCRIPCOMERC,
+                    ANEXO_MODELOVEH: row.ANEXO_MODELOVEH,
+                    ANEXO_NROINSCRIP: row.ANEXO_NROINSCRIP,
+                    ANEXO_PLACA: row.ANEXO_PLACA,
+                    ANEXO_BREVE: row.ANEXO_BREVE,
+                    ANEX_VENDPROV: row.ANEX_VENDPROV,
+                    ANEX_MONCREDITO: row.ANEX_MONCREDITO,
+                    ANEX_NUMERO: row.ANEX_NUMERO,
+                    ANEX_ZONA: row.ANEX_ZONA,
+                    ANEX_DISTRITO: row.ANEX_DISTRITO,
+                    ANEX_PROVINCIA: row.ANEX_PROVINCIA,
+                    ANEX_DEPARTAMENTO: row.ANEX_DEPARTAMENTO,
+                    ANEX_INTERIOR: row.ANEX_INTERIOR,
+                    L_TIP_CLI: 1,
+                });
+
+                var parametros = "datos_enviar=" + JSON.stringify(datos_enviar) + "&accion=" + accion;
+                $.ajax(
+                {
+                    type: "POST",
+                    dataType: "json",
+                    url: ruta_global + "Cliente/Actualizar",
+                    data: parametros,
+                    beforeSend: function () {
+                        loading_show();
+                    },
+                    cache: false,
+                    success: function (Resultado) {
+                        loading_hide();
+                        window.parent.MostrarMensaje(Resultado.color, Resultado.data);
+                        if (Resultado.respuesta) {
+                            $('#ClienteIndexGrid').DataTable().ajax.reload();
+                        }
+
+                    },
+                    error: function (xhr) { // if error occured
+                        loading_hide();
+                        console.log(xhr);
+                        window.parent.MostrarMensaje("Rojo", xhr.responseText);
+                        //$(placeholder).append(xhr.statusText + xhr.responseText);
+                    },
+                });
+            }
+        });
+    }
+</script>

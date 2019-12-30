@@ -1,0 +1,72 @@
+@model Datos.Models.MaestroModel
+@{
+    ViewBag.Title = " de Precios de Ventas";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Maestro", "Index", "Maestro")</li>
+                    <li class="breadcrumbs-item active">Configuraci&oacute;n</li>
+                    <li class="breadcrumbs-item active">Configuraci&oacute;n @ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5><b>Configuraci&oacute;n @ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Maestro - Configuracion @ViewBag.Title - Inicio ', '/Maestro/Ayuda', 'CPVIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Actualizaci&oacute;n de Precios</div>
+                <div class="card-body">
+                    <div class="row p-1">
+                        <div class="col-sm-2" align="right">
+                            <input type="radio" name="i_cm" />
+                        </div>
+                        <div class="col-sm-10">
+                            Autom&aacute;tico
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-2" align="right">
+                            <input type="radio" name="i_cm" />
+                        </div>
+                        <div class="col-sm-10">
+                            Solo manual<br />
+                            (Base de Datos/Art&iacute;culos/Datos de Venta)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Ayuda</div>
+                <div class="card-body">
+                    <div class="row col-sm-12 p-1">
+                        Precio m&iacute;nimo manual: los precios m&iacute;nimos solo podr&aacute;n ser actualizados desde el formulario "Datos de Venta" 
+                        de cada art&iacute;culo
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row col-sm-12">
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>

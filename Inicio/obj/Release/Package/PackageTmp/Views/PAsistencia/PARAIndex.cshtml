@@ -1,0 +1,177 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "Registro de Asistencia";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item active">Asistencia</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda - @ViewBag.Title - Inicio ', '/PMaestra/Ayuda', 'PARAIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Mes de Trabajo</h5>
+                </div>
+                <div class="card-body">
+                    <input class="form-control datepickers" readonly />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Cronograma</h5>
+                </div>
+                <div class="card-body">
+                    <input class="form-control datepickers" readonly />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Formato de Planilla</h5>
+                </div>
+                <div class="card-body">
+                    <select class="form-control">
+                        <option>Empleados</option>
+                        <option>Gratificaci&oacute;n</option>
+                        <option>Honorarios</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Sel. Trabajadores</h5>
+                </div>
+                <div class="card-body text-center">
+                    <a href="#" class="btn btn-secondary" onclick="AjaxModalGet('Selector de Trabajadores', '/PAsistencia/SelectorTrabajadores', '', 'm_central')">
+                        <i class="fa fa-users fa-2x"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 mt-1">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Modo de Ingresar Asistencia</h5>
+                </div>
+                <div class="card-body">
+                    <label>
+                        <input type="radio" name="i_modo" />
+                        D&iacute;as por Trabajadores 
+                    </label><br />
+                    <label>
+                        <input type="radio" name="i_modo" />
+                        Trabajador por D&iacute;a
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 mt-1">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12 form-group form-inline">
+                            <label class="left w-25">
+                                Nombre
+                            </label>
+                            <input class="form-control w-75 right" />
+                        </div>
+                        <div class="col-sm-12 form-group form-inline">
+                            <label class="left w-25">
+                                Centro de Costo
+                            </label>
+                            <input class="form-control w-50 right" />
+                            <button class="ml-1 btn btn-sm btn-secondary">...</button>
+                            <button class="ml-1 btn btn-sm btn-dark">NO</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2 mt-1">
+            <div class="card">
+                <div class="card-body text-center">
+                    <a href="#" class="btn btn-dark">
+                        <i class="fa fa-cogs"></i><br />
+                        Auto Rellenado
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow mt-2">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="PARAIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Apellido y Nombre</th>
+                            <th>D&iacute;as trabajados</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(function () {
+        $("#PARAIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            ajax: {
+                url: ruta_actual + "/PAsistencia/GridAsistencia",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE_TRABAJADOR" },
+                { data: "DIA" },
+            ]
+        });
+    });
+</script>

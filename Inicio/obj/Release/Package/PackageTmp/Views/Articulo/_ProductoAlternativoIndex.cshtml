@@ -1,0 +1,156 @@
+﻿@model Datos.Models.ArticuloModel
+@{
+    Layout = null;
+}
+<div class="container-fluid">
+    <div class="card-body">
+        @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosEquivalenteForm" }))
+        {
+            <div class="row">
+                <div class="col-sm-2">
+                    <label>C&oacute;digo</label><br />
+                    @Html.TextBoxFor(m => m.ACODIGO, new { @class = "form-control", @readonly = "true" })
+                </div>
+                <div class="col-sm-4">
+                    <label>Descripci&oacute;n</label><br />
+                    @Html.TextBoxFor(m => m.ADESCRI, new { @class = "form-control", @readonly = "true" })
+                </div>
+                <div class="col-sm-2">
+                    <label>Unidad</label><br />
+                    @Html.TextBoxFor(m => m.UM_ABREV, new { @class = "form-control", @readonly = "true" })
+                </div>
+                <div class="col-sm-4">
+                    <label>Descrip. Alterna</label><br />
+                    @Html.TextBoxFor(m => m.ARTALT, new { @class = "form-control", @readonly = "true" })
+                </div>
+            </div>
+        }        
+        <br />
+        <div class="row">
+            <div class="col-sm-12">
+                <button class="btn btn-info" onclick="$('#m_central').modal('hide');">
+                    <i class='fa fa-arrow-left'></i>
+                    Regresar
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row border border-info">
+        <div class="col-sm-6">
+            <div class="card-header" align="center"><b>Art&iacute;culos no Vinculados </b> <a href="#" onclick="pasar_datos(0, 0)" class='btn btn-primary grid_opt'><i class='fa fa-angle-double-right'></i></a></div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped pre-scrollable datatables table-responsive" id="GridArtNoVinculados" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th style="width: 25%">Descripci&oacute;n</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-6 border-left">
+            <div class="card-header" align="center"><a href="#" onclick="pasar_datos(0, 1)" class='btn btn-primary grid_opt'><i class='fa fa-angle-double-left'></i></a> <b> Art&iacute;culos Alternativos</b></div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped pre-scrollable datatables table-responsive" id="GridArtAlternativos" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th style="width: 25%">Descripci&oacute;n</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        //$('#GridArtAlternativos').DataTable();
+        $('#GridArtAlternativos tbody').html('');
+        $("#codigo_pai").val($("#t_id").val());
+        $("#descripcion_pai").val($("#t_descripcion").val());
+        $("#unidad_pai").val($("#t_unidad").val());
+
+        $("#GridArtNoVinculados").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Articulo/GridArticulos",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [2],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "ACODIGO" },
+                { data: "ADESCRI" },
+                {
+                    render: function (data, type, row)
+                    { return '<button class="btn btn-success grid_opt" onclick=\'pasar_datos("' + row.ACODIGO + '",0)\'><i class="fa fa-angle-right"></i></button>'; }
+                },
+            ],
+            "fnCreatedRow": function (nRow, aData, iDataIndex) {
+                $(nRow).attr('id', "o_"+aData.ACODIGO);
+            }
+        });
+    });
+
+    function pasar_datos(fila, tabla) {
+        var valor = "";
+        var flecha = "";
+        if (tabla == 0) {
+            tabla_origen = 'GridArtNoVinculados';
+            fila_origen = 'o_';
+            tabla_destino = 'GridArtAlternativos';
+            fila_destino = 'd_';
+            valor = 1;
+            flecha = "left";
+        } else {
+            tabla_origen = 'GridArtAlternativos';
+            fila_origen = 'd_';
+            tabla_destino = 'GridArtNoVinculados';
+            fila_destino = 'o_';
+            valor = 0;
+            flecha = "right";
+        }
+
+        if (fila == 0) {
+            $("#" + tabla_origen + " tbody tr").each(function (index) {
+                var td = $(this).children("td");
+                if (td.eq(0).text() != "") {
+                    var nuevaFila = "<tr id='" + fila_destino + td.eq(0).text() + "'>";
+                    nuevaFila += "<td>" + td.eq(0).text() + "</td>";
+                    nuevaFila += "<td>" + td.eq(1).text() + "</td>";
+                    nuevaFila += '<td><button class="btn btn-success grid_opt" onclick=\'pasar_datos("' + td.eq(0).text() + '",' + valor + ')\'><i class="fa fa-angle-' + flecha + '"></i></button></td>';
+                    nuevaFila += "</tr>";
+                    $("#" + tabla_destino).append(nuevaFila);
+                    $("#" + fila_origen + td.eq(0).text()).remove();
+                }
+            });
+        } else {
+            //console.log(fila_origen + " " +fila)
+            var fila_anterior = $("#" + fila_origen + fila);
+            var td = $(fila_anterior).children("td");
+            var nuevaFila = "<tr id='" + fila_destino + td.eq(0).text() + "'>";
+            nuevaFila += "<td>" + td.eq(0).text() + "</td>";
+            nuevaFila += "<td>" + td.eq(1).text() + "</td>";
+            nuevaFila += '<td><button class="btn btn-success grid_opt" onclick=\'pasar_datos("' + td.eq(0).text() + '",' + valor + ')\'><i class="fa fa-angle-' + flecha + '"></i></button></td>';
+            nuevaFila += "</tr>";
+            $("#" + tabla_destino).append(nuevaFila);
+            $("#" + fila_origen + fila).remove();
+        }
+    }
+</script>
+

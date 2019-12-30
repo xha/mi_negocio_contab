@@ -1,0 +1,197 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "Mes de Trabajo";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item">Procesos</li>
+                    <li class="breadcrumbs-item">Aperturas</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5><b>@ViewBag.Title</b></h5>
+        </div>
+
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title', '/PProceso/Ayuda', 'PAMTIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+    <hr />
+    <div class="row" style="height: 40px">
+        <div class="col-sm-3">
+            <a href="#" onclick="$('#abrir_mes')[0].style.display = 'block';" class="btn btn-secondary">
+                <i class='fa fa-file'></i>
+                Nuevo
+            </a>
+        </div>
+        <div class="col-sm-9" id="abrir_mes" style="display: none">
+            <div class="row">
+                <div class="col-sm-7">
+                    <label class="form-inline">
+                        Seleccione la Fecha&nbsp;&nbsp;&nbsp;
+                        <input class="form-control datepickers w-50" readonly />
+                    </label>
+                </div>
+                <div class="col-sm-5">
+                    <a href="#" onclick="" class="btn btn-success">
+                        <i class='fa fa-check'></i>
+                        Aceptar
+                    </a>
+                    <a href="#" onclick="$('#abrir_mes')[0].style.display = 'none';" class="btn btn-danger">
+                        <i class='fa fa-times'></i>
+                        Cancelar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    }
+
+    <div class="card shadow">
+        <div class="card-header">
+            <b>Meses Aperturados</b>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="PAMTIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Mes</th>
+                            <th>Año</th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-12">
+            <button onclick="abrir_pdf()" class="btn btn-secondary">
+                <i class='fa fa-question'></i>
+                Ayuda del Proceso
+            </button>
+            <a href="#" onclick="" class="btn btn-secondary">
+                <i class='fa fa-question'></i>
+                Hoja de Ruta
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+    $(function () {
+        $("#PAMTIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+
+            ajax: {
+                url: ruta_actual + "/PProceso/GridMesesActivos",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [2],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                { data: "DESCRIPCION" },
+                { data: "ANIO" },
+                {
+                    render: function (data, type, row)
+                    {
+                        if (row.ESTATUS=="A") {
+                            return '<a class="btn btn-danger grid_opt" title="Cierre" href="#" onclick="anular_nota(\'' + row.MES + '\',0)" ><i class="fa fa-lock"></i></a>';
+                        } else {
+                            return '<a class="btn btn-success grid_opt" title="Apertura" href="#" onclick="anular_nota(\'' + row.MES + '\',1)"" ><i class="fa fa-unlock"></i></a>';
+                        }
+                    }
+                },
+            ],
+            rowCallback: function (row, data, index) {
+                if (data.ESTATUS == "C") {
+                    $(row).css('color', 'red');
+                }
+            }
+        });
+    });
+
+    function anular_nota(registro, valor) {
+        var titulo;
+        if (valor == 0) {
+            titulo = "Cierre";
+        } else {
+            titulo = "Apertura";
+        }
+        swal({
+            title: "¿Estás seguro?",
+            text: "Confirmar "+titulo+" del mes: "+registro,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            cancelButtonClass: "btn-secondary",
+            confirmButtonText: "Aceptar",
+            cancelButtonText: "Cancelar",
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+
+            } else {
+
+            }
+        });
+    }
+
+    function abrir_pdf() {
+        var param = "url=__PDFAperturaMes";
+        var route = '/PProceso/AccionPdf';
+        var ruta = (ruta_actual + "/" + route).replace('#', '');
+        $.ajax({
+            type: 'GET',
+            url: ruta,
+            data: param,
+            cache: false,
+            beforeSend: function (xhr) {
+                loading_show();
+            },
+            success: function (Resultado) {
+                loading_hide();
+            },
+            error: function (xhr) {
+                MostrarMensaje("Rojo", xhr.responseText);
+            },
+        });
+    }
+</script>

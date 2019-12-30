@@ -1,0 +1,90 @@
+@{
+    ViewBag.Title = "Tabla de gastos generales del mes";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Gerente", "Index", "Gerente")</li>
+                    <li class="breadcrumbs-item">C&aacute;lculo de Utilidad Neta Mensual</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Gerente/Ayuda', 'CUNMRVMIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Moneda</label>
+            <select class="form-control">
+                <option>Moneda Nacional</option>
+                <option>Moneda Extranjera</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Mes</label>
+            <input class="form-control datepickers" readonly="true" />
+        </div>
+        <div class="col-sm-3">
+            <br />
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-print'></i>
+                Imprimir
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="CUNMTGGMIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Saldo MN</th>
+                            <th>Saldo ME</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#CUNMTGGMIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Gerente/GridGastos",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "Codigo" },
+                { data: "Descripcion" },
+                { data: "MontoMN" },
+                { data: "MontoME" },
+            ]
+        });
+    });
+</script>
+

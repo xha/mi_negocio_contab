@@ -1,0 +1,159 @@
+@model Datos.Models.AlmacenesModel
+
+@{
+    ViewBag.Title = "Transferencia por Desarmado de Kits";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Almacenes", "Index", "Almacenes")</li>
+                    <li class="breadcrumbs-item">Transacciones</li>
+                    <li class="breadcrumbs-item">Manejo de Kits</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Almacenes/Ayuda', 'TDKIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+{
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Daos Generales</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label>Fecha</label>
+                            @Html.TextBoxFor(m => m.FechaEmision, new { @class = "form-control datepickers", @readonly = "true" })
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Moneda</label>
+                            @Html.DropDownListFor(m => m.Moneda, new List<SelectListItem>
+                            {
+                                new SelectListItem{ Text="Moneda Nacional", Value = "MN" },
+                                new SelectListItem{ Text="Moneda Extranjera", Value = "ME" },
+                            }, new { @class = "form-control" })
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Nro. Documento</label>
+                            @Html.TextBoxFor(m => m.Documento, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_enteros(event)" })
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Tipo Cambio</label>
+                            @Html.TextBoxFor(m => m.TipoCambio, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_decimal(event, this)" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Transacci&oacute;n</label>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    @Html.TextBoxFor(m => m.TipoTransaccion, new { @class = "form-control alert-warning", @maxlength = "3", onkeypress = "solo_alfanumericos(event)", ondblclick = "AjaxModalGet('Tipo de Transaccion', '/Utilitarios/TipoTransaccion', 'nada2', 'm_middle')" })
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" readonly id="descripcion_tipodocumento" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>C&oacute;digo</label>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    @Html.TextBoxFor(m => m.CodigoProducto, new { @class = "form-control alert-warning", @maxlength = "20", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Articulos', '/Articulo/Articulos', 'nada2', 'm_middle')" })
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label>Cantidad</label>
+                            @Html.TextBoxFor(m => m.Cantidad, new { @class = "form-control", @readonly = true })
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Saldo Stock</label>
+                            @Html.TextBoxFor(m => m.Stock, new { @class = "form-control", @readonly = true })
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Unidad</label>
+                            @Html.TextBoxFor(m => m.Unidad, new { @class = "form-control", @readonly = true })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Guardar
+            </a>
+        </div>
+    </div>
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="TDKIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Cant. Reg.</th>
+                            <th>Cant. Armado</th>
+                            <th>Cant. Disp.</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#TDKIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Almacenes/GridTAK",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CodigoProducto" },
+                { data: "DescripcionProducto" },
+                { data: "Cantidad" },
+                { data: "CantidadArmado" },
+                { data: "CantidadDisponible" },
+            ]
+        });
+    });
+
+    function anular_nota(id) {
+        $("#document").html(id);
+        $("#m_anular").modal("show");
+    }
+</script>

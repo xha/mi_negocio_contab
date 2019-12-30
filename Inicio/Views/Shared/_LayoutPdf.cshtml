@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Mi Negocio</title>
+    @Styles.Render("~/Content/css")
+    <!-- DataTables Responsive CSS -->
+    <link rel="shortcut icon" href="~/Content/images/favicon.ico" type="image/x-icon" />
+    <link href="@Url.Content("~/Content/sb-admin-2.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/bower_components/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/bower_components/datatables/dataTables.checkboxes.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/bower_components/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery-ui.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/bower_components/jquery.jqGrid/ui.jqgrid.custom.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/bower_components/bootstrap4/css/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/bower_components/year_calendar/css/bootstrap-year-calendar.css")" rel="stylesheet" type="text/css" />
+    <style>
+        .bg-gradient-starsoft {
+            background-color: @ViewBag.MenuColor;
+            background-image: -webkit-gradient(linear, left top, left bottom, color-stop(10%, @ViewBag.MenuColor), to(grey));
+            background-image: linear-gradient(180deg, @ViewBag.MenuColor 10%, grey 100%);
+            background-size: cover;
+        }
+
+        .sidebar .nav-item .collapse .collapse-inner .collapse-item.active,
+        .sidebar .nav-item .collapsing .collapse-inner .collapse-item.active {
+            color: @ViewBag.MenuColor;
+            background-color: #eaecf4;
+            font-weight: 700;
+        }
+
+        h5, h6 {
+            color: @ViewBag.MenuColor;
+        }
+
+        table thead tr th {
+            background-color: @ViewBag.MenuColor;
+            color: #FFF;
+        }
+
+        .breadcrumbs a {
+            color: @ViewBag.MenuColor;
+        }
+
+        .page-item.active .page-link {
+            z-index: 1;
+            color: #fff;
+            background-color: @ViewBag.MenuColor;
+            border-color: @ViewBag.MenuColor;
+        }
+    </style>
+    <!-- jQuery -->
+    <script src="@Url.Content("~/bower_components/jquery/dist/jquery.min.js")"></script>
+    @Scripts.Render("~/bundles/bootstrap")
+</head>
+<body>
+    <div class="container-fluid" id="contenido">
+        @RenderBody()
+    </div>
+    <!-- SCRIPTS ------------------------------------------------------------------------------------------------------------------->
+    <script src="@Url.Content("~/bower_components/datatables/datatables.js")"></script>
+    <script src="@Url.Content("~/bower_components/datatables/dataTables.checkboxes.js")"></script>
+    <script src="@Url.Content("~/bower_components/jquery-ui/jquery-ui.js")"></script>
+    <script src="@Url.Content("~/bower_components/bootstrap4/js/bootstrap-select.js")"></script>
+    <script src="@Url.Content("~/bower_components/year_calendar/js/bootstrap-year-calendar.js")"></script>
+    <script src="@Url.Content("~/bower_components/year_calendar/js/bootstrap-year-calendar.es.js")"></script>
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script src="@Url.Content("~/Scripts/i18n/grid.locale-en.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.jqGrid.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap3-typeahead.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.mask.js")"></script>
+    <script src="@Url.Content("~/Scripts/jstree.js")"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

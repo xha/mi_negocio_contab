@@ -1,0 +1,124 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header font-weight-bold">Filtro por Fechas</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Fecha Inicial</label>
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Fecha Fin</label>
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header font-weight-bold">
+                    <input type="checkbox" id="i_trabajador" />
+                    Seleccionar Trabajador
+                </div>
+                <div class="card-body">
+                    <div class="row col-sm-12">
+                        <label>Trabajador</label>
+                        <select class="form-control" id="select_trabajador" disabled >
+                            <option>Seleccione</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 mt-1">
+            <div class="card">
+                <div class="card-header font-weight-bold">
+                    <input type="checkbox" id="i_centro" />
+                    Filtrar por Centro de Costo
+                </div>
+                <div class="card-body">
+                    <div class="row col-sm-12">
+                        <label>Trabajador</label>
+                        <select class="form-control" id="select_centro" disabled>
+                            <option>Seleccione</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 mt-1">
+            <div class="card">
+                <div class="card-header font-weight-bold">
+                    <input type="checkbox" id="i_area" />
+                    Filtrar por &Aacute;rea de Trabajo
+                </div>
+                <div class="card-body">
+                    <div class="row col-sm-12">
+                        <label>Trabajador</label>
+                        <select class="form-control" id="select_area" disabled>
+                            <option>Seleccione</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-1">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_middle').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-check'></i>
+                Reporte
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $('#i_trabajador').on('ifChecked', function (event) {
+        $("#select_trabajador")[0].disabled = false;
+    });
+
+    $('#i_trabajador').on('ifUnchecked', function (event) {
+        $("#select_trabajador")[0].disabled = true;
+    });
+
+    $('#i_centro').on('ifChecked', function (event) {
+        $("#select_centro")[0].disabled = false;
+    });
+
+    $('#i_centro').on('ifUnchecked', function (event) {
+        $("#select_centro")[0].disabled = true;
+    });
+
+    $('#i_area').on('ifChecked', function (event) {
+        $("#select_area")[0].disabled = false;
+    });
+
+    $('#i_area').on('ifUnchecked', function (event) {
+        $("#select_area")[0].disabled = true;
+    });
+</script>

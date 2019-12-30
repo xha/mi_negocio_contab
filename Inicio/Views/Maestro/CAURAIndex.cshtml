@@ -1,0 +1,129 @@
+@model Datos.Models.MaestroModel
+
+@{
+    ViewBag.Title = "Roles - Acciones";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Maestro", "Index", "Maestro")</li>
+                    <li class="breadcrumbs-item active">Configuraci&oacute;n</li>
+                    <li class="breadcrumbs-item active">Administraci&oacute;n de Usuarios</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Maestro - @ViewBag.Title - Inicio ', '/Maestro/Ayuda', 'TAUMIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="#" onclick="mostrar_panel('CAURACreate', 'Maestro')" class="btn btn-success">
+                    <i class='fa fa-plus'></i>
+                    Agregar
+                </a>
+            </div>
+        </div>
+        <br />
+    }
+
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold">Roles con sus Acciones</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="CAURAIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Rol</th>
+                            <th>Alias</th>
+                            <th style="min-width: 30%">Descripci&oacute;n</th>
+                            <th>Ruta</th>
+                            <th>Controlador</th>
+                            <th style="width: 5px">Crear</th>
+                            <th style="width: 5px">Editar</th>
+                            <th style="width: 5px">Borrar</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#CAURAIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+
+            ajax: {
+                url: ruta_actual + "/Maestro/GridCAUA",
+                type: "POST",
+                datatype: "json",
+            },
+            rowGroup: {
+                dataSrc: ["Rol", "Controlador"]
+            },
+            columnDefs:
+            [{
+                targets: [6],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [7],
+                searchable: false,
+                orderable: false
+            },
+            {
+                targets: [8],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "Codigo" },
+                { data: "Rol" },
+                { data: "Alias" },
+                { data: "Descripcion" },
+                { data: "Ruta" },
+                { data: "Controlador" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<input type="checkbox" checked disabled />';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<input type="checkbox" checked disabled />';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<input type="checkbox" checked disabled />';
+                    }
+                },
+            ]
+        });
+    });
+</script>

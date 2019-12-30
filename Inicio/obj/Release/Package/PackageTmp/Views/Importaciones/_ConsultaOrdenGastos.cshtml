@@ -1,0 +1,321 @@
+﻿<div class="container-fluid">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="resumen-tab" data-toggle="tab" href="#resumen" role="tab" aria-controls="resumen" aria-selected="true">
+                <i class='fa fa-arrow-up'></i>
+                Resumen de Gastos
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="importacion-tab" data-toggle="tab" href="#importacion" role="tab" aria-controls="importacion" aria-selected="false">
+                <i class='fa fa-arrow-down'></i>
+                Gastos de Importaci&oacute;n
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="detalle-tab" data-toggle="tab" href="#detalle" role="tab" aria-controls="detalle" aria-selected="false">
+                <i class='fa fa-arrow-right'></i>
+                Detalle Documento
+            </a>
+        </li>
+    </ul>
+    <br />
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="resumen" role="tabpanel" aria-labelledby="resumen-tab">
+            <div class="card shadow">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold">Gastos de Importaci&oacute;n</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered dataTables pre-scrollable" id="GridEstatus" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Descripci&oacute;n</th>
+                                            <th>Importe MN</th>
+                                            <th>Importe ME</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Flete</td>
+                                            <td>0.00</td>
+                                            <td>0.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Agencia</td>
+                                            <td>0.00</td>
+                                            <td>0.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Aduana</td>
+                                            <td>0.00</td>
+                                            <td>0.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Banco</td>
+                                            <td>0.00</td>
+                                            <td>0.00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold">Resumen</label></h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered dataTables pre-scrollable" id="GridEstatus" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Descripci&oacute;n</th>
+                                                    <th>Importe MN</th>
+                                                    <th>Importe ME</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Orden Importaci&oacute;n</td>
+                                                    <td>20.00</td>
+                                                    <td>5.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Gastos Importaci&oacute;n</td>
+                                                    <td>5.00</td>
+                                                    <td>2.00</td>
+                                                </tr>
+                                                <tr style="font-weight: bold">
+                                                    <td>Total</td>
+                                                    <td>25.00</td>
+                                                    <td>7.00</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold">Gastos No Distribuidos</label></h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered dataTables pre-scrollable" id="GridEstatus" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Descripci&oacute;n</th>
+                                                    <th>Importe MN</th>
+                                                    <th>Importe ME</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Flete</td>
+                                                    <td>20.00</td>
+                                                    <td>5.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Seguro</td>
+                                                    <td>5.00</td>
+                                                    <td>2.00</td>
+                                                </tr>
+                                                <tr style="font-weight: bold">
+                                                    <td>Total</td>
+                                                    <td>25.00</td>
+                                                    <td>7.00</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="importacion" role="tabpanel" aria-labelledby="importacion-tab">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered dataTables pre-scrollable" id="GridEstatus" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Cod. Prov.</th>
+                                    <th>Descripci&oacute;n</th>
+                                    <th>Documento</th>
+                                    <th>F. Emisi&oacute;n</th>
+                                    <th>Importe</th>
+                                    <th>T.M.</th>
+                                    <th>T/C</th>
+                                    <th>D.U.A.</th>
+                                    <th>Sit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>112233</td>
+                                    <td>Proveedor A</td>
+                                    <td>01-02-2019</td>
+                                    <td>100.00</td>
+                                    <td>0.00</td>
+                                    <td>0.00</td>
+                                    <td></td>
+                                    <td>V</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="detalle" role="tabpanel" aria-labelledby="detalle-tab">
+            <div class="row">
+                <div class="col-sm-5">
+                    <label>Proveedor</label>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <input readonly class="form-control" />
+                        </div>
+                        <div class="col-sm-8">
+                            <input readonly class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <label>R.U.C.</label><br />
+                    <input readonly class="form-control" />
+                </div>
+                <div class="col-sm-5">
+                    <label>Documento</label><br />
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <input readonly class="form-control" />
+                        </div>
+                        <div class="col-sm-3">
+                            <input readonly class="form-control" />
+                        </div>
+                        <div class="col-sm-6">
+                            <input readonly class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>Cod. Gasto</label>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <input readonly class="form-control" />
+                        </div>
+                        <div class="col-sm-8">
+                            <input readonly class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <label>Moneda Imp</label><br />
+                    <input readonly class="form-control" />
+                </div>
+                <div class="col-sm-2">
+                    <label>Precio Vta.</label><br />
+                    <input readonly class="form-control" />
+                </div>
+                <div class="col-sm-2">
+                    <label>Equiv. ME</label><br />
+                    <input readonly class="form-control" />
+                </div>
+                <div class="col-sm-2">
+                    <label>Precio Vta ME</label><br />
+                    <input readonly class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <label>F. Emisi&oacute;n</label><br />
+                    <input readonly class="form-control" />
+                </div>
+                <div class="col-sm-2">
+                    <label>D&iacute;as</label><br />
+                    <input readonly class="form-control" />
+                </div>
+                <div class="col-sm-3">
+                    <label>F. Pago</label><br />
+                    <input readonly class="form-control" />
+                </div>
+                <div class="col-sm-2">
+                    <label>T.M.</label><br />
+                    <input readonly class="form-control" />
+                </div>
+                <div class="col-sm-2">
+                    <label>T/C</label><br />
+                    <input readonly class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <label>Valor Vta.</label><br />
+                    <input readonly class="form-control" />
+                </div>
+                <div class="col-sm-2">
+                    <label>Afecto</label><br />
+                    <input readonly class="form-control" />
+                </div>
+                <div class="col-sm-2">
+                    <label>Inafecto</label><br />
+                    <input readonly class="form-control" />
+                </div>
+                <div class="col-sm-2">
+                    <label>Tasa I.G.V.</label><br />
+                    <input readonly class="form-control" />
+                </div>
+                <div class="col-sm-2">
+                    <label>I.G.V.</label><br />
+                    <input readonly class="form-control" />
+                </div>
+                <div class="col-sm-2">
+                    <label>Precio Vta.</label><br />
+                    <input readonly class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5">
+                    <label>Glosa</label><br />
+                    <input readonly class="form-control" />
+                    <label>Enviado a Cuentas por Pagar</label>
+                </div>
+                <div class="col-sm-7 border-left border-left-1">
+                    <label class="m-0 font-weight-bold text-danger">Contabilidad</label><br />
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Cuenta</label>
+                            <input readonly class="form-control" />
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Destino</label>
+                            <input readonly class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,201 @@
+﻿@model Datos.Models.ImportacionesModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    @Html.HiddenFor(m => m.Codigo)
+        <div class="row">
+            <div class="col-sm-3">
+                <label>Serie</label>
+                @Html.DropDownListFor(m => m.Serie, new List<SelectListItem>
+                {
+                    new SelectListItem{ Text="001", Value = "1" },
+                    new SelectListItem{ Text="002", Value = "2" },
+                    new SelectListItem{ Text="003", Value = "3" },
+                }, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-3">
+                <label>N&uacute;mero</label>
+                @Html.TextBoxFor(m => m.Documento, new { @class = "form-control", @readonly = true })
+            </div>
+            <div class="col-sm-3">
+                <label>Incoterm</label>
+                @Html.DropDownListFor(m => m.Incoterms, new List<SelectListItem>
+                {
+                    new SelectListItem{ Text="EXW", Value = "1" },
+                    new SelectListItem{ Text="EXX", Value = "2" },
+                    new SelectListItem{ Text="EXY", Value = "3" },
+                }, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <label>Proveedor</label>
+                @Html.TextBoxFor(m => m.CodigoProveedor, new { @class = "form-control alert-warning", @maxlength = "11", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Listado de Proveedores', '/Proveedor/Proveedores', 'nada2', 'm_middle')" })
+            </div>
+            <div class="col-sm-3">
+                <label>&nbsp;</label><br />
+                <input readonly class="form-control" id="descripcion_proveedor" />
+            </div>
+            <div class="col-sm-2">
+                <label>RUC</label>
+                <input class="form-control" readonly id="ruc_proveedor" />
+            </div>
+            <div class="col-sm-2 border-left border-left-1">
+                <label>Embarcador</label>
+                @Html.TextBoxFor(m => m.CodigoEmbarcador, new { @class = "form-control alert-warning", @maxlength = "11", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Listado de Embarcadores', '/Proveedor/Embarcadores', 'nada2', 'm_middle')" })
+            </div>
+            <div class="col-sm-3">
+                <label>&nbsp;</label><br />
+                <input readonly class="form-control" id="descripcion_embarcador" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <label>Emisi&oacute;n</label>
+                @Html.TextBoxFor(m => m.FechaEmision, new { @class = "form-control datepickers", @readonly = "true" })
+            </div>
+            <div class="col-sm-2">
+                <label>D&iacute;as</label>
+                @Html.TextBoxFor(m => m.Dias, new { @class = "form-control", @maxlength = "5", onkeypress = "solo_enteros(event)" })
+            </div>
+            
+            <div class="col-sm-2">
+                <label>Entrega</label>
+                @Html.TextBoxFor(m => m.FechaEntrega, new { @class = "form-control datepickers", @readonly = "true" })
+            </div>
+            <div class="col-sm-2">
+                <label>T/C</label>
+                @Html.TextBoxFor(m => m.TotalCredito, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+            </div>
+            <div class="col-sm-2">
+                <label>Moneda Importaci&oacute;n</label>
+                @Html.DropDownListFor(m => m.Moneda, new List<SelectListItem>
+            {
+                new SelectListItem{ Text="Moneda Nacional", Value = "MN" },
+                new SelectListItem{ Text="Moneda Extranjera", Value = "ME" },
+            }, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2">
+                <label>Equiv. ME</label>
+                @Html.DropDownListFor(m => m.MonedaEx, new List<SelectListItem>
+            {
+                new SelectListItem{ Text="Moneda Nacional", Value = "MN" },
+                new SelectListItem{ Text="Moneda Extranjera", Value = "ME" },
+            }, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Glosa:</label>
+                @Html.TextBoxFor(m => m.Glosa, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+            </div>
+            <div class="col-sm-6">
+                <label>Lugar de Entrega:</label>
+                @Html.TextBoxFor(m => m.LugarEntrega, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+            </div>
+        </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <button class="btn btn-primary" onclick="AjaxModalGet('Detalle de Orden de Importación', '/Importaciones/OrdenAgregar');">
+            <i class='fa fa-plus'></i>
+            Nuevo
+        </button>
+    </div>
+</div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped pre-scrollable datatables" id="IOrdenImportacionDatosGrid" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>C&oacute;digo</th>
+                    <th>Descripci&oacute;n</th>
+                    <th>Cantidad</th>
+                    <th>U.M.</th>
+                    <th>V. Unitario</th>
+                    <th>V. Bruto</th>
+                    <th>V. Descto</th>
+                    <th>V. Total</th>
+                    <th style="width: 5px"></th>
+                    <th style="width: 5px"></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<div class="border rounded">
+    <div class="row">
+        <div class="col-sm-2">
+            <label>Precio Bruto</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>Descto</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Valor Vta.</label><br />
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>I.G.V.</label><br />
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Precio Vta</label><br />
+            <input type="text" class="form-control" readonly />
+        </div>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-sm-12">
+        <a href="#" onclick='mostrar_panel("OrdenIndex", "Importaciones")' class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <button class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </button>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#IOrdenImportacionDatosGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Importaciones/GridOrdenDetalleImportacion",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CodigoProducto" },
+                { data: "DescripcionProducto" },
+                { data: "Cantidad" },
+                { data: "CodigoUnidad" },
+                { data: "Precio" },
+                { data: "ImporteBruto" },
+                { data: "Descuento" },
+                { data: "Total" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="AjaxModalGet(\'Detalle de Orden de Importación\', \'/Importaciones/OrdenAgregar\')" ><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CodigoProducto + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                }
+            ]
+        });
+    });
+</script>

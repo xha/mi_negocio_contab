@@ -1,0 +1,106 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Centro de Costo</label>
+            <input class="form-control alert-warning" ondblclick="AjaxModalGet('Centros de Costo', '/PMaestra/Referencias', '', 'm_middle');" />
+        </div>
+        <div class="col-sm-3">
+            <label>Tipo Trabajador</label>
+            <select class="form-control">
+                <option>Ninguno</option>
+                <option>Full Time</option>
+                <option>Part. Time</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Trabajador</label>
+            <input class="form-control" />
+        </div>
+        <div class="col-sm-3">
+            <label>&nbsp;</label><br />
+            <a href="#" class="btn btn-secondary">
+                <i class='fa fa-spinner'></i>
+                Cargar
+            </a>
+        </div>
+    </div>
+    <br />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered pre-scrollable datatables" id="RHorarioGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Cod. Trabajador</th>
+                            <th>Apellidos y Nombres</th>
+                            <th>Cod. Horario</th>
+                            <th>Horario de Trabajo</th>
+                            <th>D&iacute;as Horario</th>                            
+                            <th>Horario Refrigerio</th>
+                            <th>D&iacute;a Descanso</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-1">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Grabar
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+    
+    $(function () {
+        $("#RHorarioGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            info: false,
+
+            ajax: {
+                url: ruta_actual + "/PAsistencia/GridAsistencia",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [3, 4, 5, 6],
+                orderable: false,
+                searchable: false,
+            }],
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE_TRABAJADOR" },
+                { data: "HORA_LABORADA" },
+                { data: "ENTRADA" },
+                { data: "DIA" },
+                { data: "SALIDA" },
+                { data: "HORA_LABORADA" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Eliminar" href="#"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+            ],
+        });
+    });
+</script>

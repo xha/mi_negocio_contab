@@ -1,0 +1,443 @@
+﻿@model Datos.Models.ImportacionesModel
+
+@{
+    ViewBag.Title = "Resumen de Importaciones";
+    //Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Importaciones", "Index", "Importaciones")</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+    </div>
+    <hr />
+    <!-- Cajas de Texto -->
+    <div class="row">
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Productos Importados en el mes</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">$ @ViewBag.total_importado</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Entregas efectivas en el mes</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.total_efectivo</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-bar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Entregas faltantes en el mes</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.total_faltante</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-area fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Cajas de Texto -->
+    <!-- Gráficos -->
+    <div class="row p-2">
+        <div class="col-sm-12">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Costos unidad importada</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div id="div_productos_importados"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped pre-scrollable datatables" id="Demogrid" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Mes</th>
+                                            <th>Costo</th>
+                                            <th>Total por Unidad</th>
+                                            <th>Indicador</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row p-2">
+        <div class="col-sm-12">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Entregas Perfectas</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div id="div_entregas_perfectas"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped pre-scrollable datatables" id="GridEntregasPerfectas" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Mes</th>
+                                            <th>Ped. Ent. Perfectos</th>
+                                            <th>Total Ped. Ent.</th>
+                                            <th>Indicador</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row p-2">
+        <div class="col-sm-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Entregas a tiempo</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_entregas_tiempo"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Entregas completas</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_entregas_completo"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Vista Global</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_vista_global"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Gráficos -->
+</div>
+<script type="text/javascript">
+    var productos_importados = @Html.Raw(Json.Encode(@ViewData["productos_importados"]));
+    var meses = @Html.Raw(Json.Encode(@ViewData["meses"]));
+    var entregas_perfectas = @Html.Raw(Json.Encode(@ViewData["entregas_perfectas"]));
+    var entregas_tiempo = @Html.Raw(Json.Encode(@ViewData["entregas_tiempo"]));
+    var entregas_completo = @Html.Raw(Json.Encode(@ViewData["entregas_completo"]));
+    var i;
+
+    $(function () {
+        $("#Demogrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: false, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            scrollY:        '40vh',
+            info:     false,
+            scrollCollapse: true,
+            paging:         false,
+
+            ajax: {
+                url: ruta_actual + "/Importaciones/GridOrdenImportacion",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "FechaEmision" },
+                { data: "Importe" },
+                { data: "Precio" },
+                { data: "Total", className: "font-weight-bold" },
+            ]
+        });
+
+        $("#GridEntregasPerfectas").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: false, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            scrollY:        '40vh',
+            info:     false,
+            scrollCollapse: true,
+            paging:         false,
+
+            ajax: {
+                url: ruta_actual + "/Importaciones/GridEntregasPerfectas",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "FechaEmision" },
+                { data: "Precio" },
+                { data: "Total" },
+                { data: "Descripcion", className: "font-weight-bold" },
+            ]
+        });
+    });
+
+    Highcharts.chart('div_productos_importados', {
+        chart: {
+            height: 310,
+            type: 'line'
+        },
+        title: {
+            text: ' .'
+        },
+        xAxis: {
+            categories: meses
+        },
+        yAxis: {
+            title: {
+                text: 'Indicador'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Mes',
+            data: productos_importados,
+            color: '#f7a35c'
+        },]
+    });
+
+    Highcharts.chart('div_entregas_perfectas', {
+        chart: {
+            height: 310,
+            type: 'line'
+        },
+        title: {
+            text: ' .'
+        },
+        xAxis: {
+            categories: meses
+        },
+        yAxis: {
+            title: {
+                text: 'Indicador'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Mes',
+            data: entregas_perfectas
+        },]
+    });
+
+    Highcharts.chart('div_entregas_tiempo', {
+        chart: {
+            height: 250,
+            type: 'column'
+        },
+        title: {
+            text: '.'
+        },
+        xAxis: {
+            categories: meses,
+            crosshair: true,
+            labels: {
+                rotation: -90,
+                style: {
+                    fontSize: '10px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Indicador'
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<b>{point.x}</b><br/>',
+            pointFormat: '{point.y}%'
+        },
+        series: [{
+            name: 'Mes',
+            data: entregas_tiempo,
+            dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: '{point.y}%', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '10px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        }]
+    });
+
+    Highcharts.chart('div_entregas_completo', {
+        chart: {
+            height: 250,
+            type: 'column'
+        },
+        title: {
+            text: '.'
+        },
+        xAxis: {
+            categories: meses,
+            crosshair: true,
+            labels: {
+                rotation: -90,
+                style: {
+                    fontSize: '10px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Indicador'
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<b>{point.x}</b><br/>',
+            pointFormat: '{point.y}%'
+        },
+        series: [{
+            name: 'Mes',
+            data: entregas_completo,
+            color: '#f7a35c',
+            dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: '{point.y}%', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                        fontSize: '10px',
+                        fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        }]
+    });
+
+    Highcharts.chart('div_vista_global', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie',
+            height: 250,
+        },
+        title: {
+            text: '.'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.y}</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f}%',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            name: 'Total',
+            colorByPoint: true,
+            data: [{
+                name: 'Importados',
+                y: @ViewBag.total_importado,
+                sliced: true,
+                selected: true
+            }, {
+                name: 'Entregas Efectivas',
+                y: @ViewBag.total_efectivo,
+            }, {
+                name: 'Entregas Faltantes',
+                y: @ViewBag.total_faltante,
+            }]
+        }]
+    });
+</script>
+
+
+

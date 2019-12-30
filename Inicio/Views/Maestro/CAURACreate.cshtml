@@ -1,0 +1,137 @@
+﻿@{
+    ViewBag.Title = "Roles - Acciones";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Maestro", "Index", "Maestro")</li>
+                    <li class="breadcrumbs-item active">Configuraci&oacute;n</li>
+                    <li class="breadcrumbs-item active">Administraci&oacute;n de Usuarios</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("CAURAIndex", "Maestro")'>@ViewBag.Title</a></li>
+                    <li class="breadcrumbs-item active">Nuevo</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Nuevo  Registro</label></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Maestro - @ViewBag.Title - Crear / Editar', '/Maestro/Ayuda', 'TAUMDatos', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+    {
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Rol</label>
+                <select class="form-control">
+                    <option>Administrador</option>
+                    <option>Soporte T&eacute;cnico</option>
+                    <option>Usuario</option>
+                </select>
+            </div>
+        </div>
+    }
+    <br />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="Demogrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Alias</th>
+                            <th style="min-width: 30%">Descripci&oacute;n</th>
+                            <th>Ruta</th>
+                            <th>Controlador</th>
+                            <th style="width: 5px">Crear</th>
+                            <th style="width: 5px">Editar</th>
+                            <th style="width: 5px">Borrar</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick="mostrar_panel('CAURAIndex', 'Maestro')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Guardar
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#Demogrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+
+            ajax: {
+                url: ruta_actual + "/Maestro/GridCAUA",
+                type: "POST",
+                datatype: "json",
+            },
+            rowGroup: {
+                dataSrc: ["Controlador"]
+            },
+            columnDefs:
+            [{
+                targets: [5],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [6],
+                searchable: false,
+                orderable: false
+            },
+            {
+                targets: [7],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "Id" },
+                { data: "Alias" },
+                { data: "Descripcion" },
+                { data: "Ruta" },
+                { data: "Controlador" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<input type="checkbox"  />';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<input type="checkbox"  />';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<input type="checkbox"  />';
+                    }
+                },
+            ]
+        });
+    });
+</script>
+

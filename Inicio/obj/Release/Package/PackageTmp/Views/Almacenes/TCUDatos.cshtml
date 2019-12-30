@@ -1,0 +1,153 @@
+﻿@model Datos.Models.AlmacenesModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    @Html.HiddenFor(m => m.Codigo)
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Art&iacute;culo Origen</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label>Cod. Art.</label>
+                            @Html.TextBoxFor(m => m.CodigoProducto, new { @class = "form-control alert-warning", @maxlength = "3", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Artículos', '/Articulo/Articulos', 'nada2', 'm_middle')" })
+                        </div>
+                        <div class="col-sm-5">
+                            <label>Descripci&oacute;n</label>
+                            <input type="text" class="form-control" readonly />
+                        </div>
+                        <div class="col-sm-2">
+                            <label>Stock</label>
+                            <input type="text" class="form-control" readonly />
+                        </div>
+                        <div class="col-sm-2">
+                            <label>Unidad</label>
+                            <input type="text" class="form-control" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Selecci&oacute;n de Art&iacute;culos Destino</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped pre-scrollable datatables" id="TCUDatosGrid" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>C&oacute;digo</th>
+                                    <th>Descripci&oacute;n</th>
+                                    <th>Stock</th>
+                                    <th>Und.</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Art&iacute;culo Origen</div>
+                <div class="card-body">
+                    <div class="row">
+                        <input class="form-control" readonly />
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <label>Cantidad a Transferir</label>
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(m => m.CantidadOrigen, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_enteros(event)" })
+                        </div>
+                        <div class="col-sm-3">
+                            <input class="form-control" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Art&iacute;culo Destino</div>
+                <div class="card-body">
+                    <div class="row">
+                        <input class="form-control" readonly />
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <label>Cantidad Transferida</label>
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(m => m.CantidadDestino, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_enteros(event)" })
+                        </div>
+                        <div class="col-sm-3">
+                            <input class="form-control" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+}
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick='ocultar_panel("TCUIndex", "Almacenes")' class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <button class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </button>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#TCUDatosGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Articulo/GridArticulos",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "Codigo" },
+                { data: "Descripcion" },
+                { data: "Stock" },
+                { data: "CodigoUnidadMedida" },
+            ]
+        });
+
+        $('#TCUDatosGrid tbody').on('click', 'tr', function () {
+            $('#TCUDatosGrid').dataTable().$('tr').removeClass('bg-secondary text-white');
+            $(this).addClass('bg-secondary text-white');
+        });
+
+        $('#TCUDatosGrid tbody').on('dblclick', 'tr', function () {
+            //eval($("#parametro").val() + "('" + this.cells[0].textContent + "','" + this.cells[1].textContent + "','" + this.cells[2].textContent + "')");
+
+        });
+    });
+
+    function nada(codigo, descripcion) {
+        $('#m_central').modal('hide');
+    }
+</script>

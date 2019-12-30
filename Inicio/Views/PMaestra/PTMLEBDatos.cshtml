@@ -1,0 +1,43 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-2">
+            <label>C&oacute;digo</label>
+            @if (Model != null && !String.IsNullOrEmpty(Model.CODIGO))
+            {
+                @Html.TextBoxFor(m => m.CODIGO, new { @class = "form-control", @readonly = "true" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.CODIGO, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_enteros(event)" })
+            }
+        </div>
+        <div class="col-sm-4">
+            <label>Descripci&oacute;n</label>
+            @Html.TextBoxFor(m => m.DESCRIPCION, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-lg-4">
+            <label>Cod. Bancario</label>
+            <input class="form-control" onkeypress="solo_alfanumericos(event)" />
+        </div>
+        <div class="col-lg-2">
+            <label>% Intereses CTS</label>
+            <input class="form-control" onkeypress="solo_decimal(event,this)" />
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('PTMLATIndex', 'Maestro')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>

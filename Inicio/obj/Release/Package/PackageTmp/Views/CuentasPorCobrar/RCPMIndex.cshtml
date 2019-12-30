@@ -1,0 +1,127 @@
+@model Datos.Models.CuentasPorCobrarModel
+
+@{
+    ViewBag.Title = "Cobranzas Proyectadas por Meses";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Cuentas Por Cobrar", "Index", "CuentasPorCobrar")</li>
+                    <li class="breadcrumbs-item">Reportes</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/CuentasPorCobrar/Ayuda', 'RECCIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-7">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Seleccionar Anexo</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-header font-weight-bold">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                Documentos
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input type="checkbox" />&nbsp;Todos
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label>Descuento</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <select class="form-control">
+                                                    <option>AB</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-header font-weight-bold">Moneda</div>
+                                    <div class="card-body">
+                                        <div class="row col-sm-12">
+                                            <select class="form-control">
+                                                <option>Moneda Nacional</option>
+                                                <option>Moneda Extranjera</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Opci&oacute;n</div>
+                    <div class="card-body">
+                        <div class="row col-sm-12">
+                            <input type="checkbox" />&nbsp;
+                            Agrupar
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <input type="radio" name="i_tipo" />&nbsp;
+                                Por Tipo de Documento
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="radio" name="i_tipo" />&nbsp;
+                                Por Cliente
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-print'></i>
+                Imprimir
+            </a>
+        </div>
+    }
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

@@ -1,0 +1,72 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header font-weight-bold">Filtro</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label>Centro de Costo</label>
+                            <input class="form-control alert-warning" ondblclick="AjaxModalGet('Centros de Costo', '/PMaestra/Referencias', '', 'm_middle');" />
+                        </div>
+                        <div class="col-sm-2">
+                            <label>Fecha Inicial</label>
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                        <div class="col-sm-2">
+                            <label>Fecha Fin</label>
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                        <div class="col-sm-3">
+                            <br />
+                            <label>
+                                <input type="checkbox" />
+                                Mostrar todas las incidencias
+                            </label>
+                        </div>
+                        <div class="col-sm-2">
+                            <label>
+                                <input type="radio" name="i_rep" />
+                                Detallado
+                            </label>
+                            <br />
+                            <label>
+                                <input type="radio" name="i_rep" />
+                                Resumido
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-1">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-check'></i>
+                Reporte
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

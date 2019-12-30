@@ -1,0 +1,93 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow">
+                <div class="card-header text-primary">
+                    Los cargos de cuenta corriente, pueden ser debitados desde los adelantos de remuneraciones. Si no desea aplicar Cuenta Corriente
+                    Programada elim&iacute;nelo en el M&oacute;dulo de Cuenta Corriente.
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered pre-scrollable datatables" id="ReferenciaGrid" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Nombres</th>
+                                    <th>Tipo</th>
+                                    <th>D&eacute;bito</th>
+                                    <th>Capital</th>
+                                    <th>Descripci&oacute;n</th>
+                                    <th>Secuencia</th>
+                                    <th style="width: 5px"></th>
+                                    <th style="width: 5px"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row mt-1">
+        <div class="col-sm-8">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+        </div>
+        <div class="col-sm-4">
+            <label>Tipo I = Ingreso</label><br />
+            <label>Tipo E = Egreso</label><br />
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $('input[type=radio]').iCheck({
+            radioClass: 'iradio_square-blue',
+        });
+
+        $('input[type=checkbox]').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+        });
+
+        $("#ReferenciaGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+
+            ajax: {
+                url: ruta_actual + "/PMaestra/GridPTMLCC",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CODIGO" },
+                { data: "DESCRIPCION" },
+                { data: "CODIGO" },
+                { data: "DESCRIPCION" },
+                { data: "CODIGO" },
+                { data: "DESCRIPCION" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-success" title="Aceptar" href="#" ><i class="fa fa-check"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger" title="Eliminar" href="#" ><i class="fa fa-times"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+</script>

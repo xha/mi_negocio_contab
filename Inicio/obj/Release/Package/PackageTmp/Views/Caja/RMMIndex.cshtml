@@ -1,0 +1,169 @@
+@model Datos.Models.CajaModel
+@{
+    ViewBag.Title = "Movimientos Mensuales";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Caja", "Index", "Caja")</li>
+                    <li class="breadcrumbs-item">Reportes</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Caja/Ayuda', 'RMMIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Opciones</div>
+                    <div class="card-body row">
+                        <div class="col-sm-6">
+                            <label>Año</label>
+                            <select class="form-control">
+                                <option>2019</option>
+                                <option>2018</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Moneda</label><br />
+                            <select class="form-control">
+                                <option>Moneda Nacional</option>
+                                <option>Moneda Extranjera</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-7">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Conceptos</div>
+                    <div class="card-body row">
+                        <div class="col-sm-4">
+                            <input type="radio" name="i_conceptos" />
+                            Todos
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="radio" name="i_conceptos" />
+                            Ingreso
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="radio" name="i_conceptos" />
+                            Salida
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <hr />
+    <div class="row">
+        <div class="card col-sm-12">
+            <div class="card-body table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="RMMIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Sel.</th>
+                            <th>C&oacute;digo</th>
+                            <th>Descripci&oacute;n</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row col-sm-12">
+        <a href="#" class="btn btn-primary">
+            <i class='fa fa-print'></i>
+            Imprimir
+        </a>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#RMMIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            searching: false,
+            paging: false,
+            info: false,
+            ajax: {
+                url: ruta_actual + "/Caja/GridTransacciones",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [0],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [1],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<i class="btn btn-primary fa fa-circle proveedor" onclick="cambiar_imagen(\'' + row.CodigoTransaccion + '\')" id="input_' + row.CodigoTransaccion + '"></i>';
+                    }
+                },
+                { data: "CodigoTransaccion" },
+                { data: "DescripcionTransaccion" },
+            ]
+        });
+
+        $('#i_arts').on('ifChecked', function () {
+            activa_arts(0);
+        })
+
+        $('#i_arts').on('ifUnchecked', function () {
+            activa_arts(1);   
+        })
+    });
+    /****************************************************************************************************/
+    function activa_arts(valor) {
+        if (valor == 0) {
+            $(".proveedor").each(function () {
+                $(this).removeClass('fa-circle');
+                $(this).addClass('fa-check-circle');
+            });
+        } else {
+            $(".proveedor").each(function () {
+                $(this).removeClass('fa-check-circle');
+                $(this).addClass('fa-circle');
+            });
+        }
+    }
+
+    function cambiar_imagen(valor) {
+        var id = $("#input_" + valor)[0];
+
+        if (id.classList.contains("fa-circle")) {
+            id.classList.remove('fa-circle');
+            id.classList.add('fa-check-circle');
+        } else {
+            id.classList.add('fa-circle');
+            id.classList.remove('fa-check-close');
+        }
+    }
+</script>

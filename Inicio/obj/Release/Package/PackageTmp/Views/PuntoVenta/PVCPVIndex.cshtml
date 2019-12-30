@@ -1,0 +1,122 @@
+@model Datos.Models.FacturacionModel
+
+@{
+    ViewBag.Title = "Cuadre de Punto de Venta";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Punto de Venta", "Index", "PuntoVenta")</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/PuntoVenta/Ayuda', 'PVCPVIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Par&aacute;metros</div>
+                    <div class="card-body">
+                        <div class="row col-sm-12">
+                            <label>Punto de Venta</label>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control alert-warning" title="Doble Click para buscar" maxlength="2" onkeypress="solo_enteros(event)" ondblclick="AjaxModalGet('Puntos de Venta', '/PuntoVenta/PuntosVenta', 'nada2', 'm_middle')" />
+                                </div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-sm-12">
+                            <label>Vendedor</label>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control alert-warning" title="Doble Click para buscar" maxlength="2" onkeypress="solo_enteros(event)" ondblclick="AjaxModalGet('Vendedores', '/Vendedor/Vendedores', 'nada2', 'm_middle')" />
+                                </div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Fecha</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Desde</label><br />
+                                <input class="form-control datepickers" readonly />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Hasta</label><br />
+                                <input class="form-control datepickers" readonly />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Opciones</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <label>Moneda</label>
+                                <select class="form-control">
+                                    <option>Moneda Nacional</option>
+                                    <option>Moneda Extranjera</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7" align="center">
+                                <input type="checkbox" /><br />
+                                Ver detalles de Cheques y Tarjetas
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-print'></i>
+                Aceptar
+            </a>
+        </div>
+    }
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

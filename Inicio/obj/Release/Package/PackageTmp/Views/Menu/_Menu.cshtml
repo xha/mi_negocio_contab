@@ -1,0 +1,207 @@
+@model IEnumerable<Datos.Models.Menu> 
+@{ 
+    int constante = 28;
+    int constante2 = 23;
+    int constante3 = 46;
+}
+<ul class="navbar-nav bg-gradient-starsoft sidebar sidebar-dark accordion" id="accordionSidebar">
+    <!-- Sidebar - Brand -->
+    <div style="width:100%;height: 4rem; background-color: #FFF">
+        <a href="@Url.Action("Index", "Home")">
+            <img src="~/Content/images/logo.png" class="w-100" style="height: 100%" />
+        </a>
+    </div>
+    <hr class="sidebar-divider my-0">
+    <div class="p-1">
+        <input class="form-control" id="buscador_principal" placeholder="Buscar en el men&uacute;..." />
+    </div>
+    <hr class="sidebar-divider my-0">
+    @if (@Model.ElementAt(0).Id == 1)
+    {
+        foreach (var item in Model)
+        {
+            if (item.isParent == false && item.parentId == 0)
+            {
+                <li class="nav-item active">
+                    <a class="nav-link pl-2" href="@Url.Action(@item.action, @item.controller)">
+                        <i class="@item.imageClass"></i>
+                        <span>@item.nameOption</span>
+                    </a>
+                </li>
+            }
+            else if (item.isParent == true && item.parentId == 0)
+            {
+                <li class="nav-item">
+                    <a class="nav-link pl-2 collapsed" href="#" id="menu_@item.Id" data-toggle="collapse" data-target="#collapse_@item.Id" aria-expanded="true"
+                        aria-controls="collapse_@item.Id">
+                        <i class="@item.imageClass"></i>
+                        <span>@item.nameOption</span>
+                    </a>
+                    <div id="collapse_@item.Id" class="collapse" aria-labelledby="heading_@item.Id" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            @foreach (var child in Model.Where(p => p.parentId == item.Id))
+                            {
+                                if (child.isParent == true)
+                                {
+                                    <a class="collapse-item" id="menu_@child.Id" data-toggle="collapse" data-target="#collapse_@child.Id" href="#" 
+                                       onclick="cambia_icono(@child.Id)">
+                                        @if (@child.nameOption.Length > constante)
+                                        {
+                                            @child.nameOption.Substring(0, constante)
+                                            <br />
+                                            @child.nameOption.Substring(constante, (@child.nameOption.Length - constante))
+                                        }
+                                        else
+                                        {
+                                            @child.nameOption
+                                        }
+                                        <i class="fa fa-fw fa-angle-right text-right" style="float: right; margin-top: 0.3rem" id="icono_@child.Id"></i>
+                                    </a>
+                                    <div id="collapse_@child.Id" class="collapse">
+                                        @foreach (var child2 in Model.Where(p2 => p2.parentId == child.Id))
+                                        {
+                                            <a class="collapse-item hinner" id="menu_@child2.Id" onclick="pagina_central('@child2.action', '@child2.controller',@child2.Id)" href="#">
+                                                @child2.nameOption
+                                            </a>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {   //@Url.Action(child.action, child.controller)
+                                    <a class="collapse-item" href="#" id="menu_@child.Id" onclick="pagina_central('@child.action', '@child.controller',@child.Id)">@child.nameOption</a>
+                                }
+                            }
+                        </div>
+                    </div>
+                </li>
+            }
+        }
+    }
+    else
+    {
+        <li class="nav-item active">
+            <a class="nav-link pl-2" href="@Url.Action("Index", "Home")">
+                <i class="fa fa-undo fa-fw"></i>
+                <span>Inicio </span>
+            </a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link pl-2" href="@Url.Action("Index", @HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString())">
+                <i class="fa fa-book-open fa-fw"></i>
+                <span>@ViewBag.Titulo</span>
+            </a>
+        </li>
+
+        foreach (var item in Model)
+        {
+            if (item.parentId2 == 0)
+            {   
+                if (item.action != "")
+                {
+                    <li class="nav-item">
+                        <a class="nav-link pl-2" href="#" id="menu_@item.Id" onclick="pagina_central('@item.action', '@item.controller',@item.Id)" >
+                            <i class="@item.imageClass"></i>
+                            <span>
+                                @item.nameOption
+                            </span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link pl-2 collapsed" id="menu_@item.Id" href="#" data-toggle="collapse" data-target="#collapse_@item.Id" aria-expanded="true"
+                            aria-controls="collapse_@item.Id">
+                            <i class="@item.imageClass"></i>
+                            <span>
+                                @if (@item.nameOption.Length > constante2)
+                                {
+                                    @item.nameOption.Substring(0, constante2)
+                                    <br />
+                                    @item.nameOption.Substring(constante2, (@item.nameOption.Length - constante2))
+                                }
+                                else
+                                {
+                                    @item.nameOption
+                                }
+                            </span>
+                        </a>
+                        <div id="collapse_@item.Id" class="collapse" aria-labelledby="heading_@item.Id" data-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
+                                @foreach (var child in Model.Where(p => p.parentId2 == item.Id))
+                                {
+                                    if (child.isParent == true)
+                                    {
+                                        <a class="collapse-item" id="menu_@child.Id" data-toggle="collapse" data-target="#collapse_@child.Id" href="#"
+                                           onclick="cambia_icono(@child.Id)">
+                                            @if (@child.nameOption.Length > constante)
+                                            {
+                                                @child.nameOption.Substring(0, constante)
+                                                <br />
+                                                @child.nameOption.Substring(constante, (@child.nameOption.Length - constante))
+                                            }
+                                            else
+                                            {
+                                                @child.nameOption
+                                            }
+                                            <i class="fa fa-fw fa-angle-right text-right" style="float: right; margin-top: 0.3rem" id="icono_@child.Id"></i>
+                                        </a>
+                                        <div id="collapse_@child.Id" class="collapse"> <!-- style="margin-left: 1rem"-->
+                                            @foreach (var child2 in Model.Where(p2 => p2.parentId2 == child.Id))
+                                            {
+                                                <a class="collapse-item hinner" id="menu_@child2.Id" onclick="pagina_central('@child2.action','@child2.controller',@child2.Id)" href="#">
+                                                    @if (@child2.nameOption.Length > constante2)
+                                                    {
+                                                        @child2.nameOption.Substring(0, constante2)
+                                                        <br />
+                                                        if (@child2.nameOption.Length > constante3)
+                                                        {
+                                                            //child2.nameOption.Substring(constante2, (@child2.nameOption.Length - (constante3+1)))
+                                                            @child2.nameOption.Substring(constante2, constante2)
+                                                            <br />
+                                                            @child2.nameOption.Substring(constante3, (@child2.nameOption.Length - constante3))
+                                                        }
+                                                        else
+                                                        {
+                                                            @child2.nameOption.Substring(constante2, (@child2.nameOption.Length - constante2))
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        @child2.nameOption
+                                                    }
+                                                </a>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <a class="collapse-item" id="menu_@child.Id" onclick="pagina_central('@child.action','@child.controller',@child.Id)" href="#">
+                                            @if (@child.nameOption.Length > constante)
+                                            {
+                                                @child.nameOption.Substring(0, constante)
+                                                <br />
+                                                @child.nameOption.Substring(constante, (@child.nameOption.Length - constante))
+                                            }
+                                            else
+                                            {
+                                                @child.nameOption
+                                            }
+                                        </a>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </li>
+                }
+
+            }
+        }
+    }
+    <!-- Nav Item - Pages Collapse Menu -->
+    <hr class="sidebar-divider">
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div align="center">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+</ul>

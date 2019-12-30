@@ -1,0 +1,147 @@
+    @model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "Liquidación";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <input id="t_id" type="hidden" />
+    <input id="t_unidad" type="hidden" />
+    <input id="t_descripcion" type="hidden" />
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item">Procesos</li>
+                    <li class="breadcrumbs-item">Calcular Beneficios Sociales</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5><b>@ViewBag.Title</b></h5>
+        </div>
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title', '/PProceso/Ayuda', 'PCBSLIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="card">
+        <div class="card-header text-danger">
+        Fecha de Cese
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-2">
+                    <input class="form-control datepickers" readonly />
+                </div>
+                <div class="col-sm-2">
+                    <input class="form-control datepickers" readonly />
+                </div>
+                <div class="col-sm-4">
+                    <button class="btn btn-primary">
+                        <i class="fa fa-search"></i>
+                        Buscar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-1">
+        <div class="col-sm-12">
+            <button class="btn btn-primary m-1" onclick="AjaxModalGet('Liquidación de Trabajadores', '/PProceso/LiquidacionTrabajadores', '', 'm_central')">
+               Liquidar
+            </button>
+            <button class="btn btn-secondary m-1">
+                Anular Liq.
+            </button>
+        </div>
+    </div>
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" style="cursor: pointer" id="PCBSLIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Trabajador</th>
+                            <th>Fecha de Ing.</th>
+                            <th>Fecha Cese</th>
+                            <th>Cronograma</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2 justify-content-around">
+
+        <button class="btn btn-secondary m-1 col-sm-2">
+            <i class="fa fa-print"></i><br>
+           Certificado de Trabajo.
+        </button>
+        <button class="btn btn-secondary m-1 col-sm-2">
+            <i class="fa fa-print"></i><br>
+            Liquidación de BB.SS.
+        </button>
+        <button class="btn btn-secondary m-1 col-sm-2">
+            <i class="fa fa-print"></i><br>
+            Carta de Retiro CTS
+        </button>
+        <button class="btn btn-secondary m-1 col-sm-2">
+            <i class="fa fa-print"></i><br>
+            Emite Boleta de Pago.
+        </button>
+
+        <button class="btn btn-secondary m-1 col-sm-2">
+            <i class="fa fa-print"></i><br>
+            Certificado 5ta. Cat.
+        </button>
+         
+
+    </div>
+</div>
+
+<script>
+    var seleccionado = "";
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+    $(function () {
+       
+        $("#PCBSLIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/PMaestra/GridPTMLCC",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "DESCRIPCION" },
+                { data: "FECHA" },
+                { data: "FECHA" },
+                { data: "FECHA" },
+                { data: "FECHA" }
+            ],
+        });
+
+    });
+</script>

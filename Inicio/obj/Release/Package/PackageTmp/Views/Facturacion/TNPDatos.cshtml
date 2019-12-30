@@ -1,0 +1,186 @@
+﻿@model Datos.Models.FacturacionModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    @Html.HiddenFor(m => m.Codigo)
+    <div class="row">
+        <div class="col-sm-2">
+            <label>Serie</label>
+            @Html.DropDownListFor(m => m.ControlSerie, new List<SelectListItem>
+            {
+                new SelectListItem{ Text="001", Value = "001" },
+                new SelectListItem{ Text="002", Value = "002" },
+            }, new { @class = "form-control" })
+        </div>
+        <div class="col-sm-2">
+            <label>N&uacute;mero</label>
+            @Html.TextBoxFor(m => m.Documento, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_enteros(event)" })
+        </div>
+        <div class="col-sm-2">
+            <label>Fecha</label>
+            @Html.TextBoxFor(m => m.FechaEmision, new { @class = "form-control datepickers", @readonly = "true" })
+        </div>
+        <div class="col-sm-2">
+            <label>Moneda</label><br />
+            @Html.DropDownListFor(m => m.Moneda, new List<SelectListItem>
+            {
+                new SelectListItem{ Text="Moneda Nacional", Value = "MN" },
+                new SelectListItem{ Text="Moneda Extranjera", Value = "ME" },
+            }, new { @class = "form-control" })
+        </div>
+        <div class="col-sm-2">
+            <label>T.C.</label>
+            @Html.TextBoxFor(m => m.TotalCredito, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_decimal(event,this)" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <label>Cliente</label>
+            @Html.TextBoxFor(m => m.CodigoCliente, new { @class = "form-control alert-warning", @maxlength = "11", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Listado de Clientes', '/Cliente/Clientes', 'nada2', 'm_middle')" })
+        </div>
+        <div class="col-sm-2">
+            <label>RUC</label>
+            <input type="text" class="form-control" readonly id="ruc_cliente" />
+        </div>
+        <div class="col-sm-2">
+            <label>Raz&oacute;n Social</label>
+            <input type="text" class="form-control" readonly id="razon_social" />
+        </div>
+        <div class="col-sm-6">
+            <label>Vendedor</label><br />
+            <div class="row">
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.CodigoVendedor, new { @class = "form-control alert-warning", @maxlength = "11", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Listado de Vendedores', '/Vendedor/Vendedores', 'nada2', 'm_middle')" })
+                </div>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" readonly id="descripcion_vendedor" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-5">
+            <label>Glosa</label><br />
+            @Html.TextBoxFor(m => m.Glosa, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-3" align="center">
+            <br />
+            @Html.CheckBoxFor(m => m.IncluyeIGV)
+            &nbsp;
+            Precio Incluye IGV
+        </div>
+    </div>
+    <br />
+}
+<hr />
+<div class="row">
+    <div class="col-sm-12">
+        <button class="btn btn-primary" onclick="AjaxModalGet('Mantenimiento de Detalle de Nota de Pedido', '/Facturacion/TNPNuevo', 'nada')">
+            <i class='fa fa-plus'></i>
+            Nuevo
+        </button>
+    </div>
+</div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped pre-scrollable datatables" id="TNPDatosGrid" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>C&oacute;digo</th>
+                    <th>Descripci&oacute;n</th>
+                    <th>Lote/Serie</th>
+                    <th>Und.</th>
+                    <th>Cantidad</th>
+                    <th>Precio Vta. Unit.</th>
+                    <th>Importe</th>
+                    <th>Dscto</th>
+                    <th>Precio Vta.</th>
+                    <th>IGV</th>
+                    <th>Valor Vta.</th>
+                    <th style="width: 5px"></th>
+                    <th style="width: 5px"></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<div class="row border rounded">
+    <div class="col-sm-8"></div>
+    <div class="col-sm-2" align="right">
+        <label>Precio Venta</label>
+    </div>
+    <div class="col-sm-2">
+        <input type="text" class="form-control" readonly />
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-sm-12">
+        <a href="#" onclick='ocultar_panel("TNPIndex", "Facturacion")' class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <button class="btn btn-success" onclick="AjaxModalGet('Detalle de Cobranza', '/Facturacion/TNPDetalle', 'nada2', 'm_middle')">
+            <i class='fa fa-save'></i>
+            Guardar
+        </button>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        if ($("#Codigo").val() != "") {
+            $("#TNPDatosGrid").DataTable({
+                processing: true, // for show progress bar
+                serverSide: true, // for process server side
+                filter: true, // this is for disable filter (search box)
+                orderMulti: false, // for disable multiple column at once
+                
+
+                ajax: {
+                    url: ruta_actual + "/Facturacion/GridTCVDetalle",
+                    type: "POST",
+                    datatype: "json",
+                },
+                columnDefs:
+                [{
+                    targets: [7],
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    targets: [8],
+                    searchable: false,
+                    orderable: false
+                }],
+                columns: [
+                    { data: "CodigoProducto" },
+                    { data: "DescripcionProducto" },
+                    { data: "Lote" },
+                    { data: "CodigoUnidadMedida" },
+                    { data: "Cantidad" },
+                    { data: "Precio" },
+                    { data: "ImporteIGV" },
+                    { data: "DescuentoUnitario" },
+                    { data: "PrecioVenta" },
+                    { data: "IGV" },
+                    { data: "Total" },
+                    {
+                        render: function (data, type, row)
+                        { return '<a class="btn btn-info grid_opt" title="Editar" href="#"  onclick="AjaxModalGet(\'Mantenimiento de Detalle de Nota de Pedido\', \'/Facturacion/TNPNuevo\')"><i class="fa fa-edit"></i></a>'; }
+                    },
+                    {
+                        data: null, render: function (data, type, row) {
+                            return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CodigoProducto + '\')"><i class="fa fa-trash"></i></a>';
+                        }
+                    },
+                ]
+            });
+        }
+    });
+
+    function nada2(codigo, descripcion) {
+        $('#m_middle').modal('hide');
+    }
+</script>

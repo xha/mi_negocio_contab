@@ -1,0 +1,33 @@
+@model Datos.Models.FacturacionModel
+
+@{
+    ViewBag.Title = "";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Facturacion", "Index", "Facturacion")</li>
+                    <li class="breadcrumbs-item">Procesos</li>
+                    <li class="breadcrumbs-item active">Proceso de Generaci&oacute;n de Ventas Mensuales</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>Proceso de Generaci&oacute;n de Ventas Mensuales</b></h5>
+        </div>
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Proceso de Generacion de Ventas Mensuales - Inicio', '/Facturacion/Ayuda', 'Index', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#m_proceso').modal('show');
+    });
+</script>

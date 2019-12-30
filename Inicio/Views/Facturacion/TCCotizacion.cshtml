@@ -1,0 +1,167 @@
+@model Datos.Models.FacturacionModel
+
+@{
+    ViewBag.Title = "Cotización";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+    {
+        @Html.HiddenFor(m => m.Codigo)
+        <div class="row">
+            <div class="col-sm-5">
+                <label>Vendedor</label><br />
+                <div class="row">
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.CodigoVendedor, new { @class = "form-control alert-warning", @maxlength = "11", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Listado de Vendedores', '/Vendedor/Vendedores', 'nada2', 'm_middle')" })
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" readonly id="descripcion_vendedor" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <label>Fecha Vta.</label>
+                @Html.TextBoxFor(m => m.FechaEmision, new { @class = "form-control", @readonly = true })
+            </div>
+            <div class="col-sm-2">
+                <label>T. Cambio</label>
+                @Html.TextBoxFor(m => m.TipoCambio, new { @class = "form-control", @readonly = true })
+            </div>
+            <div class="col-sm-3">
+                <label>Moneda</label><br />
+                @Html.DropDownListFor(m => m.Moneda, new List<SelectListItem>
+                {
+                    new SelectListItem{ Text="Moneda Nacional", Value = "MN" },
+                    new SelectListItem{ Text="Moneda Extranjera", Value = "ME" },
+                }, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                <label>Tipo de Documento</label><br />
+                <div class="row">
+                    <div class="col-sm-6">
+                        <select class="form-control">
+                            <option>Monto Desc.</option>
+                            <option>Otro</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" readonly />
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label>&nbsp;</label><br />
+                <b>Precios Inc. IGV</b>
+            </div>
+            <div class="col-lg-3 text-center">
+                <label>Total</label>
+                @Html.TextBoxFor(m => m.PrecioVenta, new { @class = "form-control", @readonly = true })
+            </div>
+        </div>
+    }
+    <hr />
+    <div class="row">
+        <div class="col-sm-9">
+            <button class="btn btn-primary" onclick="AjaxModalGet('Detalle de Artículos - Cotización', '/Facturacion/TCDetalleArticulosCotizacion', 'nada')">
+                <i class='fa fa-plus'></i>
+                Nuevo
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped pre-scrollable datatables" id="TCCCotizacionGrid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>C&oacute;digo</th>
+                        <th>Descripci&oacute;n</th>
+                        <th>Und.</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Precio Bruto</th>
+                        <th>Dscto</th>
+                        <th>Precio Vta.</th>
+                        <th style="width: 5px"></th>
+                        <th style="width: 5px"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row border rounded">
+        <div class="col-sm-9" align="right">
+            <b>Total</b>
+        </div>
+        <div class="col-sm-3" align="center">
+            <input type="text" class="form-control" readonly />
+        </div>
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick='ocultar_panel("TCIndex", "Facturacion")' class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <button class="btn btn-success" onclick="AjaxModalGet('Cotización - Datos del Cliente', '/Facturacion/TCDatosCliente', $('#bandera').val())">
+                <i class='fa fa-save'></i>
+                Cotización
+            </button>
+        </div>
+    </div>
+<script>
+$(function () {
+    $("#TCCCotizacionGrid").DataTable({
+        processing: true, // for show progress bar
+        serverSide: true, // for process server side
+        filter: true, // this is for disable filter (search box)
+        orderMulti: false, // for disable multiple column at once
+        
+
+        ajax: {
+            url: ruta_actual + "/Facturacion/GridTCVDetalle",
+            type: "POST",
+            datatype: "json",
+        },
+        columnDefs:
+        [{
+            targets: [8],
+            orderable: false,
+            searchable: false
+        },
+        {
+            targets: [9],
+            searchable: false,
+            orderable: false
+        }],
+        columns: [
+            { data: "CodigoProducto" },
+            { data: "DescripcionProducto" },
+            { data: "CodigoUnidadMedida" },
+            { data: "Cantidad" },
+            { data: "Precio" },
+            { data: "ImporteIGV" },
+            { data: "DescuentoUnitario" },
+            { data: "Total" },
+            {
+                render: function (data, type, row)
+                { return '<a class="btn btn-info grid_opt" title="Editar" onclick="AjaxModalGet(\'Detalle de Artículos - Cotización\', \'/Facturacion/TCDetalleArticulosCotizacion\',\'nada\')" href="#"><i class="fa fa-edit"></i></a>'; }
+            },
+            {
+                data: null, render: function (data, type, row) {
+                    return '<a class="btn btn-danger grid_opt" title="Eliminar" onclick="anular_nota(\'' + row.CodigoProducto + '\')" href="#"><i class="fa fa-trash"></i></a>';
+                }
+            },
+        ]
+    });
+});
+
+function nada2(codigo, descripcion) {
+    $('#m_middle').modal('hide');
+}
+</script>

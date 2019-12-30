@@ -1,0 +1,76 @@
+@model Datos.Models.ComprasModel
+
+<div class="container-fluid">
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DetalleForm" }))
+{
+    @Html.HiddenFor(m => m.Codigo)
+    <div class="row">
+        <div class="col-sm-3">
+            <label>C&oacute;digo</label>
+            @Html.TextBoxFor(m => m.CodigoProducto, new { @class = "form-control alert-warning", @maxlength = "20", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Listado de Artículos', '/Articulo/Articulos', 'nada2', 'm_middle')" })
+        </div>
+        <div class="col-sm-3">
+            <label>Unidad</label>
+            @Html.TextBoxFor(m => m.CodigoUnidadMedida, new { @class = "form-control alert-warning", @maxlength = "6", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Unidad de Medida', '/Maestro/UnidadMedida', 'nada2', 'm_middle')" })
+        </div>
+        <div class="col-sm-3">
+            <label>Stock</label>
+            <input type="text" class="form-control" readonly id="detalle_stock" />
+        </div>
+        <div class="col-sm-3">
+            <label>Cantidad</label>
+            @Html.TextBoxFor(m => m.Cantidad, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Precio Unitario</label>
+            @Html.TextBoxFor(m => m.PrecioUnitario, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-3">
+            <label>% IGV</label>
+            @Html.TextBoxFor(m => m.IGV, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-2">
+            <label>Descuento Unitario</label>
+            @Html.TextBoxFor(m => m.Cantidad, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-2">
+            <label>% Descuento</label>
+            @Html.TextBoxFor(m => m.Descuento, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-2">
+            <label>Precio Neto</label>
+            @Html.TextBoxFor(m => m.Precio, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Importe por Art&iacute;culo</label>
+            @Html.TextBoxFor(m => m.ImporteBruto, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-3">
+            <label>Descto. por Art&iacute;culo</label>
+            @Html.TextBoxFor(m => m.Descuento, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-3">
+            <label>Importe Neto</label>
+            @Html.TextBoxFor(m => m.ImporteNeto, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+        </div>
+    </div>
+}
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <button class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Aceptar
+            </button>
+        </div>
+    </div>
+</div>

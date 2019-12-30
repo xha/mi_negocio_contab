@@ -1,0 +1,115 @@
+﻿
+
+@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "Cálculo Utilidades";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item">Procesos</li>
+                    <li class="breadcrumbs-item">Calcular Beneficios Sociales</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5><b>@ViewBag.Title</b></h5>
+        </div>
+
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title Inicio ', '/PMaestra/Ayuda', 'PIRBIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row col-sm-12">
+        <button class="btn btn-success" onclick="AjaxModalGet('Nuevo Cálculo de Utilidades', '/PProceso/CTSUtilidadesA', 'nada2', 'm_central')">
+            <i class='fa fa-plus'></i>
+            Agregar
+        </button>
+    </div>
+    <div class="card shadow mt-1">
+     
+        <div class="card-body">
+            <div class="row mb-2">
+                <div class="col border-bottom text-center"> <p>Planilla de Utilidades</p></div>
+
+            </div>
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="PIRBIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Descripc&iacute;on</th>
+                            <th>Utilidad</th>
+                            <th>% Utilidad</th>
+                            <th>Sub Total</th>
+                            <th>Utilidad No Cobradas</th>
+                            <th>Utilidad a Distribuir</th>
+                            <th>Bol</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <th>xxx</th>
+                            <th>xxxx</th>
+                            <th>xxxx</th>
+                            <th>xxx</th>
+                            <th>xx</th>
+                            <th>xxxx</th>
+                            <th>xxx </th>
+                            <th>xx</th>
+                            <th><a class="btn btn-info grid_opt" title="Editar" onclick="AjaxModalGet('Agregar Programa','/PProceso/Programa', 'nada2', 'm_central')" href="#"><i class="fa fa-edit"></i></a></th>
+                            <th><button class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota('' + row.CODIGO + '/')"><i class="fa fa-trash"></i></button></th>
+</tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row  justify-content-center">
+                    <div class="col-auto ">
+                        <button class="col-sm-12 col-md-auto btn btn-secondary mt-1" onclick="AjaxModalGet('Adelanto de Gratificación', '/PProceso/POBCAdelantL', 'nada2', 'm_central')">
+
+                            Configuracion de Utilidades
+                        </button>
+
+
+
+                        <button class="col-sm-12 col-md-auto btn btn-info mt-1" onclick="AjaxModalGet('Adelanto de Gratificación', '/PProceso/POBCAdelantL', 'nada2', 'm_central')">
+
+                            Enviar Certificado de Utilidades
+                        </button>
+
+
+                        <button class="btn col-md-12 col-lg-auto btn-primary mt-1 " onclick="AjaxModalGet('Pagos por Banco', '/PProceso/PagosPorBanco', 'nada2', 'm_central')">
+                            Const. de Recep. Util.
+                        </button>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+  
+
+</div>
+
+
+
+    </div>

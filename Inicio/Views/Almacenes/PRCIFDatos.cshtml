@@ -1,0 +1,56 @@
+﻿@model Datos.Models.AlmacenesModel
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    @Html.HiddenFor(m => m.Codigo)
+    <div class="row">
+        <div class="col-sm-4">
+            <label>Nro. Inventario F&iacute;sico</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-4">
+            <label>&Uacute;ltima Modificaci&oacute;n</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <label>Responsable</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-8">
+            <label>Observaciones</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+    </div>
+}
+<hr />
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped pre-scrollable datatables" id="Demogrid" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>C&oacute;digo</th>
+                    <th>Descripci&oacute;n</th>
+                    <th>Und</th>
+                    <th>Stock Actual</th>
+                    <th>Ingreso de Conteo</th>
+                    <th>Diferencia</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick='ocultar_panel("PRCIFIndex", "Almacenes")' class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <button class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </button>
+    </div>
+</div>

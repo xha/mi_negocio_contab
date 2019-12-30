@@ -1,0 +1,77 @@
+﻿<div class="container-fluid">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label>C&oacute;digo</label><br />
+                    <input id="codigo_mli" name="codigo_mli" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <label>Descripci&oacute;n</label><br />
+                <input id="descripcion_mli" name="descripcion_mli" class="form-control" readonly />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="#" class="btn btn-info" onclick="$('#m_central').modal('hide');">
+                    <i class='fa fa-arrow-left'></i>
+                    Regresar
+                </a>
+                <a href="#" class="btn btn-success" onclick="agregar_lotes()">
+                    <i class='fa fa-plus'></i>
+                    Agregar
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="card-header" align="center"><b>Lotes Registrados</b></div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped pre-scrollable datatables" id="GridMantenimientoLote" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Lote</th>
+                        <th>Stock</th>
+                        <th>Fecha V.</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#codigo_mli").val($("#t_id").val());
+        $("#descripcion_mli").val($("#t_descripcion").val());
+
+        $("#GridMantenimientoLote").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Articulo/GridMantenimientoLote",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CodigoLote" },
+                { data: "Stock" },
+                { data: "FechaVencimiento" },
+            ]
+        });
+    });
+
+    function agregar_lotes() {
+        var titulo = "Mantenimiento de Lotes";
+        var ruta = "/Articulo/MantenimientoLoteCreate";
+        AjaxModalGet(titulo, ruta, 'nada2', 'm_middle');
+    }
+</script>
+

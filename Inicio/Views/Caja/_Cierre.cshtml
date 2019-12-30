@@ -1,0 +1,85 @@
+﻿@model Datos.Models.CajaModel
+<div class="container-fluid">
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+    {
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Punto de Venta</label>
+            @Html.TextBoxFor(m => m.PuntoVenta, new { @class = "form-control", @readonly = true })
+        </div>
+        <div class="col-sm-3">
+            <label>Vendedor</label>
+            @Html.TextBoxFor(m => m.Vendedor, new { @class = "form-control", @readonly = true })
+        </div>
+        <div class="col-sm-6">
+            <label>Observaciones</label>
+            @Html.TextBoxFor(m => m.Glosa, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Saldo Totales</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-4" align="center"></div>
+                        <div class="col-sm-4" align="center">
+                            <b>Soles</b>
+                        </div>
+                        <div class="col-sm-4" align="center">
+                            <b>D&oacute;lares</b>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-4" align="center">
+                            <b>Efectivo</b>
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" maxlength="20" onkeypress="solo_decimal(event,this)" />
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" maxlength="20" onkeypress="solo_decimal(event,this)" />
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-4" align="center">
+                            <b>Cheque</b>
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" maxlength="20" onkeypress="solo_decimal(event,this)" />
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" maxlength="20" onkeypress="solo_decimal(event,this)" />
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-4" align="center">
+                            <b>Tarjeta</b>
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" maxlength="20" onkeypress="solo_decimal(event,this)" />
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" maxlength="20" onkeypress="solo_decimal(event,this)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_middle').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Cancelar
+            </a>
+            <button class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Efectuar Cierre
+            </button>
+        </div>
+    </div>
+</div>

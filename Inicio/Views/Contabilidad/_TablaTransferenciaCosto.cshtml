@@ -1,0 +1,87 @@
+@model Datos.ContabilidadModels.ContabilidadModel
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-4">
+          <label>C&oacute;digo</label><br />
+          <input class="form-control" readonly />
+      </div>
+      <div class="col-sm-8">
+        <label>Descripci&oacute;n</label><br />
+        <input class="form-control" readonly />
+      </div>
+    </div>
+    <hr />
+    <div class="card shadow mt-1">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered tabla_modal pre-scrollable datatables" id="TablaTransferenciaCostoGrid" cellspacing="0" width="100%">
+            <thead>
+              <tr>
+                <th>C&oacute;digo</th>
+                <th>Descripci&oacute;n</th>
+                <th>Abono</th>
+                <th>Factor</th>
+                <th style="width: 5px"></th>
+                <th style="width: 5px"></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>  
+  <hr />
+  <div class="row">
+    <div class="col-sm-12">
+      <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+        <i class='fa fa-arrow-left'></i>
+        Regresar
+      </a>
+    </div>
+  </div>
+</div>
+<script>
+  $(function () {
+    $('input[type=radio]').iCheck({
+      radioClass: 'iradio_square-blue',
+    });
+
+    $(".datepickers").datepicker({
+      autoclose: true
+    });
+
+    $("#TablaTransferenciaCostoGrid").DataTable({
+      processing: true, // for show progress bar
+      serverSide: true, // for process server side
+      filter: true, // this is for disable filter (search box)
+      orderMulti: false, // for disable multiple column at once
+
+      ajax: {
+        url: ruta_actual + "/Contabilidad/GridPlanCuentas",
+        type: "POST",
+        datatype: "json",
+      },
+      columnDefs:
+        [{
+          targets: [2, 3, 4, 5],
+          orderable: false,
+          searchable: false
+        }],
+      columns: [
+        { data: "CODIGO" },
+        { data: "DESCRIPCION" },
+        { data: "CENTRO_COSTO" },
+        { data: "CENTRO_COSTO" },
+        {
+          render: function (data, type, row) { return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="mostrar_panel(\'CCCTEdit?Codigo=' + row.CODIGO + '\', \'Contabilidad\')" ><i class="fa fa-edit"></i></a>'; }
+        },
+        {
+          data: null, render: function (data, type, row) {
+            return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CODIGO + '\')"><i class="fa fa-trash"></i></a>';
+          }
+        },
+      ]
+    });
+  });
+</script>

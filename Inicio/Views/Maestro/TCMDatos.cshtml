@@ -1,0 +1,93 @@
+﻿@model Datos.Models.MaestroModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-3">
+            <label>C&oacute;digo</label>
+            @if (Model != null && !String.IsNullOrEmpty(Model.COVMON_CODIGO))
+            {
+                @Html.TextBoxFor(m => m.COVMON_CODIGO, new { @class = "form-control", @readonly = "true" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.COVMON_CODIGO, new { @class = "form-control", @maxlength = "3", onkeypress = "solo_alfanumericos(event)" })
+            }
+        </div>
+        <div class="col-sm-5">
+            <label>Descripci&oacute;n</label>
+            @Html.TextBoxFor(m => m.COVMON_DESCRIPCION, new { @class = "form-control", @maxlength = "120", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('TCMIndex', 'Maestro')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success" onclick="GuardarTCMDatos()">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    function GuardarTCMDatos() {
+        var accion              = 0;
+        var COVMON_CODIGO       = $("#COVMON_CODIGO").val().trim().toUpperCase();
+        var COVMON_DESCRIPCION  = $("#COVMON_DESCRIPCION").val().trim().toUpperCase();
+        var datos_enviar        = [];
+
+        if ($("#COVMON_CODIGO")[0].readOnly) accion = 1;
+
+        if ((COVMON_CODIGO != "") && (COVMON_DESCRIPCION != "")) {
+            datos_enviar.push({
+                COVMON_CODIGO: COVMON_CODIGO,
+                COVMON_DESCRIPCION: COVMON_DESCRIPCION
+            });
+            
+            var parametros = "datos_enviar=" + JSON.stringify(datos_enviar) + "&accion=" + accion;
+            $.ajax(
+			{
+			    type: "POST",
+			    dataType: "json",
+			    url: ruta_global + "TCMActualizar",
+			    data: parametros,
+			    beforeSend: function () {
+			        loading_show();
+			    },
+			    cache: false,
+			    success: function (Resultado) {
+			        loading_hide();
+			        window.parent.MostrarMensaje(Resultado.color, Resultado.data);
+			        if (Resultado.respuesta) {
+			            ocultar_panel();
+			            $('#TCMIndexGrid').DataTable().ajax.reload();
+			        }
+
+			    },
+			    error: function (xhr) { // if error occured
+			        loading_hide();
+			        console.log(xhr);
+			        window.parent.MostrarMensaje("Rojo", xhr.responseText);
+			    },
+			});
+        } else {
+            MostrarMensaje("Rojo", "Faltan Datos");
+        }
+    }
+</script>

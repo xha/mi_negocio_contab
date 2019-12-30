@@ -1,0 +1,68 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <label>C&oacute;digo</label>
+            <input type="text" maxlength = "10" onkeypress = "solo_enteros(event)" class="form-control alert-warning" 
+            title="Doble Click para buscar" ondblclick="AjaxModalGet('Listado de Artículos', '/Articulo/Articulos', 'nada2', 'm_middle')" />
+        </div>
+        <div class="col-sm-3">
+            <label>Unidad</label>
+            <input type="text" maxlength="10" onkeypress="solo_enteros(event)" class="form-control alert-warning"
+            title="Doble Click para buscar" ondblclick="AjaxModalGet('Unidad de medida', '/Maestro/UnidadMedida', 'nada2', 'm_middle')" />
+        </div>
+        <div class="col-sm-3">
+            <label>Stock</label>
+            <input type="text" class="form-control" maxlength = "10" onkeypress = "solo_enteros(event)" />
+        </div>
+        <div class="col-sm-3">
+            <label>Cantidad</label>
+            <input type="text" class="form-control" maxlength = "10" onkeypress = "solo_enteros(event)" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Precio Unitario</label>
+            <input type="text" class="form-control" maxlength = "10" onkeypress = "solo_decimal(event, this)" />
+        </div>
+        <div class="col-sm-3">
+            <label>% IGV</label>
+            <input type="text" class="form-control" maxlength = "10" onkeypress = "solo_decimal(event, this)" />
+        </div>
+        <div class="col-sm-2">
+            <label>Descuento Unitario</label>
+            <input type="text" class="form-control" maxlength = "10" onkeypress = "solo_decimal(event, this)" />
+        </div>
+        <div class="col-sm-2">
+            <label>% Descuento</label>
+            <input type="text" class="form-control" maxlength = "10" onkeypress = "solo_decimal(event, this)" />
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Importe por Art&iacute;culo</label>
+            <input type="text" class="form-control" maxlength = "10" onkeypress = "solo_decimal(event, this)" />
+        </div>
+        <div class="col-sm-3">
+            <label>Descto. por Art&iacute;culo</label>
+            <input type="text" class="form-control" maxlength = "10" onkeypress = "solo_decimal(event, this)" />
+        </div>
+        <div class="col-sm-3">
+            <label>Importe Neto</label>
+            <input type="text" class="form-control" maxlength = "10" onkeypress = "solo_decimal(event, this)" />
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <button class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Aceptar
+            </button>
+        </div>
+    </div>
+</div>

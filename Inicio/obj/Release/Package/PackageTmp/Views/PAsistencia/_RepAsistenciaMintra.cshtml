@@ -1,0 +1,53 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-7">
+            <div class="card">
+                <div class="card-header font-weight-bold">Filtro por Fechas</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Fecha Inicial</label>
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Fecha Fin</label>
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <br />
+            <label class="m-2">
+                <input type="checkbox" name="i_marcaciones" />
+                Mostrar Todos los Trabajadores
+            </label>
+        </div>
+    </div>
+    <div class="row mt-1">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_middle').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-check'></i>
+                Reporte
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

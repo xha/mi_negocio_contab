@@ -1,0 +1,97 @@
+@model Datos.Models.CuentasPorCobrarModel
+@{
+    ViewBag.Title = "Saldos por Vendedor";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Cuentas Por Cobrar", "Index", "CuentasPorCobrar")</li>
+                    <li class="breadcrumbs-item">Reportes</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/CuentasPorCobrar/Ayuda', 'RECCIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row col-sm-12 text-center">
+            <h3>Para obtener datos m&aacute;s exactos es necesario que los documentos cancelados por Cuentas por Cobrar deben estar enviados a hist&oacute;rico</h3>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Vendedor</div>
+                    <div class="card-body row">
+                        <div class="col-sm-6">
+                            <label>De</label><br />
+                            <input type="text" class="form-control alert-warning" alert-warning"maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Vendedores', '/Vendedor/Vendedores', 'nada2', 'm_middle')" />
+                        </div>
+                        <div class="col-sm-6">
+                            <label>A</label><br />
+                            <input type="text" class="form-control alert-warning" alert-warning"maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Vendedores', '/Vendedor/Vendedores', 'nada2', 'm_middle')" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-7">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Par&aacute;metros de Documentos</div>
+                    <div class="card-body row">
+                        <div class="col-sm-4">
+                            <label>Hasta el</label><br />
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                        <div class="col-sm-4">
+                            <label>Moneda</label><br />
+                            <select class="form-control">
+                                <option>Moneda Nacional</option>
+                                <option>Moneda Extranjera</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <br />
+                            <input type="checkbox" />&nbsp;
+                            Suprimir saldos en CERO
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <hr />
+    <div class="row col-sm-12">
+        <a href="#" class="btn btn-primary">
+            <i class='fa fa-print'></i>
+            Imprimir
+        </a>
+    </div>
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

@@ -1,0 +1,228 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+   
+    <div class="row">
+        <div class="col-sm-12 col-md-5">
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header">
+                    <h5 >Plantilla de Gratificaci&oacute;n de Trabajo</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="row">
+                        <div class="col-sm-4  mt-1">
+                            <label> Per&iacute;odo</label>
+                            <input class="form-control " readonly />
+                            </div>
+                        <div class="col-sm-4 mt-1">
+                            <label>Desde</label>
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                        <div class="col-sm-4 mt-1">
+                            <label>Hasta</label>
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Modalidad</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="row justify-content-center">
+                        <div class="col-sm-6">
+                            <label>
+                                D&iacute;as efectivos Gratificaci&oacute;n
+                            <br />
+                                <input type="checkbox" id="totals" />
+                            </label>
+                        </div>
+                        <div class="col-sm-4">
+                            <label>
+                                Meses completos<br />
+                                <input type="checkbox" name="tp" />
+                            </label>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-12 col-md-3 ">
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header">
+                    <h5>Selecci&oacute;n de Trabajadores</h5>
+                </div>
+                <div class="card-body text-center">
+                    <a href="#" class="btn btn-secondary" onclick="AjaxModalGet('Selector de Trabajadores', '/PProceso/SelectorTrabajadores', '', 'm_middle')">
+                        <i class="fa fa-users fa-3x"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="PAAQIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Apellido y Nombre</th>
+                            <th>Mon.</th>
+                            <th>Importacion de Gratificacion </th>
+                            <th>Meses.</th>
+                            <th>Dias</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-12  col-md-4 mt-1">
+                    <label> N&uacute;m. Trabs</label>
+                    <input class="form-control " placeholder="0.00" readonly />
+                </div>
+                <div class="col-sm-12  col-md-4 mt-1">
+                    <label> Total Planilla MN</label>
+                    <input class="form-control datepickers" placeholder="0.00" readonly />
+                </div>
+                <div class="col-sm-12  col-md-4 mt-1">
+                    <label>Total Plantilla ME</label>
+                    <input class="form-control datepickers" placeholder="0.00" readonly />
+                </div>
+            </div>
+              
+        </div>
+    
+</div>
+
+    <br />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="PAAQIndexGrid" cellspacing="0" width="100%">
+   
+                         <thead>
+                        <tr>
+                            <th>Conceptos Computables</th>
+                            <th>Importe</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-12  col-md-3 mt-1">
+                    <label> Total Conceptos Computables</label>
+                    <input class="form-control " placeholder="0.00" readonly />
+                </div>
+                <div class="col-sm-12  col-md-3 mt-1">
+                    <label> Meses</label>
+                    <input class="form-control " placeholder="0"  readonly />
+                </div>
+                <div class="col-sm-12  col-md-3 mt-1">
+                    <label> D&iacute;as</label>
+                    <input class="form-control "  placeholder="0" readonly />
+                </div>
+                <div class="col-sm-12  col-md-3 mt-1">
+                    <label>Otros Conceptos</label>
+                    <input class="form-control " placeholder="0.00" readonly />
+                </div>
+
+            </div>
+            <hr />
+            <div class="row justify-content-end">
+                <div class="col-sm-12  col-md-5 mt-1">
+                    <label > <strong >GRATIFICACI&Oacute;N  CONCEPTOS</strong> </label>
+                    <input class="form-control " readonly placeholder="0.00" />
+                </div>
+        </div>
+
+    </div>
+</div>
+    <br />
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="row justify-content-md-center">
+                <div class="col-md-12 col-lg-4 mt-1">
+                    <button class="col-md-12 btn btn-primary text-center" onclick="AjaxModalGet('Fórmulas de Gratificaciones', '/PProceso/PCBGFormGrat', 'nada2', 'm_middle')"> F&oacute;rmulas de Gratificaciones</button>
+                </div>
+                <div class="mt-1 text-md-center">
+                    <button class="btn btn-secondary" style="display: none" id="Aparecer" onclick="AjaxModalGet('Días de servicio', '/PProceso/CTSConfDias', 'nada2', 'm_middle')"> Configure D&iacute;as Efectivos</button>
+                </div>
+               
+
+            </div>
+
+    </div>
+</div>
+<script>
+    $('#totals').on('ifChecked', function (event) {
+        $("#Aparecer")[0].style.display = "flex";
+    
+
+    });
+    $('#totals').on('ifUnchecked', function (event) {
+        $("#Aparecer")[0].style.display = "none";
+     
+    });
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(function () {
+        $("#PAAQIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+            ajax: {
+                url: ruta_actual + "/PProceso/GridListadoTrabajadores",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE" },
+                { data: "DEPARTAMENTO" },
+                { data: "BASICO" },
+                { data: "CODIGO_TIPO" },
+                 { data: "CODIGO_TIPO" },
+                
+                
+           
+              
+      
+            ]
+        });
+    });
+</script>

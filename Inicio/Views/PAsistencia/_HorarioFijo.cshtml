@@ -1,0 +1,70 @@
+﻿@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick="AjaxModalGet('Detalle Horario Fijo', '/PAsistencia/DetalleHorarioFijo', '', 'm_middle');" class="btn btn-success">
+                <i class='fa fa-plus'></i>
+                Agregar
+            </a>
+        </div>
+    </div>
+    <br />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered pre-scrollable datatables" id="HorarioFijoGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Hora Ingreso</th>
+                            <th>Hora Salida</th>
+                            <th>Hora Inicio Refrigerio</th>
+                            <th>Hora T&eacute;rmino Refrigerio</th>
+                            <th>D&iacute;a Descanso</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#HorarioFijoGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            info: false,
+
+            ajax: {
+                url: ruta_actual + "/PAsistencia/GridHorarioFijo",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CODIGO" },
+                { data: "ENTRADA" },
+                { data: "SALIDA" }, 
+                { data: "HORA_INICIO" },
+                { data: "HORA_TERMINO" },
+                { data: "DIA_LIBRE" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="AjaxModalGet(\'Detalle Horario Fijo\', \'/PAsistencia/DetalleHorarioFijo\', \'nada\', \'m_middle\');"><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.Codigo + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+</script>

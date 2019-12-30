@@ -1,0 +1,261 @@
+@model Datos.Models.MaestroModel
+@{
+    ViewBag.Title = " de Punto de Venta";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Maestro", "Index", "Maestro")</li>
+                    <li class="breadcrumbs-item active">Configuraci&oacute;n</li>
+                    <li class="breadcrumbs-item active">Configuraci&oacute;n @ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5><b>Configuraci&oacute;n @ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Maestro - Configuracion @ViewBag.Title - Inicio ', '/Maestro/Ayuda', 'CPVEIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row p-1">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Punto de Venta</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label>C&oacute;digo</label>
+                                    <input type="text" class="form-control alert-warning" title="Doble Click para buscar" ondblclick="AjaxModalGet('Puntos de Venta', '/PuntoVenta/PuntosVenta','nada2','m_middle')" />
+                                </div>
+                                <div class="col-sm-8">
+                                    <label>Descripci&oacute;n</label>
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <a href="#" class="btn btn-primary" onclick="AjaxModalGet('Administrador de Precios por Punto de Venta', '/Maestro/ListaPrecios', 'nada2', 'm_middle')">
+                                <i class='fa fa-list'></i>
+                                Lista de Precios
+                            </a>
+                            <br /><br />
+                            <a href="#" class="btn btn-secondary" onclick="AjaxModalGet('Series del Documento por Punto de Venta', '/Maestro/SeriesDoc', 'nada2', 'm_middle')">
+                                <i class='fa fa-file'></i>
+                                Series de Doc.
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Vendedor</div>
+                <div class="card-body">
+                    <div class="row col-sm-12 p-1">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label>C&oacute;digo</label>
+                                <input type="text" class="form-control alert-warning" title="Doble Click para buscar" ondblclick="AjaxModalGet('Vendedores', '/Vendedor/Vendedores','nada2','m_middle')" />
+                            </div>
+                            <div class="col-sm-8">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" readonly />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row p-1">
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Uso del m&oacute;dulo de caja</div>
+                <div class="card-body">
+                    <div class="row p-1">
+                        <div class="col-sm-2" align="right">
+                            <input type="radio" name="i_cm" />
+                        </div>
+                        <div class="col-sm-10">
+                            Opcional
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-2" align="right">
+                            <input type="radio" name="i_cm" />
+                        </div>
+                        <div class="col-sm-10">
+                            Obligatorio
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-2" align="right">
+                            <input type="radio" name="i_cm" />
+                        </div>
+                        <div class="col-sm-10">
+                            No usar
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Ingreso de Detalles</div>
+                <div class="card-body">
+                    <div class="row p-1">
+                        <div class="col-sm-2" align="right">
+                            <input type="radio" name="i_cm1" />
+                        </div>
+                        <div class="col-sm-10">
+                            Por detalle
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-2" align="right">
+                            <input type="radio" name="i_cm1" />
+                        </div>
+                        <div class="col-sm-10">
+                            Por total
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-2" align="right">
+                            <input type="radio" name="i_cm1" />
+                        </div>
+                        <div class="col-sm-10">
+                            Ambos
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Impresi&oacute;n</div>
+                <div class="card-body">
+                    <div class="row p-1">
+                        <div class="col-sm-2" align="right">
+                            <input type="radio" name="i_cm2" />
+                        </div>
+                        <div class="col-sm-10">
+                            Por pantalla
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-2" align="right">
+                            <input type="radio" name="i_cm2" />
+                        </div>
+                        <div class="col-sm-10">
+                            Por impresora
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">IGV</div>
+                <div class="card-body">
+                    <div class="row p-1">
+                        <div class="col-sm-2" align="right">
+                            <input type="radio" name="i_cm3" />
+                        </div>
+                        <div class="col-sm-10">
+                            Detalles sin IGV
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-2" align="right">
+                            <input type="radio" name="i_cm3" />
+                        </div>
+                        <div class="col-sm-10">
+                            Detalles incluyendo IGV
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row p-1">
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Generaci&oacute;n de Gu&iacute;as</div>
+                <div class="card-body">
+                    <div class="row p-1">
+                        <div class="col-sm-2" align="right">
+                            <input type="checkbox" />
+                        </div>
+                        <div class="col-sm-10">
+                            Generar Factura con Gu&iacute;a
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Detalles visibles en Ayu. Art.</div>
+                <div class="card-body">
+                    <div class="row p-1">
+                        <div class="col-sm-4">
+                            <input type="checkbox" />&nbsp;
+                            C&oacute;digo de Art&iacute;culo
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="checkbox" />&nbsp;
+                            Descripci&oacute;n de Art&iacute;culo
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="checkbox" />&nbsp;
+                            Stock
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="checkbox" />&nbsp;
+                            Unidad de Medida
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="checkbox" />&nbsp;
+                            Marca
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="checkbox" />&nbsp;
+                            Familia
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="checkbox" />&nbsp;
+                            C&oacute;digo Alterno
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="checkbox" />&nbsp;
+                            Descripci&oacute;n Alterna
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="checkbox" />&nbsp;
+                            Ubicaci&oacute;n en Almac&eacute;n
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row col-sm-12">
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>

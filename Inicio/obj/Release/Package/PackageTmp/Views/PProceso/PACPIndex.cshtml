@@ -1,0 +1,283 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "Cronograma de Pago";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item">Procesos</li>
+                    <li class="breadcrumbs-item">Aperturas</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5><b>@ViewBag.Title</b></h5>
+        </div>
+
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title', '/PProceso/Ayuda', 'PACPIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-header text-danger">
+                    Mes y rango de fechas
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="form-inline">
+                                Mes de Cargo&nbsp;&nbsp;
+                                <input class="form-control datepickers w-50 right text-right" readonly />
+                            </label>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>
+                                Fecha Inicio
+                                <input class="form-control datepickers" readonly />
+                            </label>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>
+                                Fecha Final
+                                <input class="form-control datepickers" readonly />
+                            </label>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>
+                                Fecha de <br />Pago
+                                <input class="form-control datepickers" readonly />
+                            </label>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>
+                                Fecha Adel. Quincena
+                                <input class="form-control datepickers" readonly />
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-1">
+                <div class="card-header text-danger">
+                    Otros Datos
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label>
+                                Descripci&oacute;n
+                            </label>
+                            <input class="form-control" />
+                        </div>
+                        <div class="col-sm-12 mt-1">
+                            <label class="form-inline">
+                                Semana Cronograma No.&nbsp;&nbsp;
+                                <input class="form-control w-50" />
+                            </label>
+                        </div>
+                        <div class="col-sm-12">
+                            <label class="form-inline">
+                                <input type="checkbox" />&nbsp;
+                                C&aacute;lculo 5ta. Cat. Semanal
+                            </label>
+                        </div>
+                        <div class="col-sm-12">
+                            <label class="form-inline">
+                                <input type="checkbox" />&nbsp;
+                                5ta. Cat. autom&aacute;tica
+                            </label>
+                        </div>
+                        <div class="col-sm-12">
+                            <label class="form-inline">
+                                <input type="checkbox" />&nbsp;
+                                Devoluci&oacute;n de  5ta. Cat.
+                            </label>
+                        </div>
+                        <div class="col-sm-12">
+                            <label class="form-inline">
+                                <input type="checkbox" />&nbsp;
+                                Regulariza pago m&iacute;nimo EsSalud
+                            </label>
+                        </div>
+                        <div class="col-sm-12">
+                            <label class="form-inline">
+                                <input type="checkbox" />&nbsp;
+                                Activar adelanto de pago
+                            </label>
+                        </div>
+                        <div class="col-sm-12">
+                            <label class="form-inline">
+                                <input type="checkbox" />&nbsp;
+                                Incluir adelanto de gratificaci&oacute;n
+                            </label>
+                        </div>
+                        <div class="col-sm-12">
+                            <label class="form-inline">
+                                <input type="checkbox" />&nbsp;
+                                &Uacute;ltima semana del cronograma (Semanal)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-1">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label>
+                                <b>Formato de Planilla</b>
+                                <input class="form-control" />
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-1">
+                <div class="card-header text-danger">
+                    Opcional
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label>
+                                Tipo de Proceso
+                            </label>
+                            <select class="form-control">
+                                <option>B: Boleta mensual</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-12">
+                    <a href="#" onclick="" class="btn btn-success">
+                        <i class='fa fa-save'></i>
+                        Grabar
+                    </a>
+                    <a href="#" onclick="" class="btn btn-danger">
+                        <i class='fa fa-times'></i>
+                        Cancelar
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="row">
+                <div class="col-sm-12">
+                    <a href="#" class="btn btn-success" onclick="AjaxModalGet('Cronograma de Pago', '/PProceso/Cronograma', 'nada2', 'm_middle')">
+                        <i class='fa fa-plus'></i>
+                        Agregar
+                    </a>
+                </div>
+            </div>
+            <br />
+            <div class="card shadow">
+                <div class="card-header">
+                    <b>Cronogramas existentes en la base de datos</b>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped pre-scrollable datatables" id="PACPIndexGrid" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>C&oacute;</th>
+                                    <th>Nombre</th>
+                                    <th>Mes</th>
+                                    <th>Fecha</th>
+                                    <th style="width: 5px"></th>
+                                    <th style="width: 5px"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-12">
+                    <a href="#" onclick="" class="btn btn-secondary">
+                        <i class='fa fa-question'></i>
+                        Ayuda del Proceso
+                    </a>
+                    <a href="#" onclick="" class="btn btn-secondary">
+                        <i class='fa fa-question'></i>
+                        Hoja de Ruta
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+
+    
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(function () {
+        $("#PACPIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            info: false,
+
+            ajax: {
+                url: ruta_actual + "/PProceso/GridMesesActivos",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [4,5],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                { data: "CODIGO" },
+                { data: "NOMBRE" },
+                { data: "MES" },
+                { data: "FECHA" },
+                {
+                    render: function (data, type, row) {
+                        return '<a class="btn btn-info grid_opt" title="Editar" onclick="AjaxModalGet(\'Cronograma de Pago\',\'/PProceso/Cronograma\', \'nada2\', \'m_middle\')" href="#"><i class="fa fa-edit"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CODIGO + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+            ],
+        });
+    });
+</script>

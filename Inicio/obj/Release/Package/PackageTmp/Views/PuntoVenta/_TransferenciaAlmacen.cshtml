@@ -1,0 +1,107 @@
+﻿@model Datos.Models.FacturacionModel
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Art&iacute;culo Destino</div>
+                <div class="card-body row">
+                    <div class="col-sm-9">
+                        <label>Descripci&oacute;n</label><br />
+                        <input type="text" class="form-control" readonly="true" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Unidades</label><br />
+                        <input type="text" class="form-control" readonly="true" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-1">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Selecci&oacute;n de Art&iacute;culo Origen</div>
+                <div class="card-body">
+                    <div class="row col-sm-12">
+                        <table class="table table-bordered table-striped pre-scrollable datatables" id="ArticuloGrid" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>C&oacute;digo</th>
+                                    <th>Descripci&oacute;n</th>
+                                    <th>Stock</th>
+                                    <th>Unidad</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-1">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Art&iacute;culo Origen</div>
+                <div class="card-body">
+                    <div class="row col-sm-12">
+                        <label>Descripci&oacute;n</label><br />
+                        <input type="text" class="form-control" readonly="true" />
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9 text-right">
+                            <label>Cantidad a Transferir</label>
+                            <input type="text" class="form-control" maxlength="20" onkeypress="solo_decimal(event,this)" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label>U.M.</label>
+                            <input type="text" class="form-control" readonly="true" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Art&iacute;culo Destino</div>
+                <div class="card-body">
+                    <div class="row col-sm-12">
+                        <label>Descripci&oacute;n</label><br />
+                        <input type="text" class="form-control" readonly="true" />
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9 text-right">
+                            <label>Cantidad a Ingresar</label>
+                            <input type="text" class="form-control" readonly="true" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label>U.M.</label>
+                            <input type="text" class="form-control" readonly="true" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <button class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Aceptar
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('input[type=checkbox]').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+        });
+    });
+</script>

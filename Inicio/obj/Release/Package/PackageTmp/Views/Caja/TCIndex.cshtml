@@ -1,0 +1,77 @@
+@model Datos.Models.CajaModel
+
+@{
+    ViewBag.Title = "Cierre de Caja";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Caja/Ayuda', 'TCIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="m_apertura" tabindex="-1" role="dialog" aria-labelledby="Modal Central" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Apertura</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Ya hay una caja aperturada para el Punto de Venta <b id="document">001</b>
+                <br />
+                Fecha: 10-10-2019<br />
+                Hora: 14:00<br />
+                ¿Desea Cerrarla?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" onclick="AjaxModalGet('Cierre de Caja', '/Caja/Cierre', 'nada2', 'm_middle')">Aceptar</button>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        //$("#m_apertura").modal("show");
+        chequear_caja();
+    });
+
+    function chequear_caja() {
+        swal({
+            title: "Alerta",
+            text: "Ya hay una caja aperturada para el Punto de Venta \n Fecha: 10-10-2019\n  Hora: 14:00\n \u00BF\Desea Cerrarla?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            cancelButtonClass: "btn-secondary",
+            confirmButtonText: "Aceptar",
+            cancelButtonText: "Cancelar",
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                AjaxModalGet('Cierre de Caja', '/Caja/Cierre', 'nada2', 'm_middle');
+            } else {
+
+            }
+        });
+    }
+</script>

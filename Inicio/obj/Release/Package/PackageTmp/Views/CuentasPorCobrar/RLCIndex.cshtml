@@ -1,0 +1,780 @@
+@model Datos.Models.CuentasPorCobrarModel
+@{
+    ViewBag.Title = "Letras por Cobrar";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Cuentas Por Cobrar", "Index", "CuentasPorCobrar")</li>
+                    <li class="breadcrumbs-item">Reportes</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/CuentasPorCobrar/Ayuda', 'RECCIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Seleccione Reporte</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <input type="radio" id="f_vencer" name="i_filtro" />
+                            </div>
+                            <div class="col-sm-10">
+                                <label>Letras por Cobrar por Vencer</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <input type="radio" id="f_situacion" name="i_filtro" />
+                            </div>
+                            <div class="col-sm-10">
+                                <label>Letras por Cobrar por Situaci&oacute;n</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <input type="radio" id="f_cliente" name="i_filtro" />
+                            </div>
+                            <div class="col-sm-10">
+                                <label>Letras por Cobrar por Cliente</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <input type="radio" id="f_pendiente" name="i_filtro" />
+                            </div>
+                            <div class="col-sm-10">
+                                <label>Letras Pendientes - Aceptados</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <input type="radio" id="f_bancos" name="i_filtro" />
+                            </div>
+                            <div class="col-sm-10">
+                                <label>Letras por Cobrar por Banco</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row col-sm-12">
+                    <a href="#" class="btn btn-primary">
+                        <i class='fa fa-print'></i>
+                        Imprimir
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-8" style="display: none" id="d_vencer">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Letras por Cobrar por Vencer</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-header font-weight-bold">Cliente</div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label>De</label>
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control alert-warning" maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Clientes', '/Cliente/Clientes', 'nada2', 'm_middle')" />
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label>A</label>
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control alert-warning" maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Clientes', '/Cliente/Clientes', 'nada2', 'm_middle')" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-header font-weight-bold">Fecha</div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <select class="form-control">
+                                                    <option>Fecha de Vencimiento</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <label>Desde</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control datepickers" readonly />
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <label>Hasta</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control datepickers" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-8" style="display: none" id="d_situacion">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Letras por Cobrar por Situaci&oacute;n</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-header font-weight-bold">Cliente</div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label>De</label>
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control alert-warning" alert-warning"maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Clientes', '/Cliente/Clientes', 'nada2', 'm_middle')" />
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label>A</label>
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control alert-warning" alert-warning"maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Clientes', '/Cliente/Clientes', 'nada2', 'm_middle')" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-header font-weight-bold">Fecha</div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <select class="form-control">
+                                                    <option>Fecha de Vencimiento</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <label>Desde</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control datepickers" readonly />
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <label>Hasta</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control datepickers" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card col-sm-12">
+                                <div class="card-header font-weight-bold" align="center">
+                                    <input type="checkbox" id="i_arts" />&nbsp;Marcar Todos
+                                </div>
+                                <div class="card-body table-responsive">
+                                    <table class="table table-bordered table-striped pre-scrollable datatables" id="RLCIndex1Grid" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Sel.</th>
+                                                <th>C&oacute;digo</th>
+                                                <th>Descripci&oacute;n</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8" style="display: none" id="d_cliente">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Letras por Cobrar por Cliente</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-header font-weight-bold">Cliente</div>
+                                    <div class="card-body">
+                                        <div class="row col-sm-12">
+                                            <label>De</label><br />
+                                            <input type="text" class="form-control alert-warning" alert-warning"maxlength="11" onkeypress="solo_enteros(event)"  title="Doble Click para buscar" ondblclick="AjaxModalGet('Clientes', '/Cliente/Clientes', 'nada2', 'm_middle')" />
+                                        </div>
+                                        <br />
+                                        <div class="row col-sm-12">
+                                            <label>A</label><br />
+                                            <input type="text" class="form-control alert-warning" alert-warning"maxlength="11" onkeypress="solo_enteros(event)"  title="Doble Click para buscar" ondblclick="AjaxModalGet('Clientes', '/Cliente/Clientes', 'nada2', 'm_middle')" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-header font-weight-bold">Fec. de Emisi&oacute;n</div>
+                                    <div class="card-body">
+                                        <div class="row col-sm-12">
+                                            <label>Desde</label><br />
+                                            <input type="text" class="form-control datepickers" readonly />
+                                        </div>
+                                        <br />
+                                        <div class="row col-sm-12">
+                                            <label>Hasta</label><br />
+                                            <input type="text" class="form-control datepickers" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-header font-weight-bold">Fec. de Vencimiento</div>
+                                    <div class="card-body">
+                                        <div class="row col-sm-12">
+                                            <label>Desde</label><br />
+                                            <input type="text" class="form-control datepickers" readonly />
+                                        </div>
+                                        <br />
+                                        <div class="row col-sm-12">
+                                            <label>Hasta</label><br />
+                                            <input type="text" class="form-control datepickers" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card col-sm-12">
+                                <div class="card-header font-weight-bold" align="center">
+                                    <input type="checkbox" id="i_cli" />&nbsp;Marcar Todos
+                                </div>
+                                <div class="card-body table-responsive">
+                                    <table class="table table-bordered table-striped pre-scrollable datatables" id="RLCIndex2Grid" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Sel.</th>
+                                                <th>C&oacute;digo</th>
+                                                <th>Descripci&oacute;n</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-8" style="display: none" id="d_pendiente">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Letras Pendientes - Aceptados</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-header font-weight-bold">Cliente</div>
+                                    <div class="card-body">
+                                        <div class="row col-sm-12">
+                                            <label>De</label><br />
+                                            <input type="text" class="form-control alert-warning" alert-warning"maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Clientes', '/Cliente/Clientes', 'nada2', 'm_middle')" />
+                                        </div>
+                                        <br />
+                                        <div class="row col-sm-12">
+                                            <label>A</label><br />
+                                            <input type="text" class="form-control alert-warning" alert-warning"maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Clientes', '/Cliente/Clientes', 'nada2', 'm_middle')" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-header font-weight-bold">Opciones</div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <input type="radio" name="i_lp" />
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <label>Todos</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <input type="radio" name="i_lp" />
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <label>Pendiente</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <input type="radio" name="i_lp" />
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <label>Aceptado</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <input type="radio" name="i_lp" />
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <label>Liquidado</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-header font-weight-bold">Fec. de Vencimiento</div>
+                                    <div class="card-body">
+                                        <div class="row col-sm-12">
+                                            <label>Desde</label><br />
+                                            <input type="text" class="form-control datepickers" readonly />
+                                        </div>
+                                        <br />
+                                        <div class="row col-sm-12">
+                                            <label>Hasta</label><br />
+                                            <input type="text" class="form-control datepickers" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-8" style="display: none" id="d_bancos">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Letras por Cobrar por Banco</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="card">
+                                    <div class="card-header font-weight-bold">Fec. de Vencimiento</div>
+                                    <div class="card-body">
+                                        <div class="row col-sm-12">
+                                            <label>Desde</label><br />
+                                            <input type="text" class="form-control datepickers" readonly />
+                                        </div>
+                                        <br />
+                                        <div class="row col-sm-12">
+                                            <label>Hasta</label><br />
+                                            <input type="text" class="form-control datepickers" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="card">
+                                    <div class="card-header font-weight-bold">Estados</div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <input type="checkbox" />
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <label>Cobranza</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <input type="checkbox" />
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <label>Garant&iacute;a</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <input type="checkbox" />
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <label>Descuento</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="card col-sm-12">
+                                <div class="card-body table-responsive">
+                                    <table class="table table-bordered table-striped pre-scrollable datatables" id="RLCIndex3Grid" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Sel.</th>
+                                                <th>C&oacute;digo</th>
+                                                <th>Descripci&oacute;n</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(function () {
+        $("#f_vencer")[0].checked = true;
+        activa_div_vencer(0);
+
+        $("#RLCIndex1Grid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            paging: false,
+            info: false,
+            ajax: {
+                url: ruta_actual + "/CuentasPorCobrar/GridSituacionLetra",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [0],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [1],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [2],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<i class="btn btn-primary fa fa-circle situacion" onclick="cambiar_imagen(\'' + row.Codigo + '\')" id="input_' + row.Codigo + '"></i>';
+                    }
+                },
+                { data: "Codigo" },
+                { data: "Descripcion" },
+            ]
+        });
+
+        $("#RLCIndex2Grid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            paging: false,
+            info: false,
+            ajax: {
+                url: ruta_actual + "/Cliente/GridClientes",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [0],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [1],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [2],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<i class="btn btn-primary fa fa-circle cliente" onclick="cambiar_imagen2(\'' + row.Codigo + '\')" id="ic_' + row.Codigo + '"></i>';
+                    }
+                },
+                { data: "Codigo" },
+                { data: "Descripcion" },
+            ]
+        });
+
+        $("#RLCIndex3Grid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            paging: false,
+            info: false,
+            ajax: {
+                url: ruta_actual + "/Utilitarios/GridBancos",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [0],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [1],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [2],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<i class="btn btn-primary fa fa-circle bancos" onclick="cambiar_imagen3(\'' + row.Codigo + '\')" id="ib_' + row.Codigo + '"></i>';
+                    }
+                },
+                { data: "Codigo" },
+                { data: "Descripcion" },
+            ]
+        });
+
+        $('#i_arts').on('ifChecked', function () {
+            activa_arts(0);
+        })
+
+        $('#i_arts').on('ifUnchecked', function () {
+            activa_arts(1);
+        })
+
+        $('#i_cli').on('ifChecked', function () {
+            activa_cliente(0);
+        })
+
+        $('#i_cli').on('ifUnchecked', function () {
+            activa_cliente(1);
+        })
+
+        $('#i_banco').on('ifChecked', function () {
+            activa_banco(0);
+        })
+
+        $('#i_banco').on('ifUnchecked', function () {
+            activa_banco(1);
+        })
+    });
+    /****************************************************************************************************/
+    //SITUACION
+    function activa_arts(valor) {
+        if (valor == 0) {
+            $(".situacion").each(function () {
+                $(this).removeClass('fa-circle');
+                $(this).addClass('fa-check-circle');
+            });
+        } else {
+            $(".situacion").each(function () {
+                $(this).removeClass('fa-check-circle');
+                $(this).addClass('fa-circle');
+            });
+        }
+    }
+
+    function cambiar_imagen(valor) {
+        var id = $("#input_" + valor)[0];
+
+        if (id.classList.contains("fa-circle")) {
+            id.classList.remove('fa-circle');
+            id.classList.add('fa-check-circle');
+        } else {
+            id.classList.add('fa-circle');
+            id.classList.remove('fa-check-close');
+        }
+    }
+    /****************************************************************************************************/
+    //CLIENTES
+    function activa_cliente(valor) {
+        if (valor == 0) {
+            $(".cliente").each(function () {
+                $(this).removeClass('fa-circle');
+                $(this).addClass('fa-check-circle');
+            });
+        } else {
+            $(".cliente").each(function () {
+                $(this).removeClass('fa-check-circle');
+                $(this).addClass('fa-circle');
+            });
+        }
+    }
+
+    function cambiar_imagen2(valor) {
+        var id = $("#ic_" + valor)[0];
+
+        if (id.classList.contains("fa-circle")) {
+            id.classList.remove('fa-circle');
+            id.classList.add('fa-check-circle');
+        } else {
+            id.classList.add('fa-circle');
+            id.classList.remove('fa-check-close');
+        }
+    }
+    /****************************************************************************************************/
+    //BANCOS
+    function activa_banco(valor) {
+        if (valor == 0) {
+            $(".bancos").each(function () {
+                $(this).removeClass('fa-circle');
+                $(this).addClass('fa-check-circle');
+            });
+        } else {
+            $(".bancos").each(function () {
+                $(this).removeClass('fa-check-circle');
+                $(this).addClass('fa-circle');
+            });
+        }
+    }
+
+    function cambiar_imagen3(valor) {
+        var id = $("#ib_" + valor)[0];
+
+        if (id.classList.contains("fa-circle")) {
+            id.classList.remove('fa-circle');
+            id.classList.add('fa-check-circle');
+        } else {
+            id.classList.add('fa-circle');
+            id.classList.remove('fa-check-close');
+        }
+    }
+    /****************************************************************************************************/
+    //$('#opt').on('ifChanged', function (event) { $(event.target).trigger('change'); });
+    $('#i_todos').on('ifChecked', function () {
+        activa_vencer(0);
+    })
+
+    $('#i_rango').on('ifChecked', function () {
+        activa_vencer(1);
+    })
+    /****************************************************************************************************/
+    $('#f_vencer').on('ifChecked', function () {
+        activa_div_vencer(0);
+    })
+
+    $('#f_situacion').on('ifChecked', function () {
+        activa_div_vencer(1);
+    })
+
+    $('#f_pendiente').on('ifChecked', function () {
+        activa_div_vencer(2);
+    })
+
+    $('#f_cliente').on('ifChecked', function () {
+        activa_div_vencer(3);
+    })
+
+    $('#f_bancos').on('ifChecked', function () {
+        activa_div_vencer(4);
+    })
+    /******************************************************************************************/
+
+    function activa_div_vencer(valor) {
+        switch(valor) {
+            case 0:
+                $("#d_vencer")[0].style.display = "block";
+                $("#d_situacion")[0].style.display = "none";
+                $("#d_pendiente")[0].style.display = "none";
+                $("#d_cliente")[0].style.display = "none";
+                $("#d_bancos")[0].style.display = "none";
+                break;
+            case 1:
+                $("#d_vencer")[0].style.display = "none";
+                $("#d_situacion")[0].style.display = "block";
+                $("#d_pendiente")[0].style.display = "none";
+                $("#d_cliente")[0].style.display = "none";
+                $("#d_bancos")[0].style.display = "none";
+                break;
+            case 2:
+                $("#d_vencer")[0].style.display = "none";
+                $("#d_situacion")[0].style.display = "none";
+                $("#d_pendiente")[0].style.display = "block";
+                $("#d_cliente")[0].style.display = "none";
+                $("#d_bancos")[0].style.display = "none";
+                break;
+            case 3:
+                $("#d_vencer")[0].style.display = "none";
+                $("#d_situacion")[0].style.display = "none";
+                $("#d_pendiente")[0].style.display = "none";
+                $("#d_cliente")[0].style.display = "block";
+                $("#d_bancos")[0].style.display = "none";
+                break;
+            case 4:
+                $("#d_vencer")[0].style.display = "none";
+                $("#d_situacion")[0].style.display = "none";
+                $("#d_pendiente")[0].style.display = "none";
+                $("#d_cliente")[0].style.display = "none";
+                $("#d_bancos")[0].style.display = "block";
+                break;
+        }
+    }
+</script>

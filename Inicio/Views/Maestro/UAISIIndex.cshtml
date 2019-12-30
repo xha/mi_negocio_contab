@@ -1,0 +1,169 @@
+@model Datos.Models.MaestroModel
+
+@{
+    ViewBag.Title = "Ingreso de Stock Inicial";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Maestro", "Index", "Maestro")</li>
+                    <li class="breadcrumbs-item active">Utilidades Adicionales</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Maestro - @ViewBag.Title - Inicio ', '/Maestro/Ayuda', 'UAISIIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row p-1">
+            <div class="col-sm-4">
+                <label>Descripci&oacute;n</label><br />
+                <input class="form-control" style="width: 100%" />
+            </div>
+            <div class="col-sm-4">
+                <label>Almac&eacute;n</label><br />
+                <select class="form-control">
+                    <option>Almac&eacute;n Principal</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <br />
+                <a href="#" class="btn btn-primary">
+                    <i class='fa fa-search'></i>
+                    Buscar
+                </a>
+            </div>
+            <div class="col-sm-2">
+                <label>Tipo Cambio</label><br />
+                <input class="form-control" readonly />
+            </div>
+        </div>
+        <div class="row p-1">
+            <div class="col-sm-12">
+                <input type="checkbox" />&nbsp;
+                Carga de art&iacute;culos con movimientos
+            </div>
+        </div>
+        <br />
+    }
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="UAISIIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Stock</th>
+                            <th>Unidad</th>
+                            <th>Costo MN</th>
+                            <th>Costo ME</th>
+                            <th>Marca</th>
+                            <th>Familia</th>
+                            <th>L&iacute;nea</th>
+                            <th>Grupo</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Desplazamiento tecla Enter</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input type="radio" name="i" />&nbsp;
+                            Desplazamiento Horizontal
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="radio" name="i" />&nbsp;
+                            Desplazamiento Vertical
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Aceptar
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#UAISIIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: false, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Maestro/GridUAISI",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [10],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [11],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "Codigo" },
+                { data: "Descripcion" },
+                { data: "Stock" },
+                { data: "Unidad" },
+                { data: "CostoMN" },
+                { data: "CostoME" },
+                { data: "Marca" },
+                { data: "Familia" },
+                { data: "Linea" },
+                { data: "Grupo" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.Codigo + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Imprimir" href="#"><i class="fa fa-print"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+</script>

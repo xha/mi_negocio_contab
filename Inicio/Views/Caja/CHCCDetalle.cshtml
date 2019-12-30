@@ -1,0 +1,276 @@
+﻿@model Datos.Models.CajaModel
+
+@{
+    ViewBag.Title = "Histórico de Cierres de Caja";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Caja", "Index", "Caja")</li>
+                    <li class="breadcrumbs-item">Consultas</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("CHCCIndex", "Caja")'>@ViewBag.Title</a></li>
+                    <li class="breadcrumbs-item active">Detalle</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Detalle Registro</label> #<strong>@Model.Codigo</strong></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Caja/Ayuda', 'CHCCDetalle', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Punto de Venta</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Vendedor</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Fecha Apertura</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Hora Apertura</label>
+            <input class="form-control" readonly />
+        </div>
+    </div>
+    <br />
+    <div class="row col-sm-12">
+        <div class="card">
+            <div class="card-header text-danger font-weight-bold">Informaci&oacute;n de Cierres</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>Cierre No.</label>
+                        <input class="form-control" readonly />
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Fecha Cierre</label>
+                        <input class="form-control" readonly />
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Hora Cierre</label>
+                        <input class="form-control" readonly />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+    <hr />
+    <div class="row">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="totales-tab" data-toggle="tab" href="#totales" role="tab" aria-controls="totales" aria-selected="true">
+                    <i class='fa fa-arrow-left'></i>
+                    Totales
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="punto-tab" data-toggle="tab" href="#punto" role="tab" aria-controls="punto" aria-selected="false">
+                    <i class='fa fa-arrow-up'></i>
+                    Punto de Venta
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="otras-tab" data-toggle="tab" href="#otras" role="tab" aria-controls="otras" aria-selected="false">
+                    <i class='fa fa-arrow-right'></i>
+                    Otras Operaciones
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <br />
+            <div class="tab-pane fade show active" id="totales" role="tabpanel" aria-labelledby="totales-tab">
+                <div class="row col-sm-8">
+                    <div class="card">
+                        <div class="card-header text-danger">Saldos totales del cierre de caja</div>
+                        <div class="card-body row">
+                            <div class="row col-sm-12">
+                                <div class="col-sm-4" align="center">
+                                    <b>Saldo Total</b>
+                                </div>
+                                <div class="col-sm-4" align="center">
+                                    <b>Soles (S/.)</b>
+                                </div>
+                                <div class="col-sm-4" align="center">
+                                    <b>D&oacute;lares (U$$)</b>
+                                </div>
+                            </div>
+                            <div class="row col-sm-12 p-1">
+                                <div class="col-sm-4" align="center">
+                                    <label>Saldo en Efectivo</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                            </div>
+                            <div class="row col-sm-12 p-1">
+                                <div class="col-sm-4" align="center">
+                                    <label>Ingreso en Cheque</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                            </div>
+                            <div class="row col-sm-12 p-1">
+                                <div class="col-sm-4" align="center">
+                                    <label>Ingreso en Tarjetas</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="punto" role="tabpanel" aria-labelledby="punto-tab">
+                <div class="row col-sm-8">
+                    <div class="card">
+                        <div class="card-header text-danger">Saldos generados por transacciones en punto de venta</div>
+                        <div class="card-body row">
+                            <div class="row col-sm-12">
+                                <div class="col-sm-4" align="center">
+                                    <b>Saldo Total</b>
+                                </div>
+                                <div class="col-sm-4" align="center">
+                                    <b>Soles (S/.)</b>
+                                </div>
+                                <div class="col-sm-4" align="center">
+                                    <b>D&oacute;lares (U$$)</b>
+                                </div>
+                            </div>
+                            <div class="row col-sm-12 p-1">
+                                <div class="col-sm-4" align="center">
+                                    <label>Saldo en Efectivo</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                            </div>
+                            <div class="row col-sm-12 p-1">
+                                <div class="col-sm-4" align="center">
+                                    <label>Ingreso en Cheque</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                            </div>
+                            <div class="row col-sm-12 p-1">
+                                <div class="col-sm-4" align="center">
+                                    <label>Ingreso en Tarjetas</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="otras" role="tabpanel" aria-labelledby="otras-tab">
+                <div class="row col-sm-8">
+                    <div class="card">
+                        <div class="card-header text-danger">Saldos de otras operaciones de entrada y salida</div>
+                        <div class="card-body row">
+                            <div class="row col-sm-12">
+                                <div class="col-sm-4" align="center">
+                                    <b>Saldo Total</b>
+                                </div>
+                                <div class="col-sm-4" align="center">
+                                    <b>Soles (S/.)</b>
+                                </div>
+                                <div class="col-sm-4" align="center">
+                                    <b>D&oacute;lares (U$$)</b>
+                                </div>
+                            </div>
+                            <div class="row col-sm-12 p-1">
+                                <div class="col-sm-4" align="center">
+                                    <label>Saldo en Efectivo</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                            </div>
+                            <div class="row col-sm-12 p-1">
+                                <div class="col-sm-4" align="center">
+                                    <label>Ingreso en Cheque</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                            </div>
+                            <div class="row col-sm-12 p-1">
+                                <div class="col-sm-4" align="center">
+                                    <label>Ingreso en Tarjetas</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <label>Observaciones de Cierre</label>
+            <input class="form-control" readonly />
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick="mostrar_panel('CHCCIndex', 'Caja')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+        </div>
+    </div>
+</div>

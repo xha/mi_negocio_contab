@@ -1,0 +1,98 @@
+﻿<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <h5>BANCO DE TRANSACCI&Oacute;N</h5>
+    <div class="row">
+        <div class="col-sm-4">
+            <label>Moneda</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-4">
+            <label>Cuenta</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-4">
+            <label>Saldo de "MesSeleccionado"</label>
+            <input class="form-control" readonly />
+        </div>
+    </div>
+    <hr />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered tabla_modal pre-scrollable datatables" id="MEstadoCuentaGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Fecha Oper.</th>
+                            <th>Concepto</th>
+                            <th>Documento</th>
+                            <th>Ingreso</th>
+                            <th>Salida</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Estado del Mes</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-6">
+            <label>Totales</label>
+            <div class="row">
+                <div class="col-sm-6">
+                    <input class="form-control" readonly />
+                </div>
+                <div class="col-sm-6">
+                    <input class="form-control" readonly />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label>Saldo Final</label>
+            <input class="form-control" readonly />
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-info" onclick="$('#m_central').modal('hide')">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-print'></i>
+                Imprimir
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#MEstadoCuentaGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Banco/GridEstadoCuenta",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "FechaDocumento" },
+                { data: "FechaOperacion" },
+                { data: "Descripcion" },
+                { data: "Documento" },
+                { data: "Saldo" },
+                { data: "SaldoConsolidado" },
+            ]
+        });
+    });
+</script>

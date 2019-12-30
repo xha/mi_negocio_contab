@@ -1,0 +1,90 @@
+﻿@model Datos.Models.OrdenTrabajoModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    @Html.HiddenFor(m => m.Codigo)
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2">
+            <label>Nro. de Orden</label>
+            @Html.TextBoxFor(m => m.NroOrden, new { @class = "form-control", @maxlength = "15", onkeypress = "solo_enteros(event)" })
+        </div>
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-12">
+                    <label>Producto a Fabricar</label>
+                </div>
+                <div class="col-sm-4">
+                    <input class="form-control alert-warning" maxlength = "20" onkeypress = "solo_enteros(event)" title = "Doble Click para buscar" ondblclick = "AjaxModalGet('Listado de Artículos', '/Articulo/Articulos', 'nada')" />
+                </div>
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(m => m.Producto, new { @class = "form-control alert-warning", @maxlength = "64", onkeypress = "solo_alfanumericos(event)", @title = "Doble Click para buscar", @ondblclick = "AjaxModalGet('Listado de Artículos', '/Articulo/Articulos', 'nada')" })
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label>Cantidad</label>
+            @Html.TextBoxFor(m => m.Cantidad, new { @class = "form-control", @maxlength = "15", onkeypress = "solo_decimal(event, this)" })
+        </div>
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-12">
+                    <label>Unidad de Medida</label>
+                </div>
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.CodigoUnidadMedida, new { @class = "form-control", @readonly = "true" })
+                </div>                
+                <div class="col-sm-8">
+                    <input class="form-control" readonly id="descripcion_unidad" />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    <label>Cliente</label>
+                </div>
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.CodigoCliente, new { @class = "form-control alert-warning", @maxlength = "11", onkeypress = "solo_decimal(event, this)", @title = "Doble Click para buscar", @ondblclick = "AjaxModalGet('Listado de Clientes', '/Cliente/Clientes', 'nada')" })
+                </div>
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(m => m.DescripcionCliente, new { @class = "form-control", @maxlength = "70", onkeypress = "solo_alfanumericos(event)", @readonly = "true" })
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label>Fecha de Inicio</label>
+            @Html.TextBoxFor(m => m.FechaInicio, new { @class = "form-control datepickers", @id = "FechaInicio", @readonly = "true" })
+        </div>
+        <div class="col-sm-2">
+            <label>Fecha de Fin</label>
+            @Html.TextBoxFor(m => m.FechaFin, new { @class = "form-control datepickers", @id = "FechaFin", @readonly = "true" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <label>Observaciones</label>
+            @Html.TextAreaFor(m => m.Observacion, new { @class = "form-control", @maxlength = "500", onkeyup = "textCounter(this.id, 'n_limite', 500)", onkeypress = "solo_alfanumericos(event)" })
+            <label><b id="n_limite">500</b> caract&eacute;res restantes</label>
+        </div>
+    </div>
+</div>
+}
+<br />
+<div class="container-fluid">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('Index', 'OrdenTrabajo')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <button class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </button>
+    </div>
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+</script>

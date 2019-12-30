@@ -1,0 +1,120 @@
+﻿@model Datos.Models.MaestroModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-2">
+            <label>C&oacute;digo</label>
+            @if (Model != null && !String.IsNullOrEmpty(Model.fam_codigo))
+            {
+                @Html.TextBoxFor(m => m.fam_codigo, new { @class = "form-control", @readonly = "true" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.fam_codigo, new { @class = "form-control", @maxlength = "8", onkeypress = "solo_enteros(event)" })
+            }
+        </div>
+        <div class="col-sm-5">
+            <label>Descripci&oacute;n</label>
+            @Html.TextBoxFor(m => m.fam_nombre, new { @class = "form-control", @maxlength = "120", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-2">
+            <label>Comisi&oacute;n</label>
+            @Html.TextBoxFor(m => m.porcentaje, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event,this)" })
+        </div>
+        <div class="col-sm-3">
+            <br />
+            @Html.CheckBoxFor(m => m.fam_descuento)&nbsp;
+            Aplica Descuento
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('TAFAIndex', 'Maestro')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success" onclick="GuardarTAFADatos()">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    function GuardarTAFADatos() {
+        /*
+            accion = 0 => Guardar
+            accion = 1 => Actualizar
+            accion = 2 => Borrar
+        */
+        var accion      = 0;
+        var codigo      = $("#fam_codigo").val().trim();
+        var porcentaje  = $("#porcentaje").val();
+        var descuento   = $("#fam_descuento")[0].checked;
+        var descripcion = $("#fam_nombre").val().trim().toUpperCase();
+        var datos_enviar= [];
+
+        if (porcentaje == "") porcentaje = 0;
+        if ($("#fam_codigo")[0].readOnly) {
+            accion = 1;
+        }
+
+        if ((codigo != "") && (descripcion != "")) {
+            datos_enviar.push({
+                fam_codigo: codigo,
+                fam_nombre: descripcion,
+                fam_cta: "",
+                fam_debe: "",
+                fam_haber: "",
+                fam_compra: "",
+                fam_existencia: "",
+                porcentaje: porcentaje,
+                giro_negocio: false,
+                fam_descuento: descuento,
+            });
+            
+            var parametros = "datos_enviar=" + JSON.stringify(datos_enviar) + "&accion=" + accion;
+            $.ajax(
+			{
+			    type: "POST",
+			    dataType: "json",
+			    url: ruta_global + "TAFAActualizar",
+			    data: parametros,
+			    beforeSend: function () {
+			        loading_show();
+			    },
+			    cache: false,
+			    success: function (Resultado) {
+			        loading_hide();
+			        window.parent.MostrarMensaje(Resultado.color, Resultado.data);
+			        if (Resultado.respuesta) {
+			            ocultar_panel();
+			            $('#TAFAIndexGrid').DataTable().ajax.reload();
+			        }
+
+			    },
+			    error: function (xhr) { // if error occured
+			        loading_hide();
+			        console.log(xhr);
+			        window.parent.MostrarMensaje("Rojo", xhr.responseText);
+			    },
+			});
+        } else {
+            MostrarMensaje("Rojo", "Faltan Datos");
+        }
+    }
+</script>

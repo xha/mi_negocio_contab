@@ -1,0 +1,121 @@
+@model Datos.Models.CajaModel
+
+@{
+    ViewBag.Title = "Reapertura";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Caja", "Index", "Caja")</li>
+                    <li class="breadcrumbs-item">Transacciones</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Caja/Ayuda', 'TRIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="card shadow">
+        <div class="card-header text-danger font-weight-bold">Reapertura de caja para la fecha en proceso</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="TRIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Punto de Venta</th>
+                            <th>Vendedor</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Saldo MN</th>
+                            <th>Saldo ME</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="m_reapertura" tabindex="-1" role="dialog" aria-labelledby="Modal Central" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Reapertura</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Confirmar Reapertura de Caja <b id="document"></b>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button">Aceptar</button>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#TRIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+
+            ajax: {
+                url: ruta_actual + "/Caja/GridCajaAperturada",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "Codigo" },
+                { data: "PuntoVenta" },
+                { data: "Vendedor" },
+                { data: "FechaApertura" },
+                { data: "Hora" },
+                { data: "SaldoMN" },
+                { data: "SaldoME" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Reapertura" href="#" onclick="chequear_caja(\'' + row.Codigo + '\');"><i class="fa fa-book-open"></i></a>'; }
+                },
+            ]
+        });
+    });
+
+    function chequear_caja(valor) {
+        swal({
+            title: "Alerta",
+            text: "Confirmar Reapertura de Caja "+valor,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            cancelButtonClass: "btn-secondary",
+            confirmButtonText: "Aceptar",
+            cancelButtonText: "Cancelar",
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                
+            } else {
+
+            }
+        });
+    }
+</script>

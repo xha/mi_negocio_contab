@@ -1,0 +1,637 @@
+﻿@model Datos.Models.AlmacenesModel
+@{
+    ViewBag.Title = "Resumen de Almacenes";
+    //Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Almacenes", "Index", "Almacenes")</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+    </div>
+    <hr />
+    <!-- Cajas de Texto -->
+    <div class="row">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total de Entradas</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.total_entrada</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total de Salidas</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.total_salida</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-bar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Inventario Actual</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.total_inventario</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-area fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Notas de Entrega</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.total_notas</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-file fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Cajas de Texto -->
+    <!-- Gráficos -->
+    <div class="row p-2">
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Rotaci&oacute;n de mercanc&iacute;as</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_rotacion_mercancia"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Duraci&oacute;n del inventario</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_duracion_inventario"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row p-2">
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Vej&eacute;z del Inventario</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_vejez_inventario"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Valor Econ&oacute;mico del Inventario</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_valor_economico"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row p-2">
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Exactitud del inventario</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_exactitud_inventario"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Costo de unidad almacenada</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_unidad_almacenada"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row p-2">
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Costo de Unidad Despachada</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_unidad_despachada"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Unidades Despachadas por Empleado</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_unidad_por_empleado"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row p-2">
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Costo por metro cuadrado</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_costo_metro"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Costo de despacho por empleado</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_costo_despacho"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row p-2">
+        <div class="col-sm-12">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Nivel de cumplimiento en despachos</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_cumplimiento_despacho"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Gráficos -->
+</div>
+<script type="text/javascript">
+    var rotacion_mercancia = @Html.Raw(Json.Encode(@ViewData["rotacion_mercancia"]));
+    var duracion_inventario = @Html.Raw(Json.Encode(@ViewData["duracion_inventario"]));
+    var meses = @Html.Raw(Json.Encode(@ViewData["meses"]));
+    var vejez_inventario = @Html.Raw(Json.Encode(@ViewData["vejez_inventario"]));
+    var valor_economico = @Html.Raw(Json.Encode(@ViewData["valor_economico"]));
+    var exactitud_inventario = @Html.Raw(Json.Encode(@ViewData["exactitud_inventario"]));
+    var unidad_almacenada = @Html.Raw(Json.Encode(@ViewData["unidad_almacenada"]));
+    var unidad_despachada = @Html.Raw(Json.Encode(@ViewData["unidad_despachada"]));
+    var unidad_por_empleado = @Html.Raw(Json.Encode(@ViewData["unidad_por_empleado"]));
+    var costo_metro = @Html.Raw(Json.Encode(@ViewData["costo_metro"]));
+    var costo_despacho = @Html.Raw(Json.Encode(@ViewData["costo_despacho"]));
+    var cumplimiento_despacho = @Html.Raw(Json.Encode(@ViewData["cumplimiento_despacho"]));
+    var i;
+
+    //var div_proveedores_certificados = document.getElementById('div_proveedores_certificados').getContext('2d');
+
+    Highcharts.chart('div_duracion_inventario', {
+        chart: {
+            height: 310,
+            type: 'column',
+        },
+        title: {
+            text: '.'
+        },
+        xAxis: {
+            categories: meses,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Indicador',
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<b>{point.x}</b><br/>',
+            pointFormat: '{series.name}: {point.y}'
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: false,
+                }
+            }
+        },
+        series: [{
+            name: 'Mes',
+            data: duracion_inventario,
+            color: '#f7a35c'
+        }]
+    });
+
+    Highcharts.chart('div_rotacion_mercancia', {
+        chart: {
+            height: 310,
+            type: 'column'
+        },
+        title: {
+            text: '.'
+        },
+        xAxis: {
+            categories: meses,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Indicador'
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<b>{point.x}</b><br/>',
+            pointFormat: '{series.name}: {point.y}'
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: false,
+                }
+            }
+        },
+        series: [{
+            name: 'Mes',
+            data: rotacion_mercancia
+
+        }]
+    });
+
+    Highcharts.chart('div_valor_economico', {
+        chart: {
+            height: 310,
+            type: 'line'
+        },
+        title: {
+            text: ' .'
+        },
+        xAxis: {
+            categories: meses
+        },
+        yAxis: {
+            title: {
+                text: 'Indicador'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Mes',
+            data: valor_economico,
+            color: '#2f7ed8'
+        },]
+    });
+
+    Highcharts.chart('div_vejez_inventario', {
+        chart: {
+            height: 310,
+            type: 'column'
+        },
+        title: {
+            text: '.'
+        },
+        xAxis: {
+            categories: meses,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Indicador'
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<b>{point.x}</b><br/>',
+            pointFormat: '{series.name}: {point.y}'
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: false,
+                }
+            }
+        },
+        series: [{
+            name: 'Mes',
+            data: vejez_inventario,
+            color: '#0d233a'        
+        }]
+    });
+
+    Highcharts.chart('div_exactitud_inventario', {
+        chart: {
+            height: 310,
+            type: 'line'
+        },
+        title: {
+            text: ' .'
+        },
+        xAxis: {
+            categories: meses
+        },
+        yAxis: {
+            title: {
+                text: 'Indicador'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Mes',
+            data: exactitud_inventario,
+            color: '#910000'
+        },]
+    });
+
+    Highcharts.chart('div_unidad_almacenada', {
+        chart: {
+            height: 310,
+            type: 'line'
+        },
+        title: {
+            text: ' .'
+        },
+        xAxis: {
+            categories: meses
+        },
+        yAxis: {
+            title: {
+                text: 'Indicador'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Mes',
+            data: unidad_almacenada,
+            color: '#8bbc21'
+        },]
+    });
+
+    Highcharts.chart('div_unidad_despachada', {
+        chart: {
+            height: 310,
+            type: 'column'
+        },
+        title: {
+            text: '.'
+        },
+        xAxis: {
+            categories: meses,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Indicador'
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<b>{point.x}</b><br/>',
+            pointFormat: '{series.name}: {point.y}'
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: false,
+                }
+            }
+        },
+        series: [{
+            name: 'Mes',
+            data: unidad_despachada,
+            color: '#0d233a'
+        }]
+    });
+
+    Highcharts.chart('div_unidad_por_empleado', {
+        chart: {
+            height: 310,
+            type: 'line'
+        },
+        title: {
+            text: ' .'
+        },
+        xAxis: {
+            categories: meses
+        },
+        yAxis: {
+            title: {
+                text: 'Indicador'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Mes',
+            data: unidad_por_empleado,
+            color: '#2f7ed8'
+        },]
+    });
+
+    Highcharts.chart('div_costo_metro', {
+        chart: {
+            height: 310,
+            type: 'line'
+        },
+        title: {
+            text: ' .'
+        },
+        xAxis: {
+            categories: meses
+        },
+        yAxis: {
+            title: {
+                text: 'Indicador'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Mes',
+            data: costo_metro,
+            color: '#1aadce'
+        },]
+    });
+
+    Highcharts.chart('div_costo_despacho', {
+        chart: {
+            height: 310,
+            type: 'line'
+        },
+        title: {
+            text: ' .'
+        },
+        xAxis: {
+            categories: meses
+        },
+        yAxis: {
+            title: {
+                text: 'Indicador'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Mes',
+            data: costo_despacho,
+            color: '#492970'
+        },]
+    });
+
+    Highcharts.chart('div_cumplimiento_despacho', {
+        chart: {
+            height: 310,
+            type: 'column'
+        },
+        title: {
+            text: '.'
+        },
+        xAxis: {
+            categories: meses,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Indicador'
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<b>{point.x}</b><br/>',
+            pointFormat: '{series.name}: {point.y}%'
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: false,
+                }
+            }
+        },
+        series: [{
+            name: 'Mes',
+            data: cumplimiento_despacho,
+            color: '#a6c96a'
+        }]
+    });
+</script>

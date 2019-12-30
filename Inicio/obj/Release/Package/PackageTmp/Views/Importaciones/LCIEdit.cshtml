@@ -1,0 +1,136 @@
+﻿@model Datos.Models.ImportacionesModel
+@{
+    ViewBag.Title = "Liquidación de Costos de Importación";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <nav aria-label="breadcrumbs">
+                    <ol class="breadcrumbs">
+                        <li class="breadcrumbs-item">@Html.ActionLink("Importaciones", "Index", "Importaciones")</li>
+                        <li class="breadcrumbs-item">Transacciones</li>
+                        <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("LCIIndex", "Importaciones")'>@ViewBag.Title</a></li>
+                        <li class="breadcrumbs-item active">Editar</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-sm-11">
+                <h5> <b>Liquidaci&oacute;n de Costos de Importaci&oacute;n</b></h5>
+                <h6><label style="color:#ffbc00">Editar Registro</label> #<strong>@Model.Codigo</strong></h6>
+            </div>
+            
+            <div class="col-sm-1">
+                <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Crear / Editar', '/Importaciones/Ayuda', 'LCIEdit', 'm_ayudas')" class="icono_ayuda">
+                    <i class="fa fa-question-circle fa-2x"></i>
+                </a>
+            </div>
+        </div>
+        <hr />
+        @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+        {
+            @Html.HiddenFor(m => m.Codigo)
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>Orden de Importaci&oacute;n</label>
+                    @Html.TextBoxFor(m => m.NroOrden, new { @class = "form-control alert-warning", @maxlength = "11", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Ordenes de Importación', '/Importaciones/OrdenesImportacion', 'nada2', 'm_middle')" })
+                </div>
+                <div class="col-sm-3">
+                    <label>Moneda</label>
+                    @Html.DropDownListFor(m => m.Moneda, new List<SelectListItem>
+                    {
+                        new SelectListItem{ Text="Moneda Nacional", Value = "MN" },
+                        new SelectListItem{ Text="Moneda Extranjera", Value = "ME" },
+                    }, new { @class = "form-control" })
+                </div>
+                <div class="col-sm-5">
+                    <label>Incoterm</label>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(m => m.Incoterms, new { @class = "form-control", @readonly = true })
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control" id="descripcion_incoterm" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label>Proveedor</label>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(m => m.CodigoProveedor, new { @class = "form-control alert-warning", @maxlength = "11", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Listado de Proveedores', '/Proveedor/Proveedores', 'nada2', 'm_middle')" })
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control" id="descripcion_proveedor" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <label>No. D.U.A.</label>
+                    @Html.TextBoxFor(m => m.DUA, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+                </div>
+                <div class="col-sm-3">
+                    <label>Importe</label><br />
+                    @Html.TextBoxFor(m => m.Importe, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_decimal(event, this)" })
+                </div>
+            </div>
+        }
+        <hr />
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <a href="#" onclick='ocultar_panel("LCIIndex", "Importaciones")' class="btn btn-info">
+                    <i class='fa fa-arrow-left'></i>
+                    Regresar
+                </a>
+                <button class="btn btn-success">
+                    <i class='fa fa-save'></i>
+                    Iniciar
+                </button>
+            </div>
+        </div>
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold">Gastos de Importaci&oacute;n</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped pre-scrollable datatables" id="Demogrid" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Descripci&oacute;n</th>
+                                <th>Gasto General</th>
+                                <th>Gasto D.U.A.</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#Demogrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Importaciones/GridLCIGastoImportacion",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "Descripcion" },
+                { data: "Total" },
+                { data: "DUA" },
+            ]
+        });
+    });
+</script>

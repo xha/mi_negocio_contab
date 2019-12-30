@@ -1,0 +1,80 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick="AjaxModalGet('Registro de Incidencia Horas', '/PAsistencia/DetalleIncidenciaHora', '', 'm_middle');" class="btn btn-success">
+                <i class='fa fa-plus'></i>
+                Agregar
+            </a>
+        </div>
+    </div>
+    <br />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="IncidenciaHoraGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Concepto</th>
+                            <th>Tipo</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#IncidenciaHoraGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+    
+            ajax: {
+                url: ruta_actual + "/PMaestra/GridConceptos",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [2,3,4],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                { data: "CODIGO_CONCEPTO" },
+                { data: "DESCRIPCION_CONCEPTO" },
+                { data: "COLUMNA_PLANILLA" },
+                {
+                    render: function (data, type, row)
+                    {
+                        if (row.FILA == 1) {
+                            return 'Suma (+)';
+                        } else {
+                            return 'Resta (-)';
+                        }                        
+                    }
+                },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="AjaxModalGet(\'Registro de Incidencia\', \'/PAsistencia/DetalleIncidenciaHora\', \'' + row.CODIGO_CONCEPTO + '\', \'m_middle\');"><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CODIGO_CONCEPTO + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+</script>

@@ -1,0 +1,163 @@
+@model Datos.Models.ComprasModel
+
+@{
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Compras", "Index", "Compras")</li>
+                    <li class="breadcrumbs-item">Compras Nacionales</li>
+                    <li class="breadcrumbs-item">&Oacute;rdenes de Compra</li>
+                    <li class="breadcrumbs-item active">Reporte de &Oacute;rdenes de Compra</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>Reporte de &Oacute;rdenes de Compra</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Reporte Ordenes de Compra - Inicio', '/Compras/Ayuda', 'ROCIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Fecha</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Desde</label><br />
+                                <input class="form-control datepickers" readonly />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Hasta</label><br />
+                                <input class="form-control datepickers" readonly />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Proveedor</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <label>Todos </label>
+                                <input type="checkbox" />
+                            </div>
+                            <div class="col-sm-5">
+                                <label>Desde</label><br />
+                                <input type="text" class="form-control alert-warning" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Proveedores', '/Proveedor/Proveedores','nada2','m_middle')" />
+                            </div>
+                            <div class="col-sm-5">
+                                <label>Hasta</label><br />
+                                <input type="text" class="form-control alert-warning" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Proveedores', '/Proveedor/Proveedores','nada2','m_middle')" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Filtro</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <input type="checkbox" />
+                            </div>
+                            <div class="col-sm-9">
+                                <label>Proveedor </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <input type="checkbox" />
+                            </div>
+                            <div class="col-sm-9">
+                                <label>Art&iacute;culo </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <input type="checkbox" />
+                            </div>
+                            <div class="col-sm-9">
+                                <label>O/Compra </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Opciones</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <input name="opt" type="radio" />&nbsp;
+                                <label>Todas</label>
+                            </div>
+                            <div class="col-sm-5">
+                                <input name="opt" type="radio" />&nbsp;
+                                <label>Pendientes y Atrasadas</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input name="opt" type="radio" />&nbsp;
+                                <label>Pendientes</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Ordenar por</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <select class="form-control w-75">
+                                    <option>Fecha de Emisi&oacute;n</option>
+                                    <option>Orden 1</option>
+                                    <option>Orden 2</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-print'></i>
+                Imprimir
+            </a>
+        </div>
+    }
+</div>
+<script type="text/javascript">
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+</script>

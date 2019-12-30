@@ -1,0 +1,208 @@
+﻿@model Datos.Models.ComprasModel
+
+@{
+    ViewBag.Title = "Resumen de Punto de Venta";
+    //Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+    </div>
+    <hr />
+    <!-- Cajas de Texto -->
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="row">
+                <div class="col-xl-6 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Transferencia</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$ @ViewBag.total_transferencia</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-chart-pie fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-6 mb-4">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Efectivo</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$ @ViewBag.total_efectivo</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-chart-bar fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-6 mb-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Dep&oacute;sito</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$ @ViewBag.total_deposito</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-chart-area fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-6 mb-4">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Cheque</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$ @ViewBag.total_cheque</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-file fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-6 mb-4">
+                    <div class="card border-left-danger shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Punto</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$ @ViewBag.total_punto</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-id-card fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-6 mb-4">
+                    <div class="card border-left-secondary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">Total</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$ @ViewBag.total</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold">Resumen Total</h6>
+                </div>
+                <div class="card-body">
+                    <div id="div_total"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Cajas de Texto -->
+</div>
+<script type="text/javascript">
+    var total_deposito = "@ViewData["total_deposito"]";
+    total_deposito = total_deposito.replace(/\./g, "");
+    total_deposito = parseFloat(total_deposito.replace(",","."));
+
+    var total_efectivo = "@ViewData["total_efectivo"]";
+    total_efectivo = total_efectivo.replace(/\./g, "");
+    total_efectivo = parseFloat(total_efectivo.replace(",","."));
+
+    var total_transferencia = "@ViewData["total_transferencia"]";
+    total_transferencia = total_transferencia.replace(/\./g, "");
+    total_transferencia = parseFloat(total_transferencia.replace(",", "."));
+
+    var total_cheque = "@ViewData["total_cheque"]";
+    total_cheque = total_cheque.replace(/\./g, "");
+    total_cheque = parseFloat(total_cheque.replace(",", "."));
+
+    var total_punto = "@ViewData["total_punto"]";
+    total_punto = total_punto.replace(/\./g, "");
+    total_punto = parseFloat(total_punto.replace(",","."));
+
+    Highcharts.chart('div_total', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie',
+            height: 310,
+        },
+        title: {
+            text: '.'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.y}</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f}%',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            name: 'Total',
+            colorByPoint: true,
+            data: [{
+                name: 'Depósito',
+                y: total_deposito,
+                sliced: true,
+                selected: true
+            }, {
+                name: 'Efectivo',
+                y: total_efectivo,
+            }, {
+                name: 'Transferencia',
+                y: total_transferencia,
+            }, {
+                name: 'Cheque',
+                y: total_cheque,
+            }, {
+                name: 'Punto',
+                y: total_punto,
+            }]
+        }]
+    });
+</script>
+
+
+
+

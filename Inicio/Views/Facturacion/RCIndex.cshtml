@@ -1,0 +1,121 @@
+@model Datos.Models.FacturacionModel
+@{
+    ViewBag.Title = "Reporte de Comisiones";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Facturacion", "Index", "Facturacion")</li>
+                    <li class="breadcrumbs-item">Reportes</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Facturacion/Ayuda', 'RCIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Par&aacute;metros</div>
+                    <div class="card-body">
+                        <div class="row col-sm-12">
+                            <label>De</label><br />
+                            <select class="form-control">
+                                <option>Abril del 2019</option>
+                            </select>
+                        </div>
+                        <div class="row col-sm-12">
+                            <label>Moneda</label><br />
+                            <select class="form-control">
+                                <option>Moneda Nacional</option>
+                                <option>Moneda Extranjera</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Vendedores</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>De</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control alert-warning" maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Vendedores', '/Vendedor/Vendedores', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                        &nbsp;
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>A</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control alert-warning"  maxlength="11" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Vendedores', '/Vendedor/Vendedores', 'nada2', 'm_middle')" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <label>Documentos Cancelados en m&aacute;s de 90 d&iacute;as a partir de su Fecha de Emisi&oacute;n. Pierde Comisi&oacute;n</label>
+                            </div>
+                            <div class="col-sm-5">
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <input value="90" class="form-control" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label>D&iacute;as</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <hr />
+    <div class="col-sm-12">
+        <a href="#" class="btn btn-primary">
+            <i class='fa fa-print'></i>
+            Imprimir
+        </a>
+    </div>
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

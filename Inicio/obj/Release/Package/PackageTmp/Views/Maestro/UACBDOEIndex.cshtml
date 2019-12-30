@@ -1,0 +1,94 @@
+@model Datos.Models.MaestroModel
+
+@{
+    ViewBag.Title = "Copiar Base de Datos-Otra Empresa";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Maestro", "Index", "Maestro")</li>
+                    <li class="breadcrumbs-item active">Utilidades Adicionales</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Maestro - @ViewBag.Title - Inicio ', '/Maestro/Ayuda', 'UACBDOEIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row col-sm-12">
+        <h3 class="font-weight-bold w-100 text-center">ADVERTENCIA</h3><br />
+        <label class="text-justify">
+            Se recomienda emplear esta utilidad con una nueva Empresa. Si realiza esta operaci&oacute;n en una Empresa existente, antes de ello se recomienda
+            que realice una backup de la base de datos
+        </label>
+    </div>
+    <hr />
+    <div class="row col-sm-12">
+        <h5 class="font-weight-bold w-100 text-center">Se copiar&aacute;n las siguiente tablas</h5>
+        <label class="text-justify">
+            Unidad de medida, Clientes, Proveedores, Transportistas, Vendedores, Familias, L&iacute;neas, Grupos, Tipo precio, Lista de precio, ARt&iacute;culos,
+            Tipo documentos, Operaciones bancarias, Bancos, Cuentas bancarias, Num. documentos, Art&iacute;culos equivalentes, Art&iacute;culos alternativos, Art&iacute;culos
+            hom&oacute;nimos, Datos de compra, Tipo de art&iacute;culos, Transacciones
+        </label>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Seleccione una empresa de donde desea importar sus datos</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped pre-scrollable datatables" id="Demogrid" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Sel.</th>
+                                    <th>Empresa</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold"><input type="checkbox" /> Escribir o no escribir registros existentes</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input type="radio" name="i" />&nbsp;
+                            Sobreescribir registros existentes
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="radio" name="i" />&nbsp;
+                            No sobreescribir registros existentes
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Aceptar
+            </a>
+        </div>
+    </div>
+</div>
+

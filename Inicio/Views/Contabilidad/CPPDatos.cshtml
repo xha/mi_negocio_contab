@@ -1,0 +1,30 @@
+@model Datos.ContabilidadModels.ContabilidadModel
+
+<div class="row">
+  <div class="col-sm-3">
+    <label>C&oacute;digo de Cuenta</label>
+    <input class="form-control" />
+  </div>
+  <div class="col-sm-5">
+    <label>Descripci&oacute;n</label>
+    <input class="form-control" />
+  </div>
+</div>
+<hr />
+<div class="row">
+  <div class="col-sm-12">
+    <a href="#" onclick="ocultar_panel('CPPIndex', 'Contabilidad')" class="btn btn-info">
+      <i class='fa fa-arrow-left'></i>
+      Regresar
+    </a>
+    <button class="btn btn-success">
+      <i class='fa fa-save'></i>
+      Guardar
+    </button>
+  </div>
+</div>
+<script>
+  $(".datepickers").datepicker({
+    autoclose: true
+  });
+</script>

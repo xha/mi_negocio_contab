@@ -1,0 +1,89 @@
+﻿@model Datos.Models.BancoModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-3">
+            <label>C&oacute;digo</label>
+            @if (Model != null && !String.IsNullOrEmpty(Model.BAN_CODIGO))
+            {
+                @Html.TextBoxFor(m => m.BAN_CODIGO, new { @class = "form-control", @readonly = "true" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.BAN_CODIGO, new { @class = "form-control", @maxlength = "2", onkeypress = "solo_enteros(event)", onblur = "agrega_cero()" })
+            }
+        </div>
+        <div class="col-sm-6">
+            <label>Descripci&oacute;n</label>
+            @Html.TextBoxFor(m => m.BAN_DESCRIPCION, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel()" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success" onclick="GuardarTBBDatos()">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>
+<script type="text/javascript">
+    function GuardarTBBDatos() {
+        var accion = 0;
+        var codigo      = $("#BAN_CODIGO").val().trim();
+        var descripcion = $("#BAN_DESCRIPCION").val().trim().toUpperCase();
+        var datos_enviar = [];
+
+        if ($("#BAN_CODIGO")[0].readOnly) {
+            accion = 1;
+        }
+
+        if ((codigo != "") && (descripcion != "")) {
+            if (codigo.length < 2) codigo = "0" + codigo;
+            datos_enviar.push({
+                BAN_CODIGO: codigo,
+                BAN_DESCRIPCION: descripcion
+            });
+            
+            var parametros = "datos_enviar=" + JSON.stringify(datos_enviar) + "&accion=" + accion;
+            $.ajax(
+			{
+			    type: "POST",
+			    dataType: "json",
+			    url: ruta_global + "TBBActualizar",
+			    data: parametros,
+			    beforeSend: function () {
+			        loading_show();
+			    },
+			    cache: false,
+			    success: function (Resultado) {
+			        loading_hide();
+			        window.parent.MostrarMensaje(Resultado.color, Resultado.data);
+			        if (Resultado.respuesta) {
+			            ocultar_panel();
+			            $('#TBBIndexGrid').DataTable().ajax.reload();
+			        } 
+			        
+			    },
+			    error: function (xhr) { // if error occured
+			        loading_hide();
+			        console.log(xhr);
+			        window.parent.MostrarMensaje("Rojo", "Error");
+			        //$(placeholder).append(xhr.statusText + xhr.responseText);
+			    },
+			});
+        } else {
+            MostrarMensaje("Rojo", "Faltan Datos");
+        }
+    }
+
+    function agrega_cero() {
+        if ($("#BAN_CODIGO").val().length < 2) $("#BAN_CODIGO")[0].value = "0" + $("#BAN_CODIGO").val();
+    }
+</script>

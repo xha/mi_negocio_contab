@@ -1,0 +1,57 @@
+﻿@model Datos.Models.CuentasPorCobrarModel
+<div class="container-fluid">
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    @Html.HiddenFor(m => m.Codigo)
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Fecha</label>
+            @Html.TextBoxFor(m => m.FechaEmision, new { @class = "form-control datepickers", @readonly = "true" })
+        </div>
+        <div class="col-sm-3">
+            <label>Moneda</label>
+            @Html.DropDownListFor(m => m.Moneda, new List<SelectListItem>
+            {
+                new SelectListItem{ Text="Moneda Nacional", Value = "MN" },
+                new SelectListItem{ Text="Moneda Extranjera", Value = "ME" },
+            }, new { @class = "form-control" }) 
+        </div>
+        <div class="col-sm-3">
+            <label>T/C</label>
+            @Html.TextBoxFor(m => m.TotalCredito, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_decimal(event,this)" })
+        </div>
+        <div class="col-sm-3">
+            <label>Saldo en MN</label>
+            @Html.TextBoxFor(m => m.SaldoActual, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_decimal(event,this)" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Cobro en MN</label>
+            @Html.TextBoxFor(m => m.CanjeMN, new { @class = "form-control", @maxlength = "11", onkeypress = "solo_decimal(event,this)" })
+        </div>
+        <div class="col-sm-9">
+            <label>Referencia</label>
+            @Html.TextBoxFor(m => m.Comentario, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+    </div>
+    }
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-info" onclick="$('#m_middle').modal('hide')">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Grabar
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+</script>

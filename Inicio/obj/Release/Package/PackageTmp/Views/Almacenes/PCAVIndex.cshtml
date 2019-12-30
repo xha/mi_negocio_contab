@@ -1,0 +1,87 @@
+@model Datos.Models.AlmacenesModel
+
+@{
+    ViewBag.Title = "";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Almacenes", "Index", "Almacenes")</li>
+                    <li class="breadcrumbs-item">Procesos</li>
+                    <li class="breadcrumbs-item">Valorizaci&oacute;n de Art&iacute;culos por Documento</li>
+                    <li class="breadcrumbs-item active">Correcci&oacute;n de Art&iacute;culos Valorizados</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>Correcci&oacute;n de Art&iacute;culos Valorizados</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Correccion de Articulos Valorizados - Inicio', '/Almacenes/Ayuda', 'PCAVIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="PCAVIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>TD</th>
+                            <th>N&uacute;mero</th>
+                            <th>C&oacute;digo</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Fecha</th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#PCAVIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Almacenes/GridPAPV",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [5],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                { data: "Sit" },
+                { data: "NroTransferencia" },
+                { data: "Codigo" },
+                { data: "Descripcion" },
+                { data: "FechaEmision" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Valorizar" href="#" onclick="mostrar_panel(\'PCAVDetalle?Codigo=' + row.Codigo + '\', \'Almacenes\')" ><i class="fa fa-edit"></i></a>'; }
+                },
+            ]
+        });
+    });
+
+    function anular_nota(id) {
+        $("#document").html(id);
+        $("#m_anular").modal("show");
+    }
+</script>

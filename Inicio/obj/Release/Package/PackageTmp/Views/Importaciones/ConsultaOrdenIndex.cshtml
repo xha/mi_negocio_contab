@@ -1,0 +1,177 @@
+@model Datos.Models.ImportacionesModel
+
+@{
+    ViewBag.Title = "Consulta de Orden de";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Importaciones", "Index", "Importaciones")</li>
+                    <li class="breadcrumbs-item">Consultas</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title Importaci&oacute;n</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title Importaci&oacute;n</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title Importacion - Inicio', '/Importaciones/Ayuda', 'ConsultaOrdenIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <label>Documento</label><br />
+            <input type="text" class="form-control alert-warning" title="Doble Click para buscar" ondblclick="AjaxModalGet('Tipo de Documento', '/Utilitarios/TipoDocumento', 'nada2', 'm_middle')" placeholder="Todos" />
+        </div>
+        <div class="col-sm-5">
+            <label>Fecha de Emisi&oacute;n</label><br />
+            <div class="row">
+                <div class="col-sm-6">
+                    <input class="form-control datepickers" placeholder="Desde" readonly />
+                </div>
+                <div class="col-sm-6">
+                    <input class="form-control datepickers" placeholder="Hasta" readonly />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <label>Fecha de Entrega</label><br />
+            <div class="row">
+                <div class="col-sm-6">
+                    <input class="form-control datepickers" placeholder="Desde" readonly />
+                </div>
+                <div class="col-sm-6">
+                    <input class="form-control datepickers" placeholder="Hasta" readonly />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <label>Proveedor</label><br />
+            <div class="row">
+                <div class="col-sm-4">
+                    <input type="text" id="prov_codigo" placeholder="Todos" class="form-control alert-warning" title="Doble Click para buscar" ondblclick="AjaxModalGet('Listado de Proveedores', '/Proveedor/Proveedores', 'splitea_proveedor', 'm_middle')" />
+                </div>
+                <div class="col-sm-8">
+                    <input class="form-control" id="prov_descripcion" readonly />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label>Incoterm</label><br />
+            <select class="form-control">
+                <option>Todos</option>
+                <option>EXW</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Estado</label><br />
+            <select class="form-control">
+                <option>Todos</option>
+                <option>Anulada</option>
+            </select>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-4">
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-search'></i>
+                Buscar
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="ConsultaOrdenIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Cod. Prov.</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Documento</th>
+                            <th>Fecha Emisi&oacute;n</th>
+                            <th>Importe</th>
+                            <th>TM</th>
+                            <th>Estado</th>
+                            <th>Fecha Entrega</th>
+                            <th>Incoterm</th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(function () {
+        $("#ConsultaOrdenIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Importaciones/GridConsultaOrden",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [9],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "CodigoProveedor" },
+                { data: "Descripcion" },
+                { data: "Documento" },
+                { data: "FechaEmision" },
+                { data: "Importe" },
+                { data: "TM" },
+                { data: "Estado" },
+                { data: "FechaEntrega" },
+                { data: "Incoterm" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Detalle de la Orden" href="#" onclick="mostrar_panel(\'ConsultaOrdenDetalle?Codigo=' + row.Documento + '\', \'Importaciones\')"><i class="fa fa-check"></i></a>';
+                    }
+                },
+
+            ]
+        });
+    });
+
+    function splitea_proveedor(id, ruc, nombre) {
+        $("#prov_codigo").val(id);
+        $("#prov_descripcion").val(nombre);
+        $('#m_middle').modal('hide');
+   }
+</script>

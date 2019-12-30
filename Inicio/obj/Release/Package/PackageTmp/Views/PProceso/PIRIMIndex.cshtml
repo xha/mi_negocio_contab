@@ -1,0 +1,217 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "Registrar Ingresos de Movimientos";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item">Procesos</li>
+                    <li class="breadcrumbs-item">Ingresos y Egresos Adicionales</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5><b>@ViewBag.Title</b></h5>
+        </div>
+
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title', '/PProceso/Ayuda', 'PACPIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header text-danger">
+                    Mes de Trabajo
+                </div>
+                <div class="card-body text-center">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <select class="form-control">
+                                <option>Enero de 2020</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header text-danger">
+                    Cronograma de Adelanto
+                </div>
+                <div class="card-body text-center">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <select class="form-control">
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6 mt-1">
+                            <label>Fecha Inicial</label>
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                        <div class="col-sm-6 mt-1">
+                            <label>Fecha Final</label>
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header text-danger">
+                    Formato de Planilla
+                </div>
+                <div class="card-body text-center">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <select class="form-control">
+                                <option>Empleados</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card" style="min-height: 13.3rem">
+                <div class="card-header text-danger">
+                    Selecci&oacute;n de Trabajadores
+                </div>
+                <div class="card-body text-center">
+                    <a href="#" class="btn btn-secondary" onclick="AjaxModalGet('Selector de Trabajadores', '/PProceso/SelectorTrabajadores', '', 'm_central')">
+                        <i class="fa fa-users fa-3x"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-1">
+        <div class="col-sm-8">
+            <button class="btn btn-secondary m-1">
+                <i class="fa fa-question-circle"></i>
+                Hoja de Ruta
+            </button>
+            <button class="btn btn-primary m-1">
+                <i class="fa fa-spinner"></i>
+                Auto Llenado
+            </button>
+            <button class="btn btn-dark m-1">
+                <i class="fa fa-search"></i>
+                Buscar
+            </button>
+            <button class="btn btn-secondary m-1">
+                <i class="fa fa-angle-double-right"></i>
+                Aplicar
+            </button>
+        </div>
+        <div class="col-sm-4 border rounded border-default">
+            <label>Leyenda</label><br />
+            <div class="row">
+                <div class="col-sm-4">
+                    <label class="btn btn-sm" style="background-color: blue">&nbsp;</label>
+                    Ingresos
+                </div>
+                <div class="col-sm-4">
+                    <label class="btn btn-sm" style="background-color: red">&nbsp;</label>
+                    Egresos
+                </div>
+                <div class="col-sm-4">
+                    <label class="btn btn-sm" style="background-color: green">&nbsp;</label>
+                    Aportes
+                </div>
+            </div>            
+        </div>
+    </div>
+    <br />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="PAAQIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Nombres</th>
+                            <th>Subs. Maternidad</th>
+                            <th>Remuneraci&oacute;n Vacacional</th>
+                            <th>Gratificaci&oacute;n Ordinaria</th>
+                            <th>Remuneraci&oacute;n C.T.S.</th>
+                            <th>Vacaciones Truncas</th>
+                            <th>Gratificaci&oacute;n Extraordinaria</th>
+                            <th>Cta. Cte. Ing.</th>
+                            <th>Cta. Cte. Egr.</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-secondary">
+                <i class='fa fa-print'></i>
+                Reporte
+            </a>
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Grabar
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(function () {
+        $("#PAAQIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+            ajax: {
+                url: ruta_actual + "/PProceso/GridListadoTrabajadores",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE" },
+                { data: "CODIGO_TIPO" },
+                { data: "BASICO" },
+                { data: "CODIGO_TIPO" },
+                { data: "CODIGO_ALTERNO" },
+                { data: "CODIGO_ALTERNO" },
+                { data: "BASICO" },
+                { data: "CUENTA_BANCO" },
+                { data: "CUENTA_BANCO" },
+            ]
+        });
+    });
+</script>

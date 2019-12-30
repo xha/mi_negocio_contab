@@ -1,0 +1,151 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item active">Asistencia</li>
+                    <li class="breadcrumbs-item active">Importaci&oacute;n de Tareaje</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5><b>Importaci&oacute;n de Tareaje</b></h5>
+        </div>
+
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Importacion de Tareaje - Inicio ', '/PMaestra/Ayuda', 'PAITEIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow">
+                <div class="card-header text-danger">
+                    Configuraci&oacute;n y b&uacute;squeda del archivo excel
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class=" col-sm-8">
+                            <label>Selecci&oacute;n de Archivo de Excel</label>
+                            <form enctype="multipart/form-data" method="POST">
+                                <input name="uploadedfile" type="file" />
+                            </form>
+                        </div>
+                        <div class="col-sm-4">
+                            Selecci&oacute;n de Hoja de Excel
+                            <select class="form-control"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 mt-2">
+            <div class="card shadow">
+                <div class="card-header text-danger">
+                    Pa&aacute;metros de la Importaci&oacute;n
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label>C&oacute;digo</label>
+                            <select class="form-control"></select>
+                        </div>
+                        <div class="col-sm-4">
+                            <label>Cronograma</label>
+                            <input class="form-control alert-warning" ondblclick="AjaxModalGet('Referencias', '/PMaestra/Referencias', '', 'm_middle');" />
+                        </div>
+                        <div class="col-sm-2">
+                            <label>Fecha Inicial</label>
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                        <div class="col-sm-2">
+                            <label>Fecha Final</label>
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow mt-2">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="PAITEIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Cod. Trab.</th>
+                            <th>Nombres</th>
+                            <th>Costo</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-8">
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-cogs'></i>
+                Configuraci&oacute;n de conceptos
+            </a>
+        </div>
+        <div class="col-sm-4">
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-upload'></i>
+                Importar
+            </a>
+            <a href="#" class="btn btn-secondary">
+                <i class='fa fa-arrow-left'></i>
+                Cancelar
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#PAITEIndexGrid").DataTable({
+            destroy: true,
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            info: false,
+
+            ajax: {
+                url: ruta_actual + "/PAsistencia/GridAsistencia",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE_TRABAJADOR" },
+                { data: "DIA" },
+            ]
+        });
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+</script>

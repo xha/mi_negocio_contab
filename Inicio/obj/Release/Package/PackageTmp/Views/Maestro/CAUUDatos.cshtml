@@ -1,0 +1,55 @@
+﻿@model Datos.Models.MaestroModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    @Html.HiddenFor(m => m.Codigo)
+    <div class="row">
+        <div class="col-sm-2">
+            <label>Usuario</label>
+            <input class="form-control" maxlength="10" onkeypress="solo_alfanumericos(event)" />
+        </div>
+        <div class="col-sm-4">
+            <label>Nombre</label>
+            <input class="form-control" maxlength="60" onkeypress="solo_alfanumericos(event)" />
+        </div>
+        <div class="col-sm-3">
+            <label>Cargo</label>
+            <select class="form-control">
+                <option>Usuario</option>
+                <option>Soporte t&eacute;cnico</option>
+                <option>Administrador</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <br />
+            <input type="checkbox" />&nbsp;
+            Activo
+        </div>
+        <div class="col-sm-3">
+            <label>Contraseña</label>
+            <input class="form-control" type="password" />
+        </div>
+        <div class="col-sm-3">
+            <label>Confirmar Contraseña</label>
+            <input class="form-control" type="password" />
+        </div>
+        <div class="col-sm-6">
+            <br />
+            <input type="checkbox" />&nbsp;
+            Cambiar contraseña en el siguiente inicio de sesi&oacute;n
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('CAUUIndex', 'Maestro')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>

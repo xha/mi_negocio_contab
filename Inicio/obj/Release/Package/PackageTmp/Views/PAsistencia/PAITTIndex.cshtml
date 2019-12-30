@@ -1,0 +1,68 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "Importar Asistencia de Marcador Electronico";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item active">Asistencia</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio ', '/PAsistencia/Ayuda', 'PAITTIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <h5>
+                <i class="fa fa-exclamation-circle"></i>
+                En este proceso se importar&aacute; los datos de un archivo de texto a la base de datos del sistema.
+            </h5>
+        </div>
+        <div class="col-sm-5">
+            <label>
+                <input type="checkbox" />
+                Compatibilidad con versi&oacute;n anterior
+            </label>
+        </div>
+        <div class="col-sm-7">
+            <form enctype="multipart/form-data" method="POST">
+                <input name="uploadedfile" type="file" />
+                <a href="#" class="btn btn-dark">
+                    <i class='fa fa-arrow-up'></i>
+                    Cargar Archivo
+                </a>
+            </form>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-upload'></i>
+                Importar
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

@@ -1,0 +1,65 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-4">
+            <label>C&oacute;digo</label>
+            <input type="text" readonly class="form-control" />
+        </div>
+        <div class="col-sm-8">
+            <label>Punto de Venta</label>
+            <input type="text" readonly class="form-control" />
+        </div>
+    </div>
+    <hr />
+    <div class="card shadow">
+        <div class="card-header">
+            <h6 class="font-weight-bold text-danger">Lista de Precios</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered pre-scrollable datatables tabla_modal" id="MListaPreciosGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Visible</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('.dataTables').DataTable({
+            responsive: true
+        });
+
+        $("#MListaPreciosGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+
+            ajax: {
+                url: ruta_actual + "/Maestro/GridListaPrecios",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "Codigo" },
+                { data: "Descripcion" },
+                { data: "Visible" },
+            ]
+        });
+
+        $('.tabla_modal')[0].setAttribute("title", "Doble Click para seleccionar");
+
+        $('#MListaPreciosGrid tbody').on('dblclick', 'tr', function () {
+            eval($("#parametro").val() + "('" + this.cells[0].textContent + "','" + this.cells[1].textContent + "','" + this.cells[2].textContent + "')");
+        });
+    });
+</script>
+

@@ -1,0 +1,198 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+
+<div class="container-fluid">
+
+
+    <div class="card shadow">
+
+        <div class="card-header">
+            Configuraci&oacute;n del Adelanto
+
+        </div>
+        <div class="row m-2">
+            <div class="col form-group">
+                <label>
+                    Cargar el Adelanto
+                </label>
+
+                <input class="form-control" type="text" />
+            </div>
+        
+         
+         
+        
+        
+        </div>
+
+    </div>
+     
+
+    <br />
+
+
+
+
+    <div class="card shadow">
+
+        <div class="tab-content m-2" id="myTabContent">
+            <table class="table table-bordered table-striped pre-scrollable " id="Paso3Grid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Apellidos y Nombres</th>
+                        <th>Total Gratificaci&oacute;n</th>
+                        <th>Adelanto de Gratif</th>
+                        <th style="width: 5px" class="text-center"></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                       
+                        <th >Trabajadores: 2 </th>
+                        <th class="text-center">
+                           
+                Total Gratificaci&oacute;n
+                            
+                     </th>
+                       
+                        <th class="border"> <input class="form-control" readonly/></th>
+                        <th class="border" colspan="2"><input class="form-control" readonly/></th>
+                    </tr>
+                </tfoot>
+            </table>
+
+
+
+
+        </div>
+
+
+    </div>
+
+ <hr />
+
+
+
+    <div class="card shadow">
+ <div class="card-body">
+     
+     <div class="row justify-content-between ">
+
+       
+             <button class="btn btn-secondary">
+                 <i class='fa fa-cogs'></i>
+                 Calcular
+             </button>
+       
+         <button class="btn btn-secondary">
+       
+             Redondear
+         </button>
+         <button class="btn btn-success">
+             <i class='fa fa-save'></i>
+             Guardar
+         </button>
+
+     
+          
+ </div>
+
+    </div>
+
+
+
+
+</div>
+    </div>
+<script>
+    $(function () {
+        $("#Paso3Grid").DataTable({
+            destroy: true,
+            processing: true,
+            serverSide: true,
+            filter: true, 
+            orderMulti: false,
+            info: false,
+            ajax: {
+                url: ruta_actual + "/PAsistencia/GridAsistencia",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE_TRABAJADOR" },
+              { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE_TRABAJADOR" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CODIGO + '\')"><i class="fa fa-trash"></i></button>';
+
+                    }
+                },
+            ]
+        });
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('#c_centro_todas').on('ifUnchecked', function (event) {
+        $("#c_centro_uno")[0].style.display = "flex";
+    });
+
+    $('#c_centro_todas').on('ifChecked', function (event) {
+        $("#c_centro_uno")[0].style.display = "none";
+    });
+
+    $('#c_area_todas').on('ifUnchecked', function (event) {
+        $("#c_area_uno")[0].style.display = "flex";
+    });
+
+    $('#c_area_todas').on('ifChecked', function (event) {
+        $("#c_area_uno")[0].style.display = "none";
+    });
+
+    $('#totals').on('ifChecked', function (event) {
+        $("#Aparecer")[0].style.display = "flex";
+       
+    });
+    $('#totals').on('ifUnchecked', function (event) {
+        $("#Aparecer")[0].style.display = "none";
+    });
+
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+    $('#area_radio').on('ifChecked', function (event) {
+        $("#mp_area")[0].style.display = "block";
+        $("#mp_centro")[0].style.display = "none";
+    });
+
+    $('#area_radio').on('ifUnchecked', function (event) {
+        $("#mp_area")[0].style.display = "none";
+        $("#mp_centro")[0].style.display = "block";
+    });
+
+    function cambia_fecha(valor) {
+        if (valor == "") {
+            $("#fecha_ingreso")[0].style.display = "none";
+        } else {
+            $("#fecha_ingreso")[0].style.display = "flex";
+        }
+    }
+</script>

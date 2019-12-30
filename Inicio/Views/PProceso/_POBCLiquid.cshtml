@@ -1,0 +1,451 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+<input id="parametro" name="parametro" type="hidden" value="@ViewBag.accion" />
+
+<div class="container-fluid">
+
+
+    <div class="row justify-content-between">
+        <div class="col-4 align-self-center form-group">
+            <label> Nombre del Cliente</label>
+            <input class="form-control" type="text" />
+
+        </div>
+        <div class="col-4 form-group text-center">
+            <label>Calcular interes por cts no depositado</label> <br />
+            <input class="checkbox" type="checkbox" id="totals" />
+
+        </div>
+        <div class="col-4 align-self-center  text-center" style="display: none"  id="Aparecer">
+        (%) <br />
+            <input class="form-control" type="text" />
+
+        </div>
+    </div>
+
+ 
+
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="paso3-tab" data-toggle="tab" href="#paso3" role="tab" aria-controls="paso3" aria-selected="false">
+                <i class='fa fa-arrow-right'></i>
+                CTS
+              
+            </a>    
+        </li>
+          <li class="nav-item">
+            <a class="nav-link " id="paso2-tab" data-toggle="tab" href="#paso2" role="tab" aria-controls="paso2" aria-selected="true">
+                <i class='fa fa-arrow-right'></i>
+                Vacaciones
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="paso1-tab" data-toggle="tab" href="#paso1" role="tab" aria-controls="paso1" aria-selected="false">
+                <i class='fa fa-arrow-right'></i>
+                Gratificaciones
+            </a>
+        </li>
+     
+      
+    </ul>
+    <br />
+    <div class="tab-content" id="myTabContent">
+      
+         <div class="tab-pane show active" id="paso3" role="tabpanel" aria-labelledby="paso3-tab">
+        
+         <div class="row">
+
+
+
+                <diV class="col-md-3 ">
+                    <button class="btn btn-success" onclick="$('#abrete')[0].style.display='flex'">
+                        <i class='fa fa-plus'></i>
+                        Agregar
+                    </button>
+                </diV>
+            
+                <diV class="col-md-3 text-center ">
+                    <label>Inicio</label>
+                    <input class="form-control float-right datepickers" readonly/>
+
+                </diV>
+                <diV class="col-md-3 text-center ">
+                    <label>Final</label>
+                    <input class="form-control float-right datepickers " readonly />
+
+                </diV>
+                <diV class="col-md-3 text-center">
+                    <label>No Computables</label> <br />
+                    <input type="checkbox" class="checkbox float-right" />
+
+                </diV>
+
+
+            </div>
+           
+             <div class="card shadow  animated bounce mt-2" s id="abrete" style="display: none">
+                 <div class="card-header font-weight-bold">
+                  Formulario
+                     <button type="button" class="close" onclick="$('#abrete')[0].style.display='none'" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                     </button>
+                 </div>
+                 <div class="card-body">
+
+
+                     <div class="row">
+                         <div class="col-md-6 col-sm-12">
+                             <label>Descripci&oacute;n del Concepto para CTS</label>
+                             <input class="form-control "  />
+                         </div>
+                         <div class="col-md-6 col-sm-12">
+                             <label>Valor</label>
+                             <input class="form-control" />
+                         </div>
+
+                    
+
+                     </div>
+            
+                     <div class="form-group row mt-1 text-right">
+                         <div class="col-sm-12">
+                             <a href="#" class="btn btn-success">
+                                 <i class='fa fa-save'></i>
+                                 Aceptar
+                             </a>
+                         </div>
+                     </div>
+                 </div>
+
+
+             </div>
+
+
+            <br />
+            <table class="table table-bordered table-striped pre-scrollable " id="Paso3Grid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Conceptos Computables.</th>
+                        <th>Importe</th>
+                      
+                        <th style="width: 5px" class="text-center"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+  
+            <div class="row border-top justify-content-end mt-1">
+                <div class="col-12 mt-1  ">
+                    Base C&aacute;lculo
+                    <input class="form-control" />
+                </div>
+
+            </div>
+
+    
+        </div>
+        <div class="tab-pane" id="paso1" role="tabpanel" aria-labelledby="paso1-tab">
+
+            <div class="row">
+
+
+
+                <diV class="col-md-3 ">
+                    <button class="btn btn-success" onclick="$('#abrete3')[0].style.display='flex'">
+                        <i class='fa fa-plus'></i>
+                        Agregar
+                    </button>
+                </diV>
+
+                <diV class="col-md-3 text-center ">
+                    <label>Inicio</label>
+                    <input class="form-control float-right datepickers" readonly/>
+
+                </diV>
+                <diV class="col-md-3 text-center ">
+                    <label>Final</label>
+                    <input class="form-control float-right datepickers" readonly />
+
+                </diV>
+                <diV class="col-md-3 text-center">
+                    <label>No Computables</label> <br />
+                    <input type="checkbox" class="checkbox float-right" />
+
+                </diV>
+
+
+            </div>
+
+            <div class="card shadow  animated bounce mt-2" s id="abrete3" style="display: none">
+                <div class="card-header font-weight-bold">
+                    Formulario
+                    <button type="button" class="close" onclick="$('#abrete3')[0].style.display='none'" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="card-body">
+
+
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <label>Descripci&oacute;n del Concepto para CTS</label>
+                            <input class="form-control " />
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <label>Valor</label>
+                            <input class="form-control" />
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="form-group row mt-1 text-right">
+                        <div class="col-sm-12">
+                            <a href="#" class="btn btn-success">
+                                <i class='fa fa-save'></i>
+                                Aceptar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <br />
+            <table class="table table-bordered table-striped pre-scrollable " id="Paso3Grid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Conceptos Computables.</th>
+                        <th>Importe</th>
+
+                        <th style="width: 5px" class="text-center"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+
+            <div class="row border-top justify-content-end mt-1">
+                <div class="col-12 mt-1  ">
+                    Base C&aacute;lculo
+                    <input class="form-control" />
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="tab-pane " id="paso2" role="tabpanel" aria-labelledby="paso2-tab">
+
+            <div class="row">
+
+
+
+                <diV class="col-md-3 ">
+                    <button class="btn btn-success" onclick="$('#abrete2')[0].style.display='flex'">
+                        <i class='fa fa-plus'></i>
+                        Agregar
+                    </button>
+                </diV>
+
+                <diV class="col-md-3 text-center ">
+                    <label>Inicio</label>
+                    <input class="form-control float-right datepickers" readonly />
+
+                </diV>
+                <diV class="col-md-3 text-center ">
+                    <label>Final</label>
+                    <input class="form-control float-right datepickers " readonly />
+
+                </diV>
+                <diV class="col-md-3 text-center">
+                    <label>No Computables</label> <br />
+                    <input type="checkbox" class="checkbox float-right" />
+
+                </diV>
+
+
+            </div>
+
+            <div class="card shadow  animated bounce mt-2" s id="abrete2" style="display: none">
+                <div class="card-header font-weight-bold">
+                    Formulario
+                    <button type="button" class="close" onclick="$('#abrete2')[0].style.display='none'" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="card-body">
+
+
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <label>Descripci&oacute;n del Concepto para CTS</label>
+                            <input class="form-control " />
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <label>Valor</label>
+                            <input class="form-control" />
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="form-group row mt-1 text-right">
+                        <div class="col-sm-12">
+                            <a href="#" class="btn btn-success">
+                                <i class='fa fa-save'></i>
+                                Aceptar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <br />
+            <table class="table table-bordered table-striped pre-scrollable " id="Paso3Grid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Conceptos Computables.</th>
+                        <th>Importe</th>
+
+                        <th style="width: 5px" class="text-center"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+
+            <div class="row border-top justify-content-end mt-1">
+                <div class="col-12 mt-1  ">
+                    Base C&aacute;lculo
+                    <input class="form-control" />
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        
+ 
+
+
+    </div>
+ 
+ <hr />
+<div class="row justify-content-between ">
+    <div class="col-12 mt-1 col-sm-4 ">
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Agregar
+        </a>
+    </div>
+    <div class="col-12 mt-1 col-sm-4">
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Reclutar
+        </a>
+    </div>
+
+    <div class="col-12 mt-1 col-sm-2">
+        <a href="#" onclick="$('#m_central').modal('hide')" class="btn btn-danger">
+            <i class='fa fa-times'></i>
+            Salir
+        </a>
+    </div>
+</div>
+</div>
+<script>
+    $(function () {
+        $("#Paso3Grid").DataTable({
+            destroy: true,
+            processing: true,
+            serverSide: true,
+            filter: true, 
+            orderMulti: false,
+            info: false,
+            ajax: {
+                url: ruta_actual + "/PAsistencia/GridAsistencia",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE_TRABAJADOR" },
+            
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CODIGO + '\')"><i class="fa fa-trash"></i></button>';
+
+                    }
+                },
+            ]
+        });
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('#c_centro_todas').on('ifUnchecked', function (event) {
+        $("#c_centro_uno")[0].style.display = "flex";
+    });
+
+    $('#c_centro_todas').on('ifChecked', function (event) {
+        $("#c_centro_uno")[0].style.display = "none";
+    });
+
+    $('#c_area_todas').on('ifUnchecked', function (event) {
+        $("#c_area_uno")[0].style.display = "flex";
+    });
+
+    $('#c_area_todas').on('ifChecked', function (event) {
+        $("#c_area_uno")[0].style.display = "none";
+    });
+
+    $('#totals').on('ifChecked', function (event) {
+        $("#Aparecer")[0].style.display = "flex";
+       
+    });
+    $('#totals').on('ifUnchecked', function (event) {
+        $("#Aparecer")[0].style.display = "none";
+    });
+
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+    $('#area_radio').on('ifChecked', function (event) {
+        $("#mp_area")[0].style.display = "block";
+        $("#mp_centro")[0].style.display = "none";
+    });
+
+    $('#area_radio').on('ifUnchecked', function (event) {
+        $("#mp_area")[0].style.display = "none";
+        $("#mp_centro")[0].style.display = "block";
+    });
+
+    function cambia_fecha(valor) {
+        if (valor == "") {
+            $("#fecha_ingreso")[0].style.display = "none";
+        } else {
+            $("#fecha_ingreso")[0].style.display = "flex";
+        }
+    }
+</script>

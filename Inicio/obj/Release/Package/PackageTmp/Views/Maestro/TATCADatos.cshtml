@@ -1,0 +1,109 @@
+﻿@model Datos.Models.MaestroModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-2">
+            <label>Tipo</label>
+            <select class="form-control" id="TRANC_INGSAL">
+                <option value="I">Ingreso</option>
+                <option value="S">Salida</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <label>C&oacute;digo</label>
+            @if (Model != null && !String.IsNullOrEmpty(Model.TRANC_COD))
+            {
+                @Html.TextBoxFor(m => m.TRANC_COD, new { @class = "form-control", @readonly = "true" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.TRANC_COD, new { @class = "form-control", @maxlength = "2", onkeypress = "solo_enteros(event)" })
+            }
+        </div>
+        <div class="col-sm-5">
+            <label>Descripci&oacute;n</label>
+            @Html.TextBoxFor(m => m.TRANC_DESCRIPCION, new { @class = "form-control", @maxlength = "64", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-3">
+            <br />
+            @Html.CheckBoxFor(m => m.TRANC_DOCREF)&nbsp;
+            Doc. Ref.
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('TATCAIndex', 'Maestro')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success" onclick="GuardarTATCADatos()">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    function GuardarTATCADatos() {
+        var accion           = 0;
+        var TRANC_COD        = $("#TRANC_COD").val().trim();
+        var TRANC_INGSAL     = $("#TRANC_INGSAL").val();
+        var TRANC_DOCREF     = $("#TRANC_DOCREF")[0].checked;
+        var TRANC_DESCRIPCION= $("#TRANC_DESCRIPCION").val().trim().toUpperCase();
+        var datos_enviar     = [];
+
+        if ($("#TRANC_COD")[0].readOnly) accion = 1;
+
+        if ((TRANC_COD != "") && (TRANC_DESCRIPCION != "")) {
+            datos_enviar.push({
+                TRANC_COD        : TRANC_COD,
+                TRANC_INGSAL     : TRANC_INGSAL,
+                TRANC_DESCRIPCION: TRANC_DESCRIPCION,
+                TRANC_DOCREF     : TRANC_DOCREF,
+            });
+
+            var parametros = "datos_enviar=" + JSON.stringify(datos_enviar) + "&accion=" + accion;
+            $.ajax(
+			{
+			    type: "POST",
+			    dataType: "json",
+			    url: ruta_global + "TATCAActualizar",
+			    data: parametros,
+			    beforeSend: function () {
+			        loading_show();
+			    },
+			    cache: false,
+			    success: function (Resultado) {
+			        loading_hide();
+			        window.parent.MostrarMensaje(Resultado.color, Resultado.data);
+			        if (Resultado.respuesta) {
+			            ocultar_panel();
+			            $('#TATCAIndexGrid').DataTable().ajax.reload();
+			        }
+
+			    },
+			    error: function (xhr) {
+			        loading_hide();
+			        console.log(xhr);
+			        window.parent.MostrarMensaje("Rojo", xhr.responseText);
+			    },
+			});
+        } else {
+            MostrarMensaje("Rojo", "Faltan Datos");
+        }
+    }
+</script>

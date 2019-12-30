@@ -1,0 +1,112 @@
+@model Datos.Models.MaestroModel
+@{
+    ViewBag.Title = "Modificación del IGV";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Maestro", "Index", "Maestro")</li>
+                    <li class="breadcrumbs-item active">Configuraci&oacute;n</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Maestro - @ViewBag.Title - Inicio ', '/Maestro/Ayuda', 'CMIIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <h4>Nota: El cambio de IGV y/o Retenciones afectar&aacute; a todas las ventas y compras, pero cada art&iacute;culo tiene una tasa de IGV Particular, que tambi&eacute;n debe ser actualizada</h4>
+    <br />
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">IGV</div>
+                <div class="card-body">
+                    <div class="row col-sm-12 p-1">
+                        <label>IGV Actual (%)</label><br />
+                        <input class="form-control" readonly />
+                    </div>
+                    <div class="row col-sm-12 p-1">
+                        <label>Nuevo IGV (%)</label><br />
+                        <input class="form-control" maxlength="6" onkeypress="solo_decimal(event,this)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">Retenci&oacute;n</div>
+                <div class="card-body">
+                    <div class="row col-sm-12 p-1">
+                        <label>Retenci&oacute;n acumulada (%)</label><br />
+                        <input class="form-control" readonly />
+                    </div>
+                    <div class="row col-sm-12 p-1">
+                        <label>Nueva retenci&oacute;n (%)</label><br />
+                        <input class="form-control" maxlength="6" onkeypress="solo_decimal(event,this)" />
+                    </div>
+                    <div class="row col-sm-12 p-1">
+                        <label>Monto m&iacute;nimo de retenci&oacute;n</label><br />
+                        <input class="form-control" maxlength="10" onkeypress="solo_decimal(event,this)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">IGV de art&iacute;culos</div>
+                <div class="card-body">
+                    <div class="row p-1">
+                        <div class="col-sm-2" align="right">
+                            <input type="checkbox" />
+                        </div>
+                        <div class="col-sm-10">
+                            Actualizar lista de precios que no incluyan IGV
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-2" align="right">
+                            <input type="radio" name="i_cm" />
+                        </div>
+                        <div class="col-sm-10">
+                            Actualizar todos los art&iacute;culos con el nuevo IGV
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-2" align="right">
+                            <input type="radio" name="i_cm" />
+                        </div>
+                        <div class="col-sm-10">
+                            Actualizar solo los que tengan el 18% de IGV (Recomendado)
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-2" align="right">
+                            <input type="radio" name="i_cm" />
+                        </div>
+                        <div class="col-sm-10">
+                            No actualizar el IGV de los art&iacute;culos
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row col-sm-12">
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>

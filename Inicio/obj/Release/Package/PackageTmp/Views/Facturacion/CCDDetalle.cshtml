@@ -1,0 +1,218 @@
+﻿@model Datos.Models.FacturacionModel
+@{
+    ViewBag.Title = "Consulta de Documento";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Facturacion", "Index", "Facturacion")</li>
+                    <li class="breadcrumbs-item">Consultas</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("CCDIndex", "Facturacion")'>@ViewBag.Title</a></li>
+                    <li class="breadcrumbs-item active">Consultar</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Consultar Registro</label> #<strong>@Model.Codigo</strong></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Crear / Editar', '/Facturacion/Ayuda', 'CCDDetalle', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+    {
+        @Html.HiddenFor(m => m.Codigo)
+        <div class="row">
+            <div class="col-sm-3">
+                <label>Documento</label><br />
+                @Html.TextBoxFor(m => m.Documento, new { @class = "form-control", @readonly = true })
+            </div>
+            <div class="col-sm-3">
+                <label>Cliente</label>
+                @Html.TextBoxFor(m => m.CodigoCliente, new { @class = "form-control", @readonly = true })
+            </div>
+            <div class="col-sm-2">
+                <label>Fecha</label>
+                @Html.TextBoxFor(m => m.FechaEmision, new { @class = "form-control", @readonly = true })
+            </div>
+            <div class="col-sm-2">
+                <label>Moneda</label><br />
+                @Html.TextBoxFor(m => m.Moneda, new { @class = "form-control", @readonly = true })
+            </div>
+            <div class="col-sm-2">
+                <label>Vence</label>
+                @Html.TextBoxFor(m => m.FechaVencimiento, new { @class = "form-control", @readonly = true })
+            </div>
+        </div>
+    }
+    <hr />
+    <div class="row">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="CCDetalleGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Art&iacute;culo</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Lote/Serie</th>
+                            <th>Und.</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unit.</th>
+                            <th>Precio Bruto</th>
+                            <th>Dscto</th>
+                            <th>Precio Total</th>
+                            <th>IGV</th>
+                            <th>Valor Vta.</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold" align="center">Cancelaci&oacute;n</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-4" align="center"></div>
+                        <div class="col-sm-4" align="center">
+                            <b>Soles</b>
+                        </div>
+                        <div class="col-sm-4" align="center">
+                            <b>D&oacute;lares</b>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-4" align="center">
+                            <b>Efectivo S/.</b>
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" readonly />
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" readonly />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-4" align="center">
+                            <b>Cheque S/.</b>
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" readonly />
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" readonly />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-4" align="center">
+                            <b>Tarjeta S/.</b>
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" readonly />
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" readonly />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-4" align="center">
+                            <b>A Cta. Cte.</b>
+                        </div>
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold" align="center">Total</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label>Valor Vta.</label><br />
+                            <input type="text" class="form-control" readonly />
+                        </div>
+                        <div class="col-sm-12">
+                            <label>I.G.V.</label><br />
+                            <input type="text" class="form-control" readonly />
+                        </div>
+                        <div class="col-sm-12">
+                            <label>Total Vta.</label><br />
+                            <input type="text" class="form-control" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick='ocultar_panel("CCDIndex", "Facturacion")' class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a class="btn btn-primary" href="#" onclick='mostrar_panel("TCCreateFactura?ruta=CCDDetalle?id=1", "Facturacion")'>
+                <i class='fa fa-print'></i>
+                Imprimir
+            </a>
+            <button class="btn btn-secondary">
+                <i class='fa fa-arrow-right'></i>
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#CCDetalleGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Facturacion/GridTCVDetalle",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CodigoProducto" },
+                { data: "DescripcionProducto" },
+                { data: "Lote" },
+                { data: "CodigoUnidadMedida" },
+                { data: "Cantidad" },
+                { data: "Precio" },
+                { data: "PrecioVenta" },
+                { data: "DescuentoUnitario" },
+                { data: "IGV" },
+                { data: "ImporteIGV" },
+                { data: "Total" },
+            ]
+        });
+    });
+
+    function nada2(codigo, descripcion) {
+        $('#m_middle').modal('hide');
+    }
+</script>
+

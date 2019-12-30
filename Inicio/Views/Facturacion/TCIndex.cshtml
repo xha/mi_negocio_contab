@@ -1,0 +1,145 @@
+@model Datos.Models.FacturacionModel
+
+@{
+    ViewBag.Title = "Cotizaciones";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Facturacion", "Index", "Facturacion")</li>
+                    <li class="breadcrumbs-item">Transacciones</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Facturacion/Ayuda', 'TCIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <a  class="btn btn-primary col-sm-12" href="#" onclick='mostrar_panel("TCCreateCotizacion", "Facturacion")'>
+                <i class='fa fa-plus'></i>
+                Nuevo
+            </a>
+        </div>
+        <div class="col-sm-2">
+            <a class="btn btn-success col-sm-12" href="#" onclick='mostrar_panel("TCCreateFactura?ruta=TCIndex", "Facturacion")'>
+                <i class='fa fa-save'></i>
+                Facturar
+            </a>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-outline-dark b_articulos col-sm-12" id="div_1">
+                <i class='fa fa-file'></i>
+                Cargar Desctos
+            </button>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-info b_articulos col-sm-12" id="div_2" onclick='copiar_cotizacion()'>
+                <i class='fa fa-copy'></i>
+                Copiar
+            </button>
+        </div>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="TCIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Descripci&oacute;n Cliente</th>
+                            <th>Fecha</th>
+                            <th>Importe</th>
+                            <th>Mon</th>
+                            <th>Sit</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var codigo_temp = "";
+    $(function () {
+        for (var i = 1; i < 3; i++) {
+            $("#div_"+i)[0].disabled = true;
+        }
+
+        $("#TCIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Facturacion/GridTCV",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [6],
+                orderable: false,
+                searchable: false
+            }, {
+                targets: [8],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                { data: "Documento" },
+                { data: "Descripcion" },
+                { data: "FechaEmision" },
+                { data: "ImporteIGV" },
+                { data: "Moneda" },
+                { data: "Sit" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="mostrar_panel(\'TCEditCotizacion?Codigo=' + row.Codigo + '\', \'Facturacion\')" ><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Imprimir" href="#"><i class="fa fa-print"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-secondary grid_opt" onclick="exportar_documento(\'' + row.Codigo + '\')" title="Exportar" href="#"><i class="fa fa-file-export"></i></a>';
+                    }
+                },
+            ]
+        });
+
+        $('#TCIndexGrid tbody').on('click', 'tr', function () {
+            $('#TCIndexGrid').DataTable().$('tr').removeClass('bg-secondary text-white');
+            $(this).addClass('bg-secondary text-white');
+            $(".b_articulos").removeAttr("disabled");
+            codigo_temp = $(this).find("td").eq(0).text();
+        });
+    });
+
+    function copiar_cotizacion() {
+        mostrar_panel('TCCopiarCotizacion?Codigo=' + codigo_temp, 'Facturacion');
+    }
+</script>

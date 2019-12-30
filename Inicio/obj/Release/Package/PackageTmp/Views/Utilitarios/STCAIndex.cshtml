@@ -1,0 +1,82 @@
+@{
+    ViewBag.Title = "Sincroniza Tipo de Cambio de Almacenes";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li class="breadcrumbs-item active">Sincronización de Tipo de Cambio</li>
+                    <li class="breadcrumbs-item active">Almacenes</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Utilitarios - Inicio', '/Utilitarios/Ayuda', 'STCAIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <h4>
+        Este proceso sincroniza el tipo de cambio de los documentos de almac&eacute;n con los tipos de cambio registrados
+        en la opci&oacute;n Tipo De Cambio (puede visualizar los documentos afectados al hacer Click en Imprimir)
+    </h4>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header font-weight-bold">
+                    Per&iacute;odo de proceso
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Del</label>
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Al</label>
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header text-danger font-weight-bold">
+                    Tipo de Cambio
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input type="radio" name="i_" checked />&nbsp;
+                            MiNegocio
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="radio" name="i_" />&nbsp;
+                            Contabilidad
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-12">
+            <button class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Guardar
+            </button>
+        </div>
+    </div>
+</div>
+

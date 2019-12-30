@@ -1,0 +1,145 @@
+@model Datos.Models.AlmacenesModel
+
+@{
+    ViewBag.Title = "";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Almacenes", "Index", "Almacenes")</li>
+                    <li class="breadcrumbs-item">Reportes</li>
+                    <li class="breadcrumbs-item active">Reporte de Art&iacute;culos en alerta log&iacute;stica</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>Reporte de Art&iacute;culos en alerta log&iacute;stica</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Reporte de Articulos en alerta logistica - Inicio', '/Almacenes/Ayuda', 'RAAIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-9">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Par&aacute;metro</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <input type="checkbox" />&nbsp;
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <label>Stock Cero</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <input type="checkbox" />&nbsp;
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <label>Debajo del punto de pedido</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <input type="checkbox" />&nbsp;
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <label>Debajo del punto m&iacute;nimo</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <input type="checkbox" />&nbsp;
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <label>Debajo del punto m&aacute;ximo</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <input type="checkbox" />&nbsp;
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <label>Sin definici&oacute;n log&iacute;stica</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Opciones</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label>Almac&eacute;n</label>
+                                <select class="form-control">
+                                    <option>01 - Almac&eacute;n Principal</option>
+                                    <option>01 - Almac&eacute;n Secundario</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label>Ordenado por</label>
+                                <select class="form-control">
+                                    <option>C&oacute;digo</option>
+                                    <option>Otro</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="#" class="btn btn-primary">
+                    <i class='fa fa-print'></i>
+                    Imprimir
+                </a>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

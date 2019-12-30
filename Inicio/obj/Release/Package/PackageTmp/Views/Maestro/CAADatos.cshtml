@@ -1,0 +1,159 @@
+﻿@model Datos.Models.MaestroModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row">
+        <div class="col-sm-2">
+            <label>C&oacute;digo</label>
+            @if (Model != null && !String.IsNullOrEmpty(Model.ALM_CODIGO))
+            {
+                @Html.TextBoxFor(m => m.ALM_CODIGO, new { @class = "form-control", @readonly = "true" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.ALM_CODIGO, new { @class = "form-control", @maxlength = "12", onkeypress = "solo_alfanumericos(event)" })
+            }
+        </div>
+        <div class="col-sm-5">
+            <label>Descripci&oacute;n</label>
+            @Html.TextBoxFor(m => m.ALM_DESCRI, new { @class = "form-control", @maxlength = "35", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-5">
+            <label>Direcci&oacute;n</label>
+            @Html.TextBoxFor(m => m.ALM_DIRECC, new { @class = "form-control", @maxlength = "40", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Nro.</label>
+            @Html.TextBoxFor(m => m.ALM_NUMERO, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-3">
+            <label>Interior</label>
+            @Html.TextBoxFor(m => m.ALM_INTERIOR, new { @class = "form-control", @maxlength = "30", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-3">
+            <label>Tel&eacute;fono</label>
+            @Html.TextBoxFor(m => m.ALM_TELEF, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_telefono(event)" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Zona</label>
+            @Html.TextBoxFor(m => m.ALM_ZONA, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-3">
+            <label>Distrito</label>
+            @Html.TextBoxFor(m => m.ALM_DISTRI, new { @class = "form-control", @maxlength = "30", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-3">
+            <label>Provincia</label>
+            @Html.TextBoxFor(m => m.ALM_PROVINCIA, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-3">
+            <label>Departamento</label>
+            @Html.TextBoxFor(m => m.ALM_DEPARTAMENTO, new { @class = "form-control", @maxlength = "20", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Ult. Num. NE</label>
+            @Html.TextBoxFor(m => m.ALM_NUMENT, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_enteros(event)" })
+        </div>
+        <div class="col-sm-3">
+            <label>Ult. Num. a Emitir NE</label>
+            @Html.TextBoxFor(m => m.ALM_NUMNE, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_enteros(event)" })
+        </div>
+        <div class="col-sm-3">
+            <label>Ult. Num. NS</label>
+            @Html.TextBoxFor(m => m.ALM_NUMSAL, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_enteros(event)" })
+        </div>
+        <div class="col-sm-3">
+            <label>Ult. Num. a Emitir NS</label>
+            @Html.TextBoxFor(m => m.ALM_NUMNS, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_enteros(event)" })
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('CAAIndex', 'Maestro')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success" onclick="GuardarCAADatos()">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>
+<script>
+    function GuardarCAADatos() {
+        var accion           = 0;
+        var ALM_CODIGO = $("#ALM_CODIGO").val().trim();
+        var ALM_DESCRI = $("#ALM_DESCRI").val().trim().toUpperCase();
+        var ALM_DIRECC = $("#ALM_DIRECC").val().trim().toUpperCase();
+        var ALM_DISTRI = $("#ALM_DISTRI").val().trim().toUpperCase();
+        var ALM_TELEF = $("#ALM_TELEF").val().trim();
+        var ALM_NUMENT = $("#ALM_NUMENT").val();
+        var ALM_NUMSAL = $("#ALM_NUMSAL").val();
+        var ALM_NUMNE = $("#ALM_NUMNE").val();
+        var ALM_NUMNS = $("#ALM_NUMNS").val();
+        var ALM_NUMERO = $("#ALM_NUMERO").val().trim().toUpperCase();
+        var ALM_ZONA = $("#ALM_ZONA").val().trim().toUpperCase();
+        var ALM_INTERIOR = $("#ALM_INTERIOR").val().trim().toUpperCase();
+        var ALM_PROVINCIA = $("#ALM_PROVINCIA").val().trim().toUpperCase();
+        var ALM_DEPARTAMENTO = $("#ALM_DEPARTAMENTO").val().trim().toUpperCase();
+        var datos_enviar     = [];
+
+        if ($("#ALM_CODIGO")[0].readOnly) accion = 1;
+
+        if ((ALM_CODIGO != "") && (ALM_DESCRI != "")) {
+            datos_enviar.push({
+                ALM_CODIGO: ALM_CODIGO,
+                ALM_DESCRI: ALM_DESCRI,
+                ALM_DIRECC: ALM_DIRECC,
+                ALM_DISTRI: ALM_DISTRI,
+                ALM_TELEF: ALM_TELEF,
+                ALM_NUMENT: ALM_NUMENT,
+                ALM_NUMSAL: ALM_NUMSAL,
+                ALM_NUMNE: ALM_NUMNE,
+                ALM_NUMNS: ALM_NUMNS,
+                ALM_NUMERO: ALM_NUMERO,
+                ALM_ZONA: ALM_ZONA,
+                ALM_INTERIOR: ALM_INTERIOR,
+                ALM_PROVINCIA: ALM_PROVINCIA,
+                ALM_DEPARTAMENTO: ALM_DEPARTAMENTO,
+            });
+
+            var parametros = "datos_enviar=" + JSON.stringify(datos_enviar) + "&accion=" + accion;
+            $.ajax(
+			{
+			    type: "POST",
+			    dataType: "json",
+			    url: ruta_global + "CAAActualizar",
+			    data: parametros,
+			    beforeSend: function () {
+			        loading_show();
+			    },
+			    cache: false,
+			    success: function (Resultado) {
+			        loading_hide();
+			        window.parent.MostrarMensaje(Resultado.color, Resultado.data);
+			        if (Resultado.respuesta) {
+			            ocultar_panel();
+			            $('#CAAIndexGrid').DataTable().ajax.reload();
+			        }
+
+			    },
+			    error: function (xhr) {
+			        loading_hide();
+			        console.log(xhr);
+			        window.parent.MostrarMensaje("Rojo", xhr.responseText);
+			    },
+			});
+        } else {
+            MostrarMensaje("Rojo", "Faltan Datos");
+        }
+    }
+</script>

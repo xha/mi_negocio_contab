@@ -1,0 +1,69 @@
+@{
+    ViewBag.Title = "Tipo de Cambio por Día";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li class="breadcrumbs-item">Base de Datos</li>
+                    <li class="breadcrumbs-item active">Tipo de Cambio por D&iacute;a</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5><b>Tipo de Cambio por D&iacute;a</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda Tipo de Cambio - Inicio', '/TipoCambio/Ayuda', 'Index', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold">Listado de Tipos de Cambio por Dias <label class='btn btn-primary grid_opt' onclick="imprimir_global()"><i class='fa fa-print'></i></label></h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="TipoCambioGrid" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Compra</th>
+                            <th>Venta</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#TipoCambioGrid").DataTable({
+            "processing": true, // for show progress bar
+            "serverSide": true, // for process server side
+            "filter": true, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "pageLength": 5,
+
+            "ajax": {
+                "url": "/TipoCambio/GridTipoCambios",
+                "type": "POST",
+                "datatype": "json"
+            },
+            "columns": [
+                { data: "Fecha" },
+                { data: "Compra" },
+                { data: "Venta" },
+            ]
+        });
+    });
+</script>

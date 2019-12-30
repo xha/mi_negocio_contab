@@ -1,0 +1,148 @@
+﻿@model Datos.Models.BancoModel
+@{
+    ViewBag.Title = "Transacciones Bancarias";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Banco", "Index", "Banco")</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("TIndex", "Banco")'>Transacciones Bancarias</a></li>
+                    <li class="breadcrumbs-item active">Transacci&oacute;n</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Transacci&oacute;n </label> #<strong>@Model.Codigo</strong></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Banco/Ayuda', 'TTransaccion', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Cuenta Bancaria</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Moneda</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-4">
+            <label>Banco</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>Saldo Ini.</label>
+            <input class="form-control" readonly />
+        </div>
+    </div>
+    <hr />
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped pre-scrollable datatables" id="TTransaccionGrid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Fecha Oper.</th>
+                        <th>Fecha Doc.</th>
+                        <th>Transacci&oacute;n</th>
+                        <th>Tipo Doc.</th>
+                        <th>Documento</th>
+                        <th>Ingreso</th>
+                        <th>Salida</th>
+                        <th>Glosa</th>
+                        <th style="width: 5px"></th>
+                        <th style="width: 5px"></th>
+                        <th style="width: 5px"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Nro. Transacciones</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-4">
+            <label>Saldo Mensual</label>
+            <input class="form-control" readonly />
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick="ocultar_panel('TIndex', 'Banco')" class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#TTransaccionGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            ajax: {
+                url: ruta_actual + "/Banco/GridTTransacciones",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+                [{
+                    targets: [8],
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    targets: [9],
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    targets: [10],
+                    orderable: false,
+                    searchable: false
+                },],
+            columns: [
+                { data: "FechaOperacion" },
+                { data: "FechaDocumento" },
+                { data: "NroTransaccion" },
+                { data: "TipoDocumento" },
+                { data: "Documento" },
+                { data: "Ingreso" },
+                { data: "Salida" },
+                { data: "Glosa" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-primary grid_opt" title="Digitación" href="#" onclick="AjaxModalGet(\'Detalle\', \'/Banco/Digitacion\', \'nada\')"><i class="fa fa-chart-line"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="AjaxModalGet(\'Detalle\', \'/Banco/Digitacion\', \'nada\')"><i class="fa fa-edit"></i></a>';
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Eliminar" href="#" onclick="anular_nota(\'' + row.Codigo + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+</script>
+

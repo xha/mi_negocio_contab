@@ -1,0 +1,91 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <label>Fecha</label>
+            <input type="text" class="form-control datepickers" readonly />
+        </div>
+        <div class="col-sm-3">
+            <div class="row col-sm-12 p-1">
+                <input type="radio" name="i_ingreso" />&nbsp;
+                Ingreso
+            </div>
+            <div class="row col-sm-12 p-1">
+                <input type="radio" name="i_ingreso" />&nbsp;
+                Salida
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label>Fecha de Oper.</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-3">
+            <label>Importe</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <label>Transacci&oacute;n</label>
+            <div class="row">
+                <div class="col-sm-4">
+                    <input type="text" class="form-control alert-warning" maxlength="3" onkeypress="solo_enteros(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Transacciones Bancarias', '/Banco/Transacciones', 'nada2', 'm_middle')" />
+                </div>
+                <div class="col-sm-8">
+                    <input class="form-control" readonly />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <label>Documento</label>
+            <div class="row">
+                <div class="col-sm-4">
+                    <input type="text" class="form-control alert-warning" maxlength="3" onkeypress="solo_alfanumericos(event)" title="Doble Click para buscar" ondblclick="AjaxModalGet('Tipos de Documento', '/Utilitarios/TipoDocumento', 'nada2', 'm_middle')" />
+                </div>
+                <div class="col-sm-8">
+                    <input class="form-control" readonly />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <label>Nro de Documento</label>
+            <input class="form-control" readonly />
+        </div>
+        <div class="col-sm-2 text-center">
+            <br />
+            <input type="checkbox" /><br />
+            Cancelaci&oacute;n M&uacute;ltiple
+        </div>
+        <div class="col-sm-6">
+            <label>Glosa</label>
+            <input class="form-control" maxlength="60" onkeypress="solo_alfanumericos(event)" />
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-info" onclick="$('#m_central').modal('hide')">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+            <a href="#" class="btn btn-success">
+                <i class='fa fa-save'></i>
+                Aceptar
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+</script>

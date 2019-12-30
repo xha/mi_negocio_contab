@@ -1,0 +1,81 @@
+@{
+    ViewBag.Title = "Artículos en negativo";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Gerente", "Index", "Gerente")</li>
+                    <li class="breadcrumbs-item">Reportes de Auditor&iacute;a </li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Gerente/Ayuda', 'RAANIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header text-danger font-weight-bold">Opciones</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Por Almac&eacute;n</label>
+                                <select class="form-control">
+                                    <option>Moneda Nacional</option>
+                                    <option>Moneda Extranjera</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Ordenado por</label>
+                                <select class="form-control">
+                                    <option>C&oacute;digo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="col-sm-12">
+            <a href="#" class="btn btn-primary">
+                <i class='fa fa-print'></i>
+                Imprimir
+            </a>
+        </div>
+    }
+</div>
+<script>
+    $('#p_todos').on('ifChecked', function (event) {
+        activa_almacen(1);
+    });
+
+    $('#p_todos').on('ifUnchecked', function (event) {
+        activa_almacen(0);
+    });
+
+    function activa_almacen(valor) {
+        var almacenes = $("#i_almacenes")[0];
+
+        if (valor == 0) {
+            almacenes.disabled = false;
+        } else {
+            almacenes.disabled = true;
+        }
+    }
+</script>

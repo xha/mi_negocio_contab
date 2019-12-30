@@ -1,0 +1,163 @@
+@model Datos.Models.ComprasModel
+
+@{
+    ViewBag.Title = "Detalle de la Orden de Compra";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Compras", "Index", "Compras")</li>
+                    <li class="breadcrumbs-item">Compras Nacionales</li>
+                    <li class="breadcrumbs-item">&Oacute;rdenes de Compra</li>
+                    <li class="breadcrumbs-item"><a href="#" onclick='pagina_central("COCIndex", "Compras")'>@ViewBag.Title</a></li>
+                    <li class="breadcrumbs-item active">Detalle</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Detalle Registro</label> #<strong>@Model.Codigo</strong></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Compras/Ayuda', 'COCDetalle', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "COCDetalleForm" }))
+{
+    <div class="row">
+        <div class="col-sm-5">
+            <label>Proveedor</label>
+            @Html.TextBoxFor(m => m.CodigoProveedor, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="col-sm-2">
+            <label>RUC</label>
+            <input type="text" readonly class="form-control" />
+        </div>
+        <div class="col-sm-3">
+            <label>Documento</label>
+            @Html.TextBoxFor(m => m.Documento, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="col-sm-2">
+            <label>F. Emisi&oacute;n</label>
+            @Html.TextBoxFor(m => m.FechaEmision, new { @class = "form-control", @readonly = "true" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <label>Moneda</label>
+            @Html.TextBoxFor(m => m.Moneda, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="col-sm-2">
+            <label>T. Cambio</label>
+            @Html.TextBoxFor(m => m.TotalCredito, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="col-sm-2">
+            <label>F. Entrega</label>
+            @Html.TextBoxFor(m => m.FechaVencimiento, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="col-sm-2">
+            <label>Estado O/C</label>
+            @Html.TextBoxFor(m => m.Estatus, new { @class = "form-control", @readonly = "true" })
+        </div>
+    </div>
+}
+    <hr />
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped pre-scrollable datatables" id="COCDetalleGrid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>C&oacute;digo</th>
+                        <th>Descripci&oacute;n</th>
+                        <th>Lote/Serie</th>
+                        <th>Cantidad</th>
+                        <th>Unidad</th>
+                        <th>Precio</th>
+                        <th>Bruto</th>
+                        <th>Descto</th>
+                        <th>Total Vta.</th>
+                        <th>IGV</th>
+                        <th>Valor Vta.</th>
+                        <th>Descto 2</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row border rounded">
+        <div class="col-sm-2" align="center">
+            <label>Bruto</label><br />
+            <input type="text" readonly class="form-control" />
+        </div>
+        <div class="col-sm-2" align="center">
+            <label>Descuento</label><br />
+            <input type="text" readonly class="form-control" />
+        </div>
+        <div class="col-sm-2" align="center">
+            <label>Descto. Adicional</label><br />
+            <input type="text" class="form-control" onkeypress="solo_enteros(event)" />
+        </div>
+        <div class="col-sm-2" align="center">
+            <label>Valor Vta.</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-2" align="center">
+            <label>IGV</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-2" align="center">
+            <label>Total</label>
+            <input type="text" class="form-control" readonly />
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick='ocultar_panel("COCIndex", "Compras")' class="btn btn-info">
+                <i class='fa fa-arrow-left'></i>
+                Regresar
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#COCDetalleGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Compras/GridProductos",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CodigoProducto" },
+                { data: "DescripcionProducto" },
+                { data: "Lote" },
+                { data: "Cantidad" },
+                { data: "CodigoUnidad" },
+                { data: "Precio" },
+                { data: "Bruto" },
+                { data: "Descuento" },
+                { data: "TotalVta" },
+                { data: "IGV" },
+                { data: "ValorVta" },
+                { data: "DescuentoDetalle" },
+            ]
+        });
+    });
+</script>

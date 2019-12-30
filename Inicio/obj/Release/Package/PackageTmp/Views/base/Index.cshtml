@@ -1,0 +1,114 @@
+﻿@model Datos.Models.VendedorModel
+
+@{
+    ViewBag.Title = "Vendedor";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid">
+    <h5><i class="fa fa-check-circle-o fa-2x"></i> <b>@ViewBag.Title</b></h5>
+</div>
+<div class="container-fluid">
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label>Descripci&oacute;n</label><br />
+                    <input class="form-control" style="width: 100%" />
+                </div>
+            </div>
+            <div class="col-sm-1">
+                <label>Habilitado</label><br />
+                <input type="checkbox" />
+            </div>
+            <div class="col-sm-2">
+                <br />
+                <a href="#" class="btn btn-primary">
+                    <i class='fa fa-search'></i>
+                    Buscar
+                </a>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+            <div class="col-sm-4">
+                <a href="@Url.Action("Create", "Vendedor")" class="btn btn-success">
+                    <i class='fa fa-plus'></i>
+                    Agregar
+                </a>
+            </div>
+        </div>
+    }
+
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold">Listado de Vendedores 
+                <label class='btn btn-primary grid_opt' onclick="imprimir_global()"><i class='fa fa-print'></i></label>
+            </h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="Demogrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>C&oacute;digo</th>
+                            <th>RUC</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Usuario</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#Demogrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Vendedor/GridVendedores",
+                type: "GET",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [4],
+                orderable: false,
+                searchable: false
+            },
+            {
+                targets: [5],
+                searchable: false,
+                orderable: false
+            }],
+            columns: [
+                { data: "ID" },
+                { data: "RUC" },
+                { data: "Descripcion" },
+                { data: "Usuario" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" href="/Proveedor/Edit/' + row.ID + '"><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" href="/Proveedor/Delete/' + row.ID + '"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+
+            ]
+        });
+    });
+</script>

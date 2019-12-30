@@ -1,0 +1,100 @@
+﻿@model Datos.Models.MaestroModel
+
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+{
+    <div class="row p-1">
+        <div class="col-sm-2">
+            <label>C&oacute;digo</label>
+            @if (Model != null && !String.IsNullOrEmpty(Model.Codigo))
+            {
+                @Html.TextBoxFor(m => m.Codigo, new { @class = "form-control", @readonly = "true" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.Codigo, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_alfanumericos(event)" })
+            }
+        </div>
+        <div class="col-sm-4">
+            <label>Descripci&oacute;n</label>
+            @Html.TextBoxFor(m => m.Descripcion, new { @class = "form-control", @maxlength = "60", onkeypress = "solo_alfanumericos(event)" })
+        </div>
+        <div class="col-sm-3">
+            <label>C&oacute;digo Sunat</label>
+            @Html.TextBoxFor(m => m.CodigoSunat, new { @class = "form-control", @maxlength = "10", onkeypress = "solo_enteros(event)" })
+        </div>
+        <div class="col-sm-3">
+            <br />
+            @Html.CheckBoxFor(m => m.Activo)&nbsp;
+            Activo
+        </div>
+    </div>
+    <div class="row p-1">
+        <div class="col-sm-3">
+            @Html.CheckBoxFor(m => m.AplicaSerie)&nbsp;
+            Nro. Serie
+        </div>
+        <div class="col-sm-3">
+            @Html.CheckBoxFor(m => m.AplicaDocumento)&nbsp;
+            Nro. Doc.
+        </div>
+        <div class="col-sm-3">
+            @Html.CheckBoxFor(m => m.AplicaDocumentoReferencia)&nbsp;
+            Doc. Ref.
+        </div>
+    </div>
+    <div class="row p-1">
+        <div class="col-sm-3">
+            @Html.CheckBoxFor(m => m.AplicaDtoCompra)&nbsp;
+            Dcto. de Compra
+        </div>
+        <div class="col-sm-3">
+            @Html.CheckBoxFor(m => m.AplicaDtoVenta)&nbsp;
+            Dcto. de Venta
+        </div>
+        <div class="col-sm-3">
+            @Html.CheckBoxFor(m => m.AplicaDtoAlmacen)&nbsp;
+            Dcto. de Almac&eacute;n
+        </div>
+        <div class="col-sm-3">
+            @Html.CheckBoxFor(m => m.AplicaDtoCxC)&nbsp;
+            Dcto. de Cuentas por Cobrar
+        </div>
+        <div class="col-sm-3">
+            @Html.CheckBoxFor(m => m.AplicaDtoCxP)&nbsp;
+            Dcto. de Cuentas por Pagar
+        </div>
+        <div class="col-sm-3">
+            @Html.CheckBoxFor(m => m.AplicaDtoBanco)&nbsp;
+            Dcto. de Banco
+        </div>
+        <div class="col-sm-3">
+            @Html.CheckBoxFor(m => m.AplicaRegistroCompraSunat)&nbsp;
+            Registro Compras SUNAT
+        </div>
+        <div class="col-sm-3">
+            @Html.CheckBoxFor(m => m.AplicaRegistroVentaSunat)&nbsp;
+            Registro Ventas SUNAT
+        </div>
+        <div class="col-sm-3">
+            @Html.CheckBoxFor(m => m.AplicaRegistroCompraComercial)&nbsp;
+            Registro Compras Comercial
+        </div>
+        <div class="col-sm-3">
+            @Html.CheckBoxFor(m => m.AplicaRegistroVentaComercial)&nbsp;
+            Registro Ventas Comercial
+        </div>
+    </div>
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-12">
+        <a href="#" onclick="ocultar_panel('TATDIndex', 'Maestro')" class="btn btn-info">
+            <i class='fa fa-arrow-left'></i>
+            Regresar
+        </a>
+        <a href="#" class="btn btn-success">
+            <i class='fa fa-save'></i>
+            Guardar
+        </a>
+    </div>
+</div>

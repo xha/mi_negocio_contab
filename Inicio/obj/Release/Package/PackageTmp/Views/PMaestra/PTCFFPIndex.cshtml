@@ -1,0 +1,234 @@
+@model Datos.PlanillaModels.PMaestraModel
+
+@{
+    ViewBag.Title = "Formatos de Planilla";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="modal fade" id="m_ptcffp" tabindex="-1" role="dialog" aria-labelledby="Modal Central" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header col-sm-12">
+                <h5 class="modal-title" id="mp_titulo"></h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body h500">
+                <div class="col-sm-12 text-justify" id="mp_cuerpo">
+
+                </div>
+            </div>
+            <div class="modal-footer float-left" id="mp_pie">
+                <a href="#" onclick="$('#m_ptcffp').modal('hide')" class="btn btn-info">
+                    <i class='fa fa-arrow-left'></i>
+                    Regresar
+                </a>
+                <a href="#" class="btn btn-success" onclick="agregar_item()">
+                    <i class='fa fa-save'></i>
+                    Aceptar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item active">Base de Datos</li>
+                    <li class="breadcrumbs-item active">Tablas de Conceptos y F&oacute;rmulas</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda PMaestra - @ViewBag.Title - Inicio ', '/PMaestra/Ayuda', 'PTCFFPIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <div class="card">
+            <div class="card-header text-danger font-weight-bold">Ordenar / Filtrar</div>
+            <div class="card-body row">
+                <div class="col-sm-5">
+                    <label>
+                        Formatos
+                        <a href="#" class="btn btn-sm btn-secondary" onclick="agregar_formato()">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-danger" onclick="eliminar_formato2()">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                    </label><br />
+                    <select class="form-control" id="id_formato" name="id_formato">
+                        <option value="C">Construcci&oacute;n Civil</option>
+                        <option value="E">Empleados</option>
+                        <option value="G">Gratificaci&oacute;n</option>
+                    </select>
+                    <input type="hidden" id="observacion" />
+                </div>
+                <div class="col-lg-2">
+                    <label>&nbsp;</label><br />
+                    <a href="#" class="btn btn-primary">
+                        <i class='fa fa-search'></i>
+                        Buscar
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="#" onclick="mostrar_panel('PTCFMCCreate', 'PMaestra')" class="btn btn-success">
+                <i class='fa fa-plus'></i>
+                Agregar
+            </a>
+        </div>
+    </div>
+    <br />
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="PTCFFPIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>T</th>
+                            <th>C&oacute;digo</th>
+                            <th>Nombre</th>
+                            <th>Planilla</th>
+                            <th>Tipo</th>
+                            <th style="width: 5px"></th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#m_ptcffp').appendTo('body');
+        $("#PTCFFPIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            /*language: {
+ 
+                url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+ 
+            },*/
+            ajax: {
+                url: ruta_actual + "/PMaestra/GridConceptos",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [2, 3, 4],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                {
+                    data: "TIPO", render: function (data, type, row) {
+                        switch (data) {
+                            case 0:
+                                return '<label class="btn-sm btn-info"><i class="fa fa-info-circle"></i></label>';
+                                break;
+                            case 1:
+                                return '<label class="btn-sm btn-primary"><i class="fa fa-plus-circle"></i></label>';
+                                break;
+                            case 2:
+                                return '<label class="btn-sm btn-danger"><i class="fa fa-minus-circle"></i></label>';
+                                break;
+                            case 3:
+                                return '<label class="btn-sm btn-success"><i class="fa fa-chevron-circle-up"></i></label>';
+                                break;
+                            default: return '';
+                        }
+                    }
+                },
+                { data: "CODIGO_CONCEPTO" },
+                { data: "DESCRIPCION_CONCEPTO" },
+                { data: "COLUMNA_PLANILLA" },
+                { data: "TIPO" },
+                {
+                    render: function (data, type, row)
+                    { return '<a class="btn btn-info grid_opt" title="Editar" href="#" onclick="mostrar_panel(\'PTCFMCEdit?Codigo=' + row.CODIGO + '\', \'PMaestra\')" ><i class="fa fa-edit"></i></a>'; }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-danger grid_opt" title="Anular" href="#" onclick="anular_nota(\'' + row.CODIGO + '\')"><i class="fa fa-trash"></i></a>';
+                    }
+                },
+            ]
+        });
+    });
+
+    function eliminar_formato2() {
+        var nombre = $("#formato option:selected").text();
+        $("#mp_titulo")[0].innerHTML = 'Realmente desea Eliminar el Formato: \n<b>' + nombre + '</b>';
+        $("#mp_cuerpo")[0].innerHTML = "<i class='fa fa-question-circle'></i> Por seguridad tendrá que escribir la contraseña de Administrador del Sistema, ";
+        $("#mp_cuerpo")[0].innerHTML = $("#mp_cuerpo")[0].innerHTML + "debido a que este proceso necesita permisos de administrador.";
+        $("#mp_cuerpo")[0].innerHTML = $("#mp_cuerpo")[0].innerHTML + "<br /><br /><b class='mt-2'>Ingresar Contraseña:<b></b><input type='password' id='m_clave' class='form-control w-75' />";
+        $('#m_ptcffp').modal('show');
+    }
+
+    function agregar_formato() {
+        $("#mp_titulo")[0].innerHTML = 'Nuevo formato de planilla';
+        $("#mp_cuerpo")[0].innerHTML = "Escriba el nuevo formato de planilla";
+        $("#mp_cuerpo")[0].innerHTML = $("#mp_cuerpo")[0].innerHTML + "<br /><input type='text' id='m_formato' class='form-control w-75' />";
+        $('#m_ptcffp').modal('show');
+    }
+
+    function agregar_item() {
+        var valor = $("#m_formato").val();
+        
+        if (valor!="") {
+            //var formato = $("#id_formato")[0];
+            //formato = new Option("Seleccione", "", "", "");
+            $('#id_formato').prepend("<option value='1' selected>" + valor + "</option>");
+            $("#m_formato").val("");
+            $('#m_ptcffp').modal('hide');
+        }        
+    }
+
+    function eliminar_formato() {
+        var nombre = $("#formato option:selected").text();
+        swal({
+            title: 'Realmente desea Eliminar el Formato: ' + nombre,
+            text: '<i class="fa fa-search"></i>Por seguridad tendrá que escribir la contraseña de Administrador',
+            input: 'text',
+            inputValue: $("#observacion").val(),
+            inputPlaceholder: 'Escriba la contraseña',
+            inputAttributes: {
+                autocapitalize: 'off',
+                onkeypress: 'solo_alfanumericos(event)',
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.value) {
+                //$("#obs_" + linea).val(result.value);
+            }
+        })
+    }
+</script>

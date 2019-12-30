@@ -1,0 +1,269 @@
+@model Datos.Models.FacturacionModel
+@{
+    ViewBag.Title = "Punto de Venta - OFICINA PRINCIPAL";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Punto de Venta", "Index", "PuntoVenta")</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                    <li class="breadcrumbs-item active">Nuevo</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+            <h6><label style="color:#ffbc00">Nuevo  Registro</label></h6>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/PuntoVenta/Ayuda', 'PVVIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "DatosForm" }))
+    {
+        
+        <div class="row">
+            <div class="col-sm-3">
+                <label>Vendedor</label><br />
+                @Html.TextBoxFor(m => m.CodigoVendedor, new { @class = "form-control alert-warning", @maxlength = "11", onkeypress = "solo_enteros(event)", ondblclick = "AjaxModalGet('Vendedores', '/Vendedor/Vendedores', 'nada2', 'm_middle')" })
+            </div>
+            <div class="col-sm-2">
+                <label>Fecha Vta.</label>
+                @Html.TextBoxFor(m => m.FechaEmision, new { @class = "form-control", @readonly = true })
+            </div>
+            <div class="col-sm-2">
+                <label>T.C.</label>
+                @Html.TextBoxFor(m => m.TotalCredito, new { @class = "form-control", @readonly = true })
+            </div>
+            <div class="col-sm-2">
+                <label>Moneda</label><br />
+                @Html.DropDownListFor(m => m.Moneda, new List<SelectListItem>
+            {
+                new SelectListItem{ Text="Moneda Nacional", Value = "MN" },
+                new SelectListItem{ Text="Moneda Extranjera", Value = "ME" },
+            }, new { @class = "form-control" }) 
+            </div>
+            <div class="col-sm-3">
+                <label>Precios Inc. IGV</label>
+                @Html.TextBoxFor(m => m.PrecioVenta, new { @class = "form-control", @readonly = true })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Tipo de Documento</label><br />
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(m => m.TipoDocumento, new { @class = "form-control alert-warning", @maxlength = "3", onkeypress = "solo_alfanumericos(event)", ondblclick = "AjaxModalGet('Tipo de Documento', '/Utilitarios/TipoDocumento', 'nada2', 'm_middle')" })
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" readonly />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    }
+    <hr />
+    <div class="row">
+        <div class="card-body table-responsive">
+                <table class="table table-bordered table-striped w-100" cellspacing="0" style="min-width: 120%">
+                    <thead>
+                        <tr>
+                            <th style="width: 10%">
+                                <label class="btn btn-primary btn-sm left" onclick="agregar_fila()">
+                                    <i class='fa fa-plus'></i>
+                                </label>
+                                <label class="right">C&oacute;digo</label>
+                            </th>
+                            <th style="width: 30%">Descripci&oacute;n</th>
+                            <th>Lote/Serie</th>
+                            <th>Und.</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unit.</th>
+                            <th>Precio Total</th>
+                            <th>Dscto</th>
+                            <th>Importe Descto</th>
+                            <th>Importe Total</th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="Detallegrid"></tbody>
+                </table>
+        </div>
+    </div>
+    <div class="row border rounded">
+        <div class="col-sm-3">
+            <label>Valor Vta.</label><br />
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-2">
+            <label>I.G.V.</label><br />
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-2" align="right">
+            <br />
+            <b>Total</b>
+        </div>
+        <div class="col-sm-2" align="center">
+            <label>Soles</label><br />
+            <input type="text" class="form-control" readonly />
+        </div>
+        <div class="col-sm-2" align="center">
+            <label>D&oacute;lares</label><br />
+            <input type="text" class="form-control" readonly />
+        </div>
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <button class="btn btn-success" onclick="AjaxModalGet('Venta al Publico - Factura', '/Facturacion/TCFacturaDatosCliente', 'Factura')">
+                <i class='fa fa-save'></i>
+                Factura
+            </button>
+            <button class="btn btn-success" onclick="AjaxModalGet('Venta al Publico - Boleta', '/Facturacion/TCFacturaDatosCliente', 'Boleta')">
+                <i class='fa fa-save'></i>
+                Boleta
+            </button>
+            <button class="btn btn-success" onclick="AjaxModalGet('Venta al Publico - Pedido', '/Facturacion/TCFacturaDatosCliente', 'Pedido')">
+                <i class='fa fa-save'></i>
+                Pedido
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $('.telefono').mask('(000) 000-0000', { placeholder: "(000) 000-0000" });
+
+    $('input[type=radio]').iCheck({
+        radioClass: 'iradio_square-blue',
+    });
+
+    $('input[type=checkbox]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+    });
+
+    var control = 0;
+    $(function () {
+        
+    });
+
+    function agregar_fila() {
+        var tabla = $('#Detallegrid')[0];
+        var tr = document.createElement('tr');
+        var td = new Array();
+        var input = new Array();
+        control++;
+        var y = control;
+
+        var tr = document.createElement('tr');
+        tr.id = "fila_" + y;
+        tr.align = 'center';
+        tr.className = 'text-center';
+
+        td[0] = document.createElement("td");
+        //td[6].style.width = '12%';
+        input[0] = document.createElement('input');
+        input[0].id = 'codigo_' + y;
+        input[0].maxLength = '20';
+        input[0].className = 'form-control alert-warning';
+        eval("input[0].onkeypress = function(){solo_enteros(event);}");
+        eval("input[0].ondblclick = function(){AjaxModalGet('Selección de Artículos', '/PuntoVenta/ArticulosVenta', 'nada');}");
+        td[0].appendChild(input[0]);
+
+        td[1] = document.createElement("td");
+        input[1] = document.createElement('input');
+        input[1].id = 'descripcion_' + y;
+        input[1].readOnly = true;
+        input[1].className = 'form-control';
+        td[1].appendChild(input[1]);
+
+        td[2] = document.createElement("td");
+        input[2] = document.createElement('input');
+        input[2].id = 'lote_' + y;
+        input[2].readOnly = true;
+        input[2].className = 'form-control';
+        td[2].appendChild(input[2]);
+
+        td[3] = document.createElement("td");
+        input[3] = document.createElement('input');
+        input[3].id = 'um_' + y;
+        input[3].readOnly = true;
+        input[3].className = 'form-control';
+        td[3].appendChild(input[3]);
+
+        td[4] = document.createElement("td");
+        input[4] = document.createElement('input');
+        input[4].id = 'lote_' + y;
+        input[4].className = 'form-control';
+        eval("input[4].onkeypress = function(){solo_decimal(event,this);}");
+        td[4].appendChild(input[4]);
+
+        td[5] = document.createElement("td");
+        input[5] = document.createElement('input');
+        input[5].id = 'preciou_unitario_' + y;
+        input[5].readOnly = true;
+        input[5].className = 'form-control';
+        td[5].appendChild(input[5]);
+
+        td[6] = document.createElement("td");
+        input[6] = document.createElement('input');
+        input[6].id = 'precio_total_' + y;
+        input[6].readOnly = true;
+        input[6].className = 'form-control';
+        td[6].appendChild(input[6]);
+
+        td[7] = document.createElement("td");
+        input[7] = document.createElement('input');
+        input[7].id = 'descuento_' + y;
+        input[7].readOnly = true;
+        input[7].className = 'form-control';
+        td[7].appendChild(input[7]);
+
+        td[8] = document.createElement("td");
+        input[8] = document.createElement('input');
+        input[8].id = 'importe_descuento_' + y;
+        input[8].readOnly = true;
+        input[8].className = 'form-control';
+        td[8].appendChild(input[8]);
+
+        td[9] = document.createElement("td");
+        input[9] = document.createElement('input');
+        input[9].id = 'importe_total_' + y;
+        input[9].readOnly = true;
+        input[9].className = 'form-control';
+        td[9].appendChild(input[9]);
+
+        td[10] = document.createElement("td");
+        var icono = document.createElement('i');
+        var a = document.createElement('label');
+        a.className = "btn btn-danger btn-sm";
+        eval("a.onclick = function(){eliminar_fila(" + y + ");}");
+        icono.className = "fa fa-times";
+        icono.style.cursor = 'pointer';
+        icono.title = "Eliminar Fila";
+        a.appendChild(icono);
+        td[10].appendChild(a);
+
+        for (var z = 0; z < td.length; z++) {
+            tr.appendChild(td[z]);
+        }
+        tabla.appendChild(tr);
+    }
+
+    function eliminar_fila(i) {
+        $("#fila_"+i).remove();
+}
+</script>
+

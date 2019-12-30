@@ -1,0 +1,147 @@
+@model Datos.Models.ComprasModel
+
+@{
+    ViewBag.Title = "Consulta de Documentos de Compras Realizadas";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Compras", "Index", "Compras")</li>
+                    <li class="breadcrumbs-item">Consultas</li>
+                    <li class="breadcrumbs-item active">Consulta de Documentos</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+        
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda @ViewBag.Title - Inicio', '/Compras/Ayuda', 'ConsultaDocumentoIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "IndexForm" }))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label>Fecha Desde</label><br />
+                    <input class="form-control datepickers" readonly />
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <label>Fecha Hasta</label><br />
+                <input class="form-control datepickers" readonly />
+            </div>
+            <div class="col-sm-2">
+                <br />
+                <a href="#" class="btn btn-primary">
+                    <i class='fa fa-search'></i>
+                    Buscar
+                </a>
+            </div>
+        </div>
+    }
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="CCDIndexGrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Fecha Emitido</th>
+                            <th>Mon</th>
+                            <th>Precio Bruto</th>
+                            <th>Descuento</th>
+                            <th>Precio Venta</th>
+                            <th>Importe IGV</th>
+                            <th>Valor Venta</th>
+                            <th>Origen</th>
+                            <th style="width: 5px"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold">Recibo por Honorarios</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped pre-scrollable datatables" id="Demogrid" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Proveedor</th>
+                            <th>Fecha Emitido</th>
+                            <th>Mon</th>
+                            <th>T. Honorario</th>
+                            <th>IR</th>
+                            <th>IES</th>
+                            <th>Neto</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".datepickers").datepicker({
+        autoclose: true
+    });
+
+    $(function () {
+        $("#CCDIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+            
+
+            ajax: {
+                url: ruta_actual + "/Compras/GridPrincipal",
+                type: "POST",
+                datatype: "json",
+            },
+            columnDefs:
+            [{
+                targets: [10],
+                orderable: false,
+                searchable: false
+            }],
+            columns: [
+                { data: "Documento" },
+                { data: "Glosa" },
+                { data: "FechaEmision" },
+                { data: "Moneda" },
+                { data: "ImporteBruto" },
+                { data: "Descuento" },
+                { data: "PrecioVenta" },
+                { data: "ImporteIGV" },
+                { data: "ValorVenta" },
+                { data: "Origen" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return '<a class="btn btn-light grid_opt" href="#" onclick="mostrar_panel(\'ConsultaDocumentoDetalle?Codigo=' + row.Documento + '\', \'Compras\')"><i class="fa fa-search"></i></a>';
+                    }
+                },
+
+            ]
+        });
+    });
+</script>

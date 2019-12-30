@@ -1,0 +1,370 @@
+@model Datos.PlanillaModels.PAsistenciaModel
+
+@{
+    ViewBag.Title = "Control de Asistencia";
+    Layout = null; //Layout = "~/Views/Shared/_LayoutTab.cshtml";
+}
+
+<div class="container-fluid animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumbs">
+                    <li class="breadcrumbs-item">@Html.ActionLink("Planilla", "Index", "Planilla")</li>
+                    <li class="breadcrumbs-item active">Asistencia</li>
+                    <li class="breadcrumbs-item active">@ViewBag.Title</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-11">
+            <h5> <b>@ViewBag.Title</b></h5>
+        </div>
+
+        <div class="col-sm-1">
+            <a href="#" onclick="AjaxModalGet('Ayuda PMaestra - @ViewBag.Title - Inicio ', '/PMaestra/Ayuda', 'PACAIndex', 'm_ayudas')" class="icono_ayuda">
+                <i class="fa fa-question-circle fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="card shadow">
+        <div class="row card-body">
+            <div class="col-sm-3 table-responsive border-right">
+                <div class="row divs" id="TT" style="display: flex">
+                    <div class="col-lg-12">
+                        <h5 style="cursor: pointer" onclick="abre_modal('0', '');">
+                            <i class='fa fa-users'></i>
+                            <b id="titulo_TT">Asistencia</b>
+                        </h5>
+                    </div>
+                    <div class="col-lg-12" id="div_TT"></div>
+                </div>
+            </div>
+            <div class="col-sm-9" id="div_asistencia" style="display: block">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>Fecha Desde</label><br />
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Fecha Hasta</label><br />
+                        <input class="form-control datepickers" readonly />
+                    </div>
+                    <div class="col-sm-6">
+                        <br />
+                        <a href="#" class="btn btn-danger">
+                            <i class='fa fa-search'></i>
+                            Consulta de Asistencia
+                        </a>
+                    </div>
+                </div>
+                <div class="table-responsive mt-2">
+                    <table class="table table-bordered table-striped pre-scrollable datatables" id="PACAIndexGrid" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>C&oacute;digo Trab.</th>
+                                <th style="min-width: 250px">Apellidos y Nombres</th>
+                                <th>D&iacute;a</th>
+                                <th>Entrada</th>
+                                <th>Salida</th>
+                                <th>Hora Laborada</th>
+                                <th>Min. Tardanza</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-9" id="div_grafico" style="display: none">
+                <div class="row">
+                    <div class="col-sm-12 p-1">
+                        <h5 id="titulo_grafico"></h5>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>Fecha Desde</label><br />
+                            <input class="form-control datepickers" readonly />
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Fecha Hasta</label><br />
+                        <input class="form-control datepickers" readonly />
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Tipo</label>
+                        <select class="form-control">
+                            <option>Por Trabajador</option>
+                            <option>Por &Aacute;rea de Trabajo</option>
+                            <option>Por Centro Costo</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <label>&nbsp;</label><br />
+                        <a href="#" class="btn btn-primary">
+                            <i class='fa fa-search'></i>
+                            Consultar
+                        </a>
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-sm-3 border-right">
+                        <label class="btn btn-success" id="div_tabla" onclick="activa_vista(this.id)">
+                            <i class='fa fa-table fa-2x'></i>
+                        </label>
+                        <label class="btn" id="div_no_tabla" onclick="activa_vista(this.id)">
+                            <i class='fa fa-signal fa-2x'></i>
+                        </label>
+                    </div>
+                    <div class="col-sm-7 border-right">
+                        <a href="#" class="btn btn-primary">
+                            <i class='fa fa-chart-bar fa-2x'></i>
+                        </a>
+                        <a href="#" class="btn btn-info">
+                            <i class='fa fa-chart-area fa-2x'></i>
+                        </a>
+                        <a href="#" class="btn btn-warning">
+                            <i class='fa fa-chart-line fa-2x'></i>
+                        </a>
+                        <a href="#" class="btn btn-success">
+                            <i class='fa fa-chart-pie fa-2x'></i>
+                        </a>
+                        <a href="#" class="btn btn-danger">
+                            <i class='fa fa-circle-notch fa-2x'></i>
+                        </a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a href="#" class="btn btn-secondary">
+                            <i class='fa fa-file-excel fa-2x'></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-7" id="r_tabla">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped pre-scrollable datatables" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Cod.</th>
+                                        <th>Apellidos y Nombres</th>
+                                        <th>Total Horas</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 text-center" id="r_no_tabla">
+                        <h5 id="subtitulo_grafico">Ranking</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        $('#div_TT').jstree({
+            'core': {
+                'data': [
+                    {
+                        "text": "Mantenimiento",
+                        "children": [
+                            { id: 1, "text": "Horarios Fijos" },
+                            { id: 2, "text": "Código de Incidencias" },
+                            { id: 3, "text": "Código de Horas" },
+                            { id: 4, "text": "Calendario de Feriados" }
+                        ]
+                    },
+                    {
+                        "text": "Procesos",
+                        "children": [
+                            { id: 5, "text": "Sincronización Diaria" },
+                            { id: 6, "text": "Interface con el Sistema de Planillas" }
+                        ]
+                    },
+                    {
+                        "text": "Registros",
+                        "children": [
+                            { id: 7, "text": "Registro de Horarios" },
+                            { id: 8, "text": "Registro de Marcaciones" },
+                            { id: 9, "text": "Registro de H.E., tardanzas y otros" },
+                            { id: 10, "text": "Registro de Incidencias" },
+                            { id: 11, "text": "Registro de Permisos" },
+                        ]
+                    },
+                    {
+                        "text": "Reportes",
+                        "children": [
+                            { id: 12, "text": "Reporte de Marcaciones por fechas" },
+                            { id: 13, "text": "Reporte de Asistencia MINTRA" },
+                            { id: 14, "text": "Reporte de Horas Extras" },
+                            { id: 15, "text": "Reporte de Incidencias" },
+                            { id: 16, "text": "Reporte de Permisos" },
+                            { id: 17, "text": "Reporte de Tardanzas" },
+                            { id: 18, "text": "Reporte de Ranking de horas \nlaboradas" },
+                        ]
+                    },
+                    {
+                        "text": "Análisis Gráficos",
+                        "children": [
+                            { id: 19, "text": "Ranking de Tardanzas" },
+                            { id: 20, "text": "Ranking de Horas Laboradas" },
+                            { id: 21, "text": "Ranking de Incidencias" },
+                        ]
+                    },
+                    {
+                        "text": "Configuración",
+                        "children": [
+                            { id: 22, "text": "Configuración de archivos de sincronización" },
+                            { id: 23, "text": "Parámetros de conexión al Reloj Marcador" },
+                        ]
+                    },
+                ]
+            },
+        }).on('loaded.jstree', function () {
+            $('#div_TT').jstree('open_all');
+        }).on("changed.jstree", function (e, data) {
+            abre_modal(data.selected[0],data.instance.get_node(data.selected[0]).text);
+        });
+
+        $("#PACAIndexGrid").DataTable({
+            processing: true, // for show progress bar
+            serverSide: true, // for process server side
+            filter: true, // this is for disable filter (search box)
+            orderMulti: false, // for disable multiple column at once
+
+            ajax: {
+                url: ruta_actual + "/PAsistencia/GridAsistencia",
+                type: "POST",
+                datatype: "json",
+            },
+            columns: [
+                { data: "CODIGO_TRABAJADOR" },
+                { data: "NOMBRE_TRABAJADOR" },
+                { data: "DIA" },
+                { data: "ENTRADA" },
+                { data: "SALIDA" },
+                { data: "HORA_LABORADA" },
+                { data: "MIN_TARDANZA" },
+            ]
+        });
+    });
+
+    function abre_modal(valor, texto) {
+        var ruta = "";
+        var modal = 'm_central';
+
+        switch (valor) {
+            case "0":
+                $("#div_asistencia")[0].style.display = "block";
+                $("#div_grafico")[0].style.display = "none";
+                break;
+            case "1":
+                ruta = "/PAsistencia/HorarioFijo";
+                break;
+            case "2":
+                ruta = "/PAsistencia/Incidencia";
+                break;
+            case "3":
+                ruta = "/PAsistencia/IncidenciaHora";
+                break;
+            case "4":
+                ruta = "/PAsistencia/CalendarioFeriado";
+                break;
+            case "6":
+                ruta = "/PAsistencia/InterfaceSistemaPlanilla";
+                break;
+            case "7":
+                ruta = "/PAsistencia/RHorario";
+                break; 
+            case "8":
+                ruta = "/PAsistencia/RMarcaciones";
+                break;
+            case "9":
+                ruta = "/PAsistencia/RHETardanzas";
+                break;
+            case "10":
+                ruta = "/PAsistencia/RIncidencia";
+                break;
+            case "11":
+                ruta = "/PAsistencia/RPermiso";
+                break; 
+            case "12":
+                ruta = "/PAsistencia/RepMarcacionesFecha";
+                modal = 'm_middle';
+                break;
+            case "13":
+                ruta = "/PAsistencia/RepAsistenciaMintra";
+                modal = 'm_middle';
+                break;
+            case "14":
+                ruta = "/PAsistencia/RepHorasExtras";
+                modal = 'm_middle';
+                break;
+            case "15":
+                ruta = "/PAsistencia/RepIncidencias";
+                break;
+            case "16":
+                ruta = "/PAsistencia/RepPermisos";
+                modal = 'm_middle';
+                break;
+            case "17":
+                ruta = "/PAsistencia/RepTardanzas";
+                modal = 'm_middle';
+                break;
+            case "18":
+                ruta = "/PAsistencia/RepRankingHE";
+                modal = 'm_middle';
+                break;
+            case "19":
+                $("#div_asistencia")[0].style.display = "none";
+                $("#div_grafico")[0].style.display = "block";
+                $("#titulo_grafico").html(texto);
+                $("#subtitulo_grafico").html(texto);
+                break;
+            case "20":
+                $("#div_asistencia")[0].style.display = "none";
+                $("#div_grafico")[0].style.display = "block";
+                $("#titulo_grafico").html(texto);
+                $("#subtitulo_grafico").html(texto);
+                break;
+            case "21":
+                $("#div_asistencia")[0].style.display = "none";
+                $("#div_grafico")[0].style.display = "block";
+                $("#titulo_grafico").html(texto);
+                $("#subtitulo_grafico").html(texto);
+                break;
+            case "22":
+                ruta = "/PAsistencia/ArchivoSincronizacion";
+                break;
+            case "23":
+                ruta = "/PAsistencia/RelojMarcador";
+                modal = 'm_small';
+                break;
+        }
+
+        if (ruta!="") {
+            AjaxModalGet(texto, ruta, 'nada2', modal);
+        }
+    }
+
+    function activa_vista(id) {
+        if (id == 'div_tabla') {
+            $("#div_no_tabla").removeClass("btn-success");
+            $("#div_tabla").addClass("btn-success");
+            $("#r_no_tabla").removeClass("col-sm-12");
+            $("#r_no_tabla").addClass("col-sm-5");
+            $("#r_tabla")[0].style.display = "block";
+        } else {
+            $("#div_tabla").removeClass("btn-success");
+            $("#div_no_tabla").addClass("btn-success");
+            $("#r_tabla")[0].style.display = "none";
+            $("#r_no_tabla").removeClass("col-sm-5");
+            $("#r_no_tabla").addClass("col-sm-12");
+        }
+    }
+</script>
